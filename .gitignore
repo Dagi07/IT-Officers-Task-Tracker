@@ -42,6 +42,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+package-lock.json
+startbootstrap-sb-admin-gh-pages/
+ITOfficerTaskTrackerCustomTemplate/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
