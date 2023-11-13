@@ -16,7 +16,7 @@ const EachDayTasks = () => {
               .filter((filtred) => {
                 return (
                   moment(new Date(Date.parse(filtred.done_date))).format(
-                    "MM-DD-YYYY"
+                    "YYYY-MM-DD"
                   ) === doneDay
                 );
               })
