@@ -12,5 +12,9 @@ router.use(installRoute);
 const taskRoute = require("./task.routes");
 // Add the task router to the middleware chain
 router.use(taskRoute);
+// Import the task2 route
+const task2Route = require("./task2.routes");
+// Add the task2 router to the middleware chain
+router.use(task2Route);
 
 module.exports = router;

@@ -1,14 +1,14 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const dayCalc = (doneDay) => {
-  let relativeDays = moment(doneDay).calendar();
+import calendar from "dayjs/plugin/calendar";
+dayjs.extend(calendar);
 
-  let x = moment(doneDay).calendar().split(" at")[0];
-  let y = moment("10-31-2023").calendar().split("Last ")[0];
+const dayCalc = (day_key) => {
+  let relativeDays = dayjs(day_key);
+  // console.log(day_key, relativeDays);
   // console.log(moment("10-30-2022").calendar());
-
   let temp_day = relativeDays.toString();
   if (temp_day.startsWith("Last")) {
     temp_day = temp_day.split("Last ")[1];
@@ -20,13 +20,14 @@ const dayCalc = (doneDay) => {
   }
 };
 
-const SingleDayOnSidebar = ({ doneDay }) => {
+const SingleDayOnSidebar = ({ day_key, day_key_value }) => {
+  console.log(day_key, day_key_value);
   return (
-    <Link to={`/eachdaytask/${doneDay}`}>
+    <Link to={`/eachdaytask/${day_key}`}>
       <div className="day_card border border-4 nav">
         <div className="day_card__head">
-          <div className="day_card__title">{dayCalc(doneDay)}</div>
-          <div className="note-card__desc"></div>
+          <div className="day_card__title">{dayCalc()}</div>
+          <div className="note-card__desc">{day_key_value} tasks done</div>
         </div>
         <div className="note-card__date"></div>
       </div>
