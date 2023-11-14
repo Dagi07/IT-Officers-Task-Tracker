@@ -333,6 +333,19 @@ body {
   margin: 0 15px 0 5px;
 }
 
+.onDuty_selector {
+  -webkit-appearance: none;
+  margin-left: 4px;
+  padding-left: 4px;
+  color: #fff;
+border: none;
+font-weight: bold;
+cursor: pointer;
+}
+.onDuty_selector:hover {
+  color: gold;
+}
+
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {
   * {

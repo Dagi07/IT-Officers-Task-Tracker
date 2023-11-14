@@ -75,7 +75,21 @@ const Header = () => {
       <div>
         <i className=" manIcon fas fa-user fa-fw"></i>
         <strong>
-          <span className="on-duty">On-Duty: {onDutyGlobal}</span>
+          <span className="on-duty">
+            On-Duty:
+            <select
+              id="done_by"
+              onChange={(e) => setOnDutyGlobal(() => e.target.value)}
+              value={onDutyGlobal}
+              name="done_by"
+              size="1"
+              className=" onDuty_selector bg-dark"
+            >
+              <option value="Sirak">Sirak</option>
+              <option value="Dagmawi">Dagmawi</option>
+              <option value="Tsegaye">Tsegaye</option>
+            </select>
+          </span>
         </strong>
       </div>
       {/* </a> */}

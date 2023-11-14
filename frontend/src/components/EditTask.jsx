@@ -4,13 +4,13 @@ import { useTasksContext } from "../hooks/useTasksContext";
 
 function EditTask(props) {
   const { tasks, dispatch } = useTasksContext();
-  const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
+  // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
 
   const [updateTask, setUpdateTask] = useState({
-    idTask: `${currentTask[0].task_id}`,
-    taskDetail: `${currentTask[0].task_detail}`,
-    taskCompleted: `${currentTask[0].task_completed}`,
-    doneBy: `${currentTask[0].done_by}`,
+    idTask: `${props.specificTask.task_id}`,
+    taskDetail: `${props.specificTask.task_detail}`,
+    taskCompleted: `${props.specificTask.task_completed}`,
+    doneBy: `${props.specificTask.done_by}`,
   });
 
   // useEffect(() => {

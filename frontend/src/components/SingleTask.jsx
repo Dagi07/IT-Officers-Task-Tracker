@@ -6,12 +6,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import { red } from "@mui/material/colors";
 import EditTask from "./EditTask";
 
-const SingleTask = ({ eachTask }) => {
+const SingleTask = ({ specificTask }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
   return (
-    <div className="single_task" key={eachTask.task_id}>
-      <h6>{eachTask.task_detail}</h6>
+    <div className="single_task" key={specificTask.task_id}>
+      <h6>{specificTask.task_detail}</h6>
       <div className="single_task__btns">
         <Fab
           color="secondary"
@@ -25,7 +25,7 @@ const SingleTask = ({ eachTask }) => {
         </Fab>
         {modalShow && (
           <EditTask
-            taskid={eachTask.task_id}
+            specificTask={specificTask}
             setModalShow={setModalShow}
             show={modalShow}
             onHide={() => setModalShow(false)}

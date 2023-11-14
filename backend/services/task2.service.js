@@ -29,7 +29,16 @@ async function getDayssForSidebar() {
     console.error("Error in fetching task", error);
   }
 }
+async function getTasksForSpecificDay(doneDay) {
+  try {
+    let nextDay = dayjs(doneDay).add(1, "day").format("YYYY-MM-DD");
+    let taskSQL = `SELECT * FROM task_table WHERE done_date>'${doneDay} 00:00:00' AND  done_date<'${nextDay} 00:00:00'`;
 
-// getDayssForSidebar();
+    let result = conn.query(taskSQL);
+    return result;
+  } catch (error) {
+    console.error("Error in fetching task", error);
+  }
+}
 
-module.exports = { getDayssForSidebar };
+module.exports = { getDayssForSidebar, getTasksForSpecificDay };

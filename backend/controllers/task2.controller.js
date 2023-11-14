@@ -36,7 +36,29 @@ async function getDayssForSidebar(req, res) {
     res.sendStatus(503);
   }
 }
+async function getTasksForSpecificDay(req, res) {
+  const { doneDay } = req.params;
 
-// getDayssForSidebar();
+  try {
+    let serviceResult = await task2Service.getTasksForSpecificDay(doneDay);
+    if (serviceResult) {
+      const response = {
+        status: "success",
+        message: "Task fetched successfully",
+      };
 
-module.exports = { getDayssForSidebar };
+      return res.status(200).json(serviceResult);
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't fetch task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(503);
+  }
+}
+
+module.exports = { getDayssForSidebar, getTasksForSpecificDay };

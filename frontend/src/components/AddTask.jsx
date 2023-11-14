@@ -5,7 +5,7 @@ import { OndutyContext } from "../context/OndutyContext";
 const serverUrl = import.meta.env.serverUrl;
 
 const AddTask = () => {
-  const { dispatch } = useTasksContext();
+  // const { dispatch } = useTasksContext();
   const [onDutyGlobal] = useContext(OndutyContext);
 
   const [taskadd, setTaskadd] = useState({
@@ -48,12 +48,11 @@ const AddTask = () => {
         // setLoad('')
         // setReps('')
         setTaskadd({
-          task_detail: "",
-          task_completed: 1,
-          done_by: "Sirak",
+          ...taskadd,
+          done_by: onDutyGlobal,
         });
         console.log("new task added:", result);
-        dispatch({ type: "ADD_TASK", payload: result });
+        // dispatch({ type: "ADD_TASK", payload: result });
       }
     } catch (error) {
       console.log(error);

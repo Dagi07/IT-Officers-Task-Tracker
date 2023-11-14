@@ -12,21 +12,21 @@ const Noteexpand = () => {
   const { tasks, dispatch } = useTasksContext();
   const { doneDay } = useParams();
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const serverResponse = await fetch(`http://localhost:6800/task`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const result = await serverResponse.json();
-      // setDayExpand(() => result);
-      if (serverResponse.ok) {
-        // console.log("noteexp srvresp", result);
-        dispatch({ type: "SET_TASKS", payload: result });
-      }
-    };
-    fetchTasks();
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     const serverResponse = await fetch(`http://localhost:6800/task`, {
+  //       method: "GET",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  //     const result = await serverResponse.json();
+  //     // setDayExpand(() => result);
+  //     if (serverResponse.ok) {
+  //       // console.log("noteexp srvresp", result);
+  //       dispatch({ type: "SET_TASKS", payload: result });
+  //     }
+  //   };
+  //   fetchTasks();
+  // }, [dispatch]);
 
   return (
     <div className="task">
@@ -38,11 +38,11 @@ const Noteexpand = () => {
           </li>
         </ol>
       </div>
-      {!doneDay || doneDay === moment(Date.now()).format("MM-DD-YYYY") ? (
+      {/* {!doneDay || doneDay === moment(Date.now()).format("MM-DD-YYYY") ? (
         <Today />
       ) : (
         <EachDayTasks />
-      )}
+      )} */}
     </div>
   );
 };
