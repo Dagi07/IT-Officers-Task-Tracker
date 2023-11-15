@@ -349,6 +349,34 @@ body {
   background-color: brown;
 }
 
+.later_container {
+  width: 90%;
+  margin: auto;
+  
+}
+
+.later_form {
+  display: flex;
+  justify-content: space-evenly;
+  /* max-height: 70px!important; */
+  align-items: center;
+}
+
+.later_form textarea {
+  width: 40%;
+}
+
+.later_form span p {
+  margin-bottom: 8px;
+}
+.MuiInputBase-input {
+  padding: 8px 14px !important;
+}
+
+.later_form button {
+  align-self: center;
+}
+
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {
   * {
