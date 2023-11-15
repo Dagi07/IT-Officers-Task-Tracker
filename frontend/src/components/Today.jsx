@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import SingleTask from "./SingleTask";
 import AddTask from "./AddTask";
-import moment from "moment";
-import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 
-const Today = ({ tasksList }) => {
-  // const { tasks } = useTasksContext();
-  const { doneDay } = useParams();
+const serverUrl = import.meta.env.VITE_API_serverUrl;
+
+const Today = () => {
+  const [tasksList, setTasksList] = useState(null);
+  useEffect(() => {
+    const getTasks = async () => {
+      let backendResult = await fetch(
+        `${serverUrl}/getTasks/${dayjs().format("YYYY-MM-DD")}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      let res = await backendResult.json();
+      setTasksList(res);
+    };
+    getTasks();
+  }, []);
 
   return (
     <>

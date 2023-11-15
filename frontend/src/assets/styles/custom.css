@@ -337,13 +337,16 @@ body {
   -webkit-appearance: none;
   margin-left: 4px;
   padding-left: 4px;
-  color: #fff;
-border: none;
-font-weight: bold;
-cursor: pointer;
+  color: gold;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: gold;
+  text-decoration: underline;
 }
 .onDuty_selector:hover {
-  color: gold;
+  color: brown;
+  background-color: brown;
 }
 
 /* ### For Mobile Devices ### */

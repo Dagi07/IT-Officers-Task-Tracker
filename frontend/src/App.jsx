@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { OndutyProvider } from "./context/OndutyContext";
+import Later from "./components/Later";
 
 function App() {
   return (
@@ -27,6 +28,15 @@ function App() {
                 <>
                   <Header />
                   <Home />
+                </>
+              }
+            />
+            <Route
+              path="/later"
+              element={
+                <>
+                  <Header />
+                  <Later />
                 </>
               }
             />
