@@ -9,7 +9,7 @@ dayjs.extend(isBetween);
 
 const dayCalc = (day_key) => {
   let sixDaysBefore = dayjs().subtract(7, "day");
-  if (dayjs(day_key).isBetween(sixDaysBefore, dayjs()) || dayjs()) {
+  if (dayjs(day_key).isBetween(sixDaysBefore, dayjs())) {
     let relativeDays = dayjs(day_key).calendar();
     if (relativeDays.startsWith("Last")) {
       relativeDays = relativeDays.split("Last ")[1];

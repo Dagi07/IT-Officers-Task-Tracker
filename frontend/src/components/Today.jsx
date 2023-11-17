@@ -3,11 +3,15 @@ import { useTasksContext } from "../hooks/useTasksContext";
 import SingleTask from "./SingleTask";
 import AddTask from "./AddTask";
 import dayjs from "dayjs";
+import { Link, useParams } from "react-router-dom";
+import Later from "./Later";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Today = () => {
   const [tasksList, setTasksList] = useState(null);
+  const { url } = useParams();
+
   useEffect(() => {
     const getTasks = async () => {
       let backendResult = await fetch(
@@ -25,6 +29,23 @@ const Today = () => {
 
   return (
     <>
+      <div className="task__header">
+        <h1 className="mt-4">Task Tracker</h1>
+        <ol className="breadcrumb mb-4 tabs">
+          <Link to="/">
+            <li className="breadcrumb-item active pb-2 task__sub-head tab">
+              <h3 className="task__sub-head">
+                Tasks {dayjs().calendar().split(" at")[0]}
+              </h3>
+            </li>
+          </Link>
+          <Link to="/later">
+            <li className="breadcrumb-item active pb-2 task__sub-head tab">
+              <h3 className="task__sub-head">Tasks Later</h3>
+            </li>
+          </Link>
+        </ol>
+      </div>
       <div className="task__body">
         <ol>
           {tasksList ? (

@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { OndutyProvider } from "./context/OndutyContext";
 import Later from "./components/Later";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               element={
                 <>
                   <Header />
+                  <Sidebar />
                   <Later />
                 </>
               }

@@ -90,6 +90,24 @@ body {
   color: #737373;
   margin-bottom: 5px;
 }
+.task__sub-head::before {
+  display: none;
+}
+.task__sub-head h3 {
+  margin: 0 5px;
+}
+
+.tabs a {
+  text-decoration: none;
+}
+
+.tab:active {
+  border: 1px solid black;
+  border-radius: 7px;
+  padding: 0 5px;
+  /* background-color: #374151; */
+  color: #fff;
+}
 
 .task__body {
   flex: 1;
@@ -350,20 +368,38 @@ body {
 }
 
 .later_container {
-  width: 90%;
-  margin: auto;
-  
+  width: 100%;
+  position: relative;
+}
+.later_container_inner {
+  max-width: calc(100% - 275px) !important;
+  width: calc(100% - 275px) !important;
+
+  margin-left: 275px;
+}
+.later_addTask {
 }
 
 .later_form {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   /* max-height: 70px!important; */
-  align-items: center;
+  align-items: end;
+  width: calc(100% - 275px);
+  margin: auto;
+  border: 1px solid #dee2e6;
+  border-right: 3px solid #dee2e6;
+  padding: 15px;
+  position: fixed;
+  top: 144px;
 }
 
 .later_form textarea {
   width: 40%;
+}
+
+.later_form span {
+  margin: 0 5px;
 }
 
 .later_form span p {
@@ -374,7 +410,14 @@ body {
 }
 
 .later_form button {
-  align-self: center;
+  /* align-self: center; */
+}
+
+.hide-content {
+  display: none;
+}
+.show-content {
+  display: block;
 }
 
 /* ### For Mobile Devices ### */
@@ -406,6 +449,14 @@ body {
   }
   .add_task {
     padding-left: 0 !important;
+  }
+  .later_container_inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0;
+  }
+  .later_form {
+    width: 100%;
   }
 }
 
