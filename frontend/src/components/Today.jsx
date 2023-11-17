@@ -11,6 +11,7 @@ const serverUrl = import.meta.env.VITE_API_serverUrl;
 const Today = () => {
   const [tasksList, setTasksList] = useState(null);
   const { url } = useParams();
+  const [aciveTab, setActiveTab] = useState(1);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -32,15 +33,27 @@ const Today = () => {
       <div className="task__header">
         <h1 className="mt-4">Task Tracker</h1>
         <ol className="breadcrumb mb-4 tabs">
-          <Link to="/">
-            <li className="breadcrumb-item active pb-2 task__sub-head tab">
+          <Link onClick={() => setActiveTab(() => 1)} to="/">
+            <li
+              className={
+                aciveTab === 1
+                  ? "breadcrumb-item active pb-2 task__sub-head tab"
+                  : "breadcrumb-item active pb-2 task__sub-head"
+              }
+            >
               <h3 className="task__sub-head">
                 Tasks {dayjs().calendar().split(" at")[0]}
               </h3>
             </li>
           </Link>
-          <Link to="/later">
-            <li className="breadcrumb-item active pb-2 task__sub-head tab">
+          <Link onClick={() => setActiveTab(() => 1)} to="/later">
+            <li
+              className={
+                aciveTab === 2
+                  ? "breadcrumb-item active pb-2 task__sub-head tab"
+                  : "breadcrumb-item active pb-2 task__sub-head"
+              }
+            >
               <h3 className="task__sub-head">Tasks Later</h3>
             </li>
           </Link>

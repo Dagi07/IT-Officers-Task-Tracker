@@ -101,11 +101,16 @@ body {
   text-decoration: none;
 }
 
-.tab:active {
+.tab {
   border: 1px solid black;
   border-radius: 7px;
+  border-bottom: none;
   padding: 0 5px;
-  /* background-color: #374151; */
+  background-color: #374151;
+  color: #fff !important;
+  z-index: -1;
+}
+.tab .task__sub-head {
   color: #fff;
 }
 
@@ -458,6 +463,9 @@ body {
   .later_form {
     width: 100%;
   }
+  .tabs li {
+    margin-bottom: 119px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -482,6 +490,9 @@ body {
   }
   .modal-content {
     width: 60% !important;
+  }
+  .task__sub-head h3 {
+    margin: 0 5px 3px;
   }
 }
 
