@@ -100,6 +100,9 @@ body {
 .tabs a {
   text-decoration: none;
 }
+.tabs a:hover {
+  opacity:  0.8;
+}
 
 .tab {
   border: 1px solid black;
@@ -283,11 +286,12 @@ body {
 .day_card__title {
   width: 100%;
   flex: 1;
-  h1 {
-    margin: 15px 0 20px;
-    font-weight: 500;
-    font-size: 20px;
-  }
+ 
+}
+.day_card__title h1 {
+  margin: 15px 0 20px;
+  font-weight: 500;
+  font-size: 20px;
 }
 
 .single_task {
@@ -397,6 +401,8 @@ body {
   padding: 15px;
   position: fixed;
   top: 144px;
+  background-color: #374151;
+  color: #fff;
 }
 
 .later_form textarea {
@@ -412,6 +418,8 @@ body {
 }
 .MuiInputBase-input {
   padding: 8px 14px !important;
+  color: #fff !important;
+  border: #fff !important;
 }
 
 .later_form button {
@@ -442,6 +450,8 @@ body {
     width: 75% !important;
     height: 350px !important;
   }
+  .task__sub-head {
+    margin-bottom: 33px !important;}
 }
 
 @media (max-width: 768px) {
@@ -463,9 +473,9 @@ body {
   .later_form {
     width: 100%;
   }
-  .tabs li {
-    margin-bottom: 119px;
-  }
+  .task__sub-head {
+    margin-bottom: 13px !important;}
+    
 }
 
 @media (min-width: 768px) {

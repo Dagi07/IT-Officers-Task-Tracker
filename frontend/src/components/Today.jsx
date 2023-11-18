@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import SingleTask from "./SingleTask";
 import AddTask from "./AddTask";
 import dayjs from "dayjs";
 import { Link, useParams } from "react-router-dom";
 import Later from "./Later";
+import { TabsContext } from "../context/TabsContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Today = () => {
   const [tasksList, setTasksList] = useState(null);
   const { url } = useParams();
-  const [aciveTab, setActiveTab] = useState(1);
+  const [aciveTab, setActiveTab] = useContext(TabsContext);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -46,7 +47,7 @@ const Today = () => {
               </h3>
             </li>
           </Link>
-          <Link onClick={() => setActiveTab(() => 1)} to="/later">
+          <Link onClick={() => setActiveTab(() => 2)} to="/later">
             <li
               className={
                 aciveTab === 2

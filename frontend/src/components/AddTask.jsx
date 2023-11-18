@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import { OndutyContext } from "../context/OndutyContext";
 
-const serverUrl = import.meta.env.serverUrl;
+const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const AddTask = () => {
   // const { dispatch } = useTasksContext();
@@ -34,7 +34,7 @@ const AddTask = () => {
       // props.onTaskSubmit();
       e.preventDefault();
       console.log("task add", taskadd);
-      const serverResponse = await fetch(`http://localhost:6800/task`, {
+      const serverResponse = await fetch(`${serverUrl}/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(taskadd),

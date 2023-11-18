@@ -16,5 +16,9 @@ router.use(taskRoute);
 const task2Route = require("./task2.routes");
 // Add the task2 router to the middleware chain
 router.use(task2Route);
+// Import the later route
+const laterRoute = require("./later.routes");
+// Add the later router to the middleware chain
+router.use(laterRoute);
 
 module.exports = router;
