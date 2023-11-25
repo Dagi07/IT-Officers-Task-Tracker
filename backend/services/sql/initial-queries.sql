@@ -1,4 +1,4 @@
-CREATE TABLE task_table (
+CREATE TABLE if not exists task_table (
     task_id INT NOT NULL AUTO_INCREMENT,
     task_detail TEXT NOT NULL,
     task_completed BOOLEAN NOT NULL DEFAULT FALSE,
@@ -6,4 +6,13 @@ CREATE TABLE task_table (
     done_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (task_id)
+);
+
+CREATE TABLE if not exists later_table (
+    later_id INT NOT NULL AUTO_INCREMENT,
+    later_detail TEXT NOT NULL,
+    task_assignee VARCHAR(255) NOT NULL,
+    completion_time VARCHAR(255) NOT NULL,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (later_id)
 );

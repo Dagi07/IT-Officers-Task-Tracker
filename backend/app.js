@@ -31,5 +31,5 @@ app.use(allRoutes);
 
 // Set up the listener
 app.listen(port, () => {
-  console.log(`Listening at ${process.env.host}:${port}...`);
+  console.log(`Listening at http://${process.env.host}:${port}...`);
 });

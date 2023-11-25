@@ -27,7 +27,6 @@ const Later = () => {
   }, [onDutyGlobal]);
 
   const handleChange = (e) => {
-    console.log(onDutyGlobal);
     setLaterForm({ ...laterForm, [e.target.name]: e.target.value });
   };
 
