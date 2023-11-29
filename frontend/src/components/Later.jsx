@@ -3,7 +3,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import dayjs from "dayjs";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { useEffect } from "react";
@@ -11,6 +11,7 @@ import { useEffect } from "react";
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Later = () => {
+  const { url } = useParams();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   const [laterForm, setLaterForm] = useState({
@@ -18,6 +19,8 @@ const Later = () => {
     completionTime: dayjs(),
     taskAssignee: onDutyGlobal,
   });
+  console.log(url);
+
   useEffect(() => {
     // Update the taskadd state when onDutyGlobal changes
     setLaterForm((prevTaskadd) => ({
@@ -25,6 +28,20 @@ const Later = () => {
       taskAssignee: onDutyGlobal,
     }));
   }, [onDutyGlobal]);
+
+  useEffect(() => {
+    // url === "/later" && setActiveTab(() => 2);
+    const getTasks = async () => {
+      const serverResponse = await fetch(`${serverUrl}/later`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await serverResponse.json();
+      console.log("srv resp", result);
+    };
+    getTasks();
+  }, []);
 
   const handleChange = (e) => {
     setLaterForm({ ...laterForm, [e.target.name]: e.target.value });
@@ -40,7 +57,7 @@ const Later = () => {
     });
 
     const result = await serverResponse.json();
-    console.log("srv resp", result);
+    // console.log("srv resp", result);
   };
   return (
     <div className="later_container">
