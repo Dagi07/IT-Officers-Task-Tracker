@@ -433,6 +433,40 @@ body {
   display: block;
 }
 
+.onduty-wrapper {
+  float: right;
+}
+
+.header_right {}
+
+.later_list {
+  margin-top: 200px;
+}
+.eachLater {
+ margin-top: 8px;
+}
+.ll_time {
+  /* float: right; */
+}
+.ll_btn_mark {
+  font-size: 10px;
+  /* float: right; */
+  margin-right: 10px;
+  height: 30px;
+}
+
+.ll_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ll_rightSec {
+  width: 65%;
+  display: flex;
+  justify-content: space-between;
+}
+
+
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {
   * {
