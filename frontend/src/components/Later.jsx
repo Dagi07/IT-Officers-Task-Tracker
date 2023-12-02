@@ -3,7 +3,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import dayjs from "dayjs";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { useEffect } from "react";
@@ -11,23 +11,27 @@ import { useEffect } from "react";
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Later = () => {
-  const { url } = useParams();
+  const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   // const [timeValue, setTimeValue] = useState(null)
   const [laterForm, setLaterForm] = useState({
     taskDetail: "",
-    completionTime: "",
+    completionTime: dayjs(),
     taskAssignee: onDutyGlobal,
   });
-  const [laterList, setLaterList] = useState([])
+  const [laterList, setLaterList] = useState([]);
   const [markCompleteAdd, setMarkCompleteAdd] = useState({
     task_detail: "",
     task_completed: 1,
     done_by: "",
-  })
-  // console.log(url);
-  
+  });
+  const [addedItem, setAddedItem] = useState("");
+
+  useEffect(() => {
+    setAddedItem();
+  });
+
   useEffect(() => {
     // Update the taskadd state when onDutyGlobal changes
     setLaterForm((prevTaskadd) => ({
@@ -36,28 +40,13 @@ const Later = () => {
     }));
   }, [onDutyGlobal]);
 
-  useEffect(() => {
-    // url === "/later" && setActiveTab(() => 2);
-    const getTasks = async () => {
-      const serverResponse = await fetch(`${serverUrl}/later`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const result = await serverResponse.json();
-      setLaterList(() => result);
-    };
-    getTasks();
-  }, []);
-
   const handleChange = (e) => {
     setLaterForm({ ...laterForm, [e.target.name]: e.target.value });
-    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    laterForm.completionTime = dayjs(laterForm.completionTime.$d)
+    laterForm.completionTime = dayjs(laterForm.completionTime.$d);
     console.log(laterForm);
     const serverResponse = await fetch(`${serverUrl}/later`, {
       method: "POST",
@@ -66,66 +55,106 @@ const Later = () => {
     });
 
     const result = await serverResponse.json();
-    // console.log("srv resp", result);
+    console.log("srv post resp", result);
   };
 
-  const handleClick = async() => {
-    const serverResponse = await fetch(`${serverUrl}/task`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskadd),
-    });
-    const result = await serverResponse.json();
-    console.log("srv resp", result);
-
-    if (serverResponse.ok) {
-      // setError(null)
-      // setTitle('')
-      // setLoad('')
-      // setReps('')
-      setTaskadd({
-        ...taskadd,
-        done_by: onDutyGlobal,
+  useEffect(() => {
+    url.pathname === "/later" ? setActiveTab(() => 2) : setActiveTab(() => 1);
+    const getTasks = async () => {
+      const serverResponse = await fetch(`${serverUrl}/later`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       });
-    }}
 
-    return (
-      <div className="later_container">
-        <br />
-        <br />
-        <br />
-        <div className="later_container_inner">
-          <div className="task__header">
-            <h1 className="mt-4">Tasks to be done later today</h1>
-            <ol className="breadcrumb mb-4 tabs">
-              <Link onClick={() => setActiveTab(() => 1)} to="/">
-                <li
-                  className={
-                    aciveTab === 1
-                      ? "breadcrumb-item active pb-2 task__sub-head tab"
-                      : "breadcrumb-item active pb-2 task__sub-head"
-                  }
-                >
-                  <h3 className="task__sub-head">
-                    Tasks {dayjs().calendar().split(" at")[0]}
-                  </h3>
-                </li>
-              </Link>
-              <Link onClick={() => setActiveTab(() => 2)} to="/later">
-                <li
-                  className={
-                    aciveTab === 2
-                      ? "breadcrumb-item active pb-2 task__sub-head tab"
-                      : "breadcrumb-item active pb-2 task__sub-head"
-                  }
-                >
-                  <h3 className="task__sub-head">Tasks Later</h3>
-                </li>
-              </Link>
-            </ol>
-          </div>
+      const result = await serverResponse.json();
+      setLaterList(() => result);
+      setAddedItem(result);
+    };
+    getTasks();
+  }, []);
 
-          <form className="later_form" onSubmit={handleSubmit}>
+  useEffect(() => {}, [addedItem]);
+
+  const handleClick = async (eachLater) => {
+    const updatedMarkCompleteAdd = {
+      ...markCompleteAdd,
+      task_detail: eachLater.later_detail,
+      task_completed: 1,
+      done_by: eachLater.task_assignee,
+    };
+
+    try {
+      const serverResponse = await fetch(`${serverUrl}/task`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedMarkCompleteAdd),
+      });
+      const result = await serverResponse.json();
+      console.log("srv resp", result);
+
+      // After the fetch is successful, update the state
+      setMarkCompleteAdd(updatedMarkCompleteAdd);
+
+      if (serverResponse.ok) {
+        try {
+          const deleteResponse = await fetch(
+            `${serverUrl}/later/${eachLater.later_id}`,
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          const result = await deleteResponse.json();
+          console.log("delete resp", result);
+        } catch (error) {
+          console.error("Error during fetch:", error);
+        }
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
+
+  // console.log(markCompleteAdd);
+  return (
+    <div className="later_container">
+      <br />
+      <br />
+      <br />
+      <div className="later_container_inner">
+        <div className="task__header">
+          <h1 className="mt-4">Tasks to be done later today</h1>
+          <ol className="breadcrumb mb-4 tabs">
+            <Link onClick={() => setActiveTab(() => 1)} to="/">
+              <li
+                className={
+                  aciveTab === 1
+                    ? "breadcrumb-item active pb-2 task__sub-head tab"
+                    : "breadcrumb-item active pb-2 task__sub-head"
+                }
+              >
+                <h3 className="task__sub-head">
+                  Tasks {dayjs().calendar().split(" at")[0]}
+                </h3>
+              </li>
+            </Link>
+            <Link onClick={() => setActiveTab(() => 2)} to="/later">
+              <li
+                className={
+                  aciveTab === 2
+                    ? "breadcrumb-item active pb-2 task__sub-head tab"
+                    : "breadcrumb-item active pb-2 task__sub-head"
+                }
+              >
+                <h3 className="task__sub-head">Tasks Later</h3>
+              </li>
+            </Link>
+          </ol>
+        </div>
+
+        {/* ### Add Task Later Form ### */}
+        <form className="later_form" onSubmit={handleSubmit}>
+          <span className="textarea">
             <textarea
               className="form-control"
               name="taskDetail"
@@ -136,16 +165,22 @@ const Later = () => {
               value={laterForm.taskDetail}
               onChange={handleChange}
             ></textarea>
-            <span>
-              <label htmlFor="completionTime">Estimated task completion time:</label>
+          </span>
+          <span className="lf_rightSec">
+            <span className="lf_completionTime">
+              <label htmlFor="completionTime">
+                Estimated task completion time:
+              </label>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MobileTimePicker
                   name="completionTime"
                   id="completionTime"
-                  
                   value={laterForm.completionTime}
+                  defaultValue={dayjs().format("hh:mm a")}
                   // minTime={dayjs()}
-                  onChange={(newTimeValue)=>setLaterForm({...laterForm, completionTime: newTimeValue})}
+                  onChange={(newTimeValue) =>
+                    setLaterForm({ ...laterForm, completionTime: newTimeValue })
+                  }
                 />
               </LocalizationProvider>
             </span>
@@ -166,28 +201,41 @@ const Later = () => {
                 <option value="Tsegaye">Tsegaye</option>
               </select>
             </span>
-            <button className="btn btn-primary" type="submit">
-              Submit
-            </button>
-          </form>
-          <ol className="later_list">
-            {laterList && laterList.map(eachLater =>
-            (<li className="eachLater" key={eachLater.later_id}>
-              <div className="ll_container">
-                <span className="ll_leftSec">
-                  {eachLater.later_detail}
-                </span>
-                <span className="ll_rightSec">
-                  <span className="ll_time"> {dayjs(eachLater.completion_time).format('hh:mm a')}</span>
-                  <span className="assignee">{eachLater.task_assignee}</span>
-                  <button onClick={handleClick} className="ll_btn_mark btn btn-primary">Mark as complete</button>
-                </span>
+            <span>
+              <button className="btn btn-primary" type="submit">
+                Submit
+              </button>
+            </span>
+          </span>
+        </form>
 
-              </div>
-            </li>))}</ol>
-        </div>
+        {/* ###  Task Later List ### */}
+        <ol className="later_list">
+          {laterList &&
+            laterList.map((eachLater) => (
+              <li className="eachLater" key={eachLater.later_id}>
+                <div className="ll_container">
+                  <span className="ll_leftSec">{eachLater.later_detail}</span>
+                  <span className="ll_rightSec">
+                    <span className="ll_time">
+                      {" "}
+                      {dayjs(eachLater.completion_time).format("hh:mm a")}
+                    </span>
+                    <span className="assignee">{eachLater.task_assignee}</span>
+                    <button
+                      onClick={() => handleClick(eachLater)}
+                      className="ll_btn_mark btn btn-primary"
+                    >
+                      Mark as complete
+                    </button>
+                  </span>
+                </div>
+              </li>
+            ))}
+        </ol>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
-  export default Later;
+export default Later;

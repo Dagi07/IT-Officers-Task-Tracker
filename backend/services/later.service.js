@@ -43,4 +43,24 @@ async function fetchLater() {
   }
 }
 
-module.exports = { addLater, fetchLater };
+async function deleteLater(laterID) {
+  try {
+    let deleteSQL = `DELETE FROM later_table
+    WHERE later_id = ?`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(deleteSQL, [
+      laterID
+    ]);
+
+     // If the query returns a result, return the result. Otherwise, return null
+     if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    
+  }
+}
+
+module.exports = { addLater, fetchLater, deleteLater };

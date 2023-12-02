@@ -48,7 +48,12 @@ const EachDayTasks = () => {
                 {tasksList ? (
                   tasksList.map((specificTask) => {
                     return (
-                      <li key={specificTask.task_id}>
+                      <li
+                        className={
+                          specificTask.task_completed === 0 && "not_yet"
+                        }
+                        key={specificTask.task_id}
+                      >
                         <SingleTask specificTask={specificTask} />
                       </li>
                     );

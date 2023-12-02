@@ -5,9 +5,11 @@ const router = express.Router();
 // Import the task2 controller
 const laterController = require("../controllers/later.controller");
 
-// Create a psot request handler for the getDays route
+// Create a post request handler for the getDays route
 router.post("/later", laterController.addTasksLater);
 // Create a get request handler for the getDays route
 router.get("/later", laterController.fetchTasksLater);
+// Create a delete request handler for the delete task later route
+router.delete("/later/:id", laterController.deleteTasksLater);
 
 module.exports = router;

@@ -3,7 +3,7 @@ import { useTasksContext } from "../hooks/useTasksContext";
 import SingleTask from "./SingleTask";
 import AddTask from "./AddTask";
 import dayjs from "dayjs";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Later from "./Later";
 import { TabsContext } from "../context/TabsContext";
 
@@ -11,7 +11,7 @@ const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Today = () => {
   const [tasksList, setTasksList] = useState(null);
-  const { url } = useParams();
+  const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
 
   useEffect(() => {
@@ -25,9 +25,14 @@ const Today = () => {
       );
       let res = await backendResult.json();
       setTasksList(res);
+      if (url.pathname !== "/later") {
+        setActiveTab(() => 1);
+      }
     };
     getTasks();
   }, []);
+
+  console.log(url.pathname);
 
   return (
     <>
@@ -65,13 +70,16 @@ const Today = () => {
           {tasksList ? (
             tasksList.map((specificTask) => {
               return (
-                <li key={specificTask.task_id}>
+                <li
+                  key={specificTask.task_id}
+                  className={specificTask.task_completed === 0 && "not_yet"}
+                >
                   <SingleTask specificTask={specificTask} />
                 </li>
               );
             })
           ) : (
-            <p>loading...</p>
+            <p className="loading">loading...</p>
           )}
         </ol>
       </div>

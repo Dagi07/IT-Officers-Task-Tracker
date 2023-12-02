@@ -44,4 +44,28 @@ async function fetchTasksLater(req, res) {
   }
 }
 
-module.exports = { addTasksLater, fetchTasksLater };
+async function deleteTasksLater(req, res) {
+  console.log(req.params)
+  try {
+    let serviceResult = await laterService.deleteLater(req.params.id);
+
+    if (serviceResult) {
+      const response = {
+        status: "success",
+        message: "Task deleted successfully",
+      };
+      console.log(serviceResult)
+      return res.status(200).json(response);
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't delete task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    
+  }
+}
+
+module.exports = { addTasksLater, fetchTasksLater, deleteTasksLater };

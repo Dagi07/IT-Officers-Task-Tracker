@@ -335,6 +335,12 @@ body {
   text-align: center;
 }
 
+.not_yet {
+  border-color: pink !important;
+  background-color: #1f2532 !important;
+  color: #ebdfdf !important;
+}
+
 .modal-content {
   width: 30%;
   margin: 0 auto;
@@ -391,7 +397,7 @@ body {
 
 .later_form {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   /* max-height: 70px!important; */
   align-items: end;
   width: calc(100% - 275px);
@@ -405,8 +411,8 @@ body {
   color: #fff;
 }
 
-.later_form textarea {
-  width: 40%;
+.later_form .textarea {
+  width: 50%;
 }
 
 .later_form span {
@@ -424,6 +430,17 @@ body {
 
 .later_form button {
   /* align-self: center; */
+}
+
+.lf_rightSec {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: end;
+  width: 50%;
+}
+
+.lf_completionTime {
+  width: 125px;
 }
 
 .hide-content {
@@ -449,21 +466,28 @@ body {
   /* float: right; */
 }
 .ll_btn_mark {
-  font-size: 10px;
+  font-size: 11px;
   /* float: right; */
   margin-right: 10px;
   height: 30px;
+  padding: 0 5px;
 }
 
 .ll_container {
-  display: flex;
+  display: flex; 
   justify-content: space-between;
+  align-items: center;
 }
 
 .ll_rightSec {
   width: 65%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
 }
 
 
@@ -537,6 +561,13 @@ body {
   }
   .task__sub-head h3 {
     margin: 0 5px 3px;
+  }
+  .later_form {
+    display: block;
+    font-size: 12px;
+  }
+  .lf_rightSec{
+    width: 100%;
   }
 }
 
