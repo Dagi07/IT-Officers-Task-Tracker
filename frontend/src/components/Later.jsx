@@ -55,6 +55,11 @@ const Later = () => {
     if (serverResponse.ok) {
       // Append the newly added task to the existing list
       setLaterList(result);
+      setLaterForm(() => ({
+        taskDetail: "",
+        completionTime: dayjs(),
+        taskAssignee: onDutyGlobal,
+      }));
     }
   };
 

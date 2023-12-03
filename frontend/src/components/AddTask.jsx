@@ -4,7 +4,7 @@ import { SidebarContext } from "../context/SidebarContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
-const AddTask = () => {
+const AddTask = ({ taskslist, settaskslist }) => {
   const [onDutyGlobal] = useContext(OndutyContext);
   const [sidebarTaskLength, setSidebarTaskLength] = useContext(SidebarContext);
 
@@ -33,14 +33,14 @@ const AddTask = () => {
     try {
       // props.onTaskSubmit();
       e.preventDefault();
-      console.log("task add", taskadd);
+      // console.log("task add", taskadd);
       const serverResponse = await fetch(`${serverUrl}/task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(taskadd),
       });
       const result = await serverResponse.json();
-      console.log("srv resp", result);
+      console.log("srv add resp", result);
 
       if (serverResponse.ok) {
         // setError(null)
@@ -51,6 +51,8 @@ const AddTask = () => {
           ...taskadd,
           done_by: onDutyGlobal,
         });
+        console.log("taskslist", taskslist);
+        settaskslist([...taskslist, result]);
 
         let backendResult = await fetch(`${serverUrl}/getDays`, {
           method: "GET",

@@ -82,7 +82,7 @@ const Today = () => {
         </ol>
       </div>
       <div className="bg-white add_task">
-        <AddTask />
+        <AddTask taskslist={tasksList} settaskslist={setTasksList} />
       </div>
     </>
   );

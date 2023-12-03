@@ -2,31 +2,26 @@
 const taskService = require("../services/task.service");
 const task2Service = require("../services/task2.service");
 const moment = require("moment");
-let sidebarDaysResult = require("../controllers/task2.controller");
 
 async function addTask(req, res) {
   try {
     const { task_detail, task_completed, done_by } = req.body;
     // console.log(req.body);
-    await taskService.addTask(req.body);
+    let addResult = await taskService.addTask(req.body);
     let getresult = await taskService.fetchTasks();
 
-    if (getresult) {
+    if (addResult) {
       const response = {
         status: "success",
         message: "Task added successfully",
       };
       // console.log(result.length, result)
-      let x = sidebarDaysResult.getDayssForSidebar();
 
-      // console.log(x);
       // const backendResponse = {
       let getResult = getresult[getresult.length - 1];
 
       // }
-      // return res.status(201).json({
-      //   getResult
-      // });
+      return res.status(201).json(getResult);
     } else {
       const response = {
         status: "failure",

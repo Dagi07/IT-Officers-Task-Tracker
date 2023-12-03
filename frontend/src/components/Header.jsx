@@ -27,11 +27,11 @@ const Header = () => {
 
     onDutyChanger();
 
-    // Set up an interval to check and update every minute (adjust as needed)
-    const intervalId = setInterval(onDutyChanger, 60000);
-    // setOnDutyGlobal(() => onDuty);
-    // Cleanup the interval on component unmount
-    return () => clearInterval(intervalId);
+    // // Set up an interval to check and update every minute (adjust as needed)
+    // const intervalId = setInterval(onDutyChanger, 6000000);
+    // // setOnDutyGlobal(() => onDuty);
+    // // Cleanup the interval on component unmount
+    // return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -40,16 +40,16 @@ const Header = () => {
         Tasks
       </a>
 
-        <button
-          className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
-          id="sidebarToggle"
-          href="#!"
-        >
-          <i className="fas fa-bars"></i>
-        </button>
+      <button
+        className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i className="fas fa-bars"></i>
+      </button>
 
-        <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-          {/* <div className="input-group">
+      <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        {/* <div className="input-group">
           <input
             className="form-control"
             type="text"
@@ -61,8 +61,8 @@ const Header = () => {
             <i className="fas fa-search"></i>
           </button>
         </div> */}
-        </form>
-        {/* <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+      </form>
+      {/* <ul className="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"
@@ -72,27 +72,27 @@ const Header = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           > */}
-        <div className="onduty-wrapper">
-          <i className=" manIcon fas fa-user fa-fw"></i>
-          <strong>
-            <span className="on-duty">
-              On-Duty:
-              <select
-                id="done_by"
-                onChange={(e) => setOnDutyGlobal(() => e.target.value)}
-                value={onDutyGlobal}
-                name="done_by"
-                size="1"
-                className=" onDuty_selector bg-dark"
-              >
-                <option value="Sirak">Sirak</option>
-                <option value="Dagmawi">Dagmawi</option>
-                <option value="Tsegaye">Tsegaye</option>
-              </select>
-            </span>
-          </strong>
-        </div>
-        
+      <div className="onduty-wrapper">
+        <i className=" manIcon fas fa-user fa-fw"></i>
+        <strong>
+          <span className="on-duty">
+            On-Duty:
+            <select
+              id="done_by"
+              onChange={(e) => setOnDutyGlobal(() => e.target.value)}
+              value={onDutyGlobal}
+              name="done_by"
+              size="1"
+              className=" onDuty_selector bg-dark"
+            >
+              <option value="Sirak">Sirak</option>
+              <option value="Dagmawi">Dagmawi</option>
+              <option value="Tsegaye">Tsegaye</option>
+            </select>
+          </span>
+        </strong>
+      </div>
+
       {/* </a> */}
       {/* <ul
             className="dropdown-menu dropdown-menu-end"

@@ -160,10 +160,17 @@ body {
 }
 
 .addtask button {
+  background-color: #72101e;
+  color: #e2c375;
   transition: 0.4s;
 }
 .addtask button:active {
   opacity: 0.6;
+}
+.addtask button:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
 }
 
 .tasks_list {
@@ -269,8 +276,10 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #72101e !important;
   text-decoration: none;
+  background-color: #e2c375;
+  color: #72101e;
 }
 
 .day_card__head {
@@ -281,12 +290,21 @@ body {
   height: 100px;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+  
+  text-decoration: none;
 }
 
 .day_card__title {
   width: 100%;
   flex: 1;
- 
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+.scrollbox-inner a {
+  text-decoration: none;
+
 }
 .day_card__title h1 {
   margin: 15px 0 20px;
@@ -429,7 +447,14 @@ body {
 }
 
 .later_form button {
-  /* align-self: center; */
+  background-color: #72101e;
+  color: #e2c375;
+  border-color: #360008;
+}
+.later_form button:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
 }
 
 .lf_rightSec {
@@ -471,6 +496,13 @@ body {
   margin-right: 10px;
   height: 30px;
   padding: 0 5px;
+  background-color: #72101e;
+  color: #e2c375;
+}
+.ll_btn_mark:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
 }
 
 .ll_container {
