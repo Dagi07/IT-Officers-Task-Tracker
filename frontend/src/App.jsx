@@ -8,44 +8,49 @@ import { OndutyProvider } from "./context/OndutyContext";
 import { TabsProvider } from "./context/TabsContext";
 import Later from "./components/Later";
 import Sidebar from "./components/Sidebar";
+import { SidebarProvider } from "./context/SidebarContext";
 
 function App() {
   return (
     <BrowserRouter>
       <OndutyProvider>
         <TabsProvider>
-          <div className="app">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Header />
-                    <Home />
-                  </>
-                }
-              />
-              <Route
-                path="/eachdaytask/:doneDay"
-                element={
-                  <>
-                    <Header />
-                    <Home />
-                  </>
-                }
-              />
-              <Route
-                path="/later"
-                element={
-                  <>
-                    <Header />
-                    <Sidebar />
-                    <Later />
-                  </>
-                }
-              />
-            </Routes>
-          </div>
+          {" "}
+          <SidebarProvider>
+            <div className="app">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Header />
+                      <Home />
+                    </>
+                  }
+                />
+
+                <Route
+                  path="/eachdaytask/:doneDay"
+                  element={
+                    <>
+                      <Header />
+                      <Home />
+                    </>
+                  }
+                />
+                <Route
+                  path="/later"
+                  element={
+                    <>
+                      <Header />
+                      <Sidebar />
+                      <Later />
+                    </>
+                  }
+                />
+              </Routes>
+            </div>
+          </SidebarProvider>
         </TabsProvider>
       </OndutyProvider>
     </BrowserRouter>

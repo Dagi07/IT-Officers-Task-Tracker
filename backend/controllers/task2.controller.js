@@ -36,6 +36,7 @@ async function getDayssForSidebar(req, res) {
     res.sendStatus(503);
   }
 }
+
 async function getTasksForSpecificDay(req, res) {
   const { doneDay } = req.params;
 

@@ -1,20 +1,32 @@
 // Import the task service to handle the db call commonJS way
 const taskService = require("../services/task.service");
+const task2Service = require("../services/task2.service");
 const moment = require("moment");
+let sidebarDaysResult = require("../controllers/task2.controller");
 
 async function addTask(req, res) {
   try {
     const { task_detail, task_completed, done_by } = req.body;
     // console.log(req.body);
     await taskService.addTask(req.body);
-    let result = await taskService.fetchTasks();
-    if (result) {
+    let getresult = await taskService.fetchTasks();
+
+    if (getresult) {
       const response = {
         status: "success",
         message: "Task added successfully",
       };
       // console.log(result.length, result)
-      return res.status(201).json(result[result.length - 1]);
+      let x = sidebarDaysResult.getDayssForSidebar();
+
+      // console.log(x);
+      // const backendResponse = {
+      let getResult = getresult[getresult.length - 1];
+
+      // }
+      // return res.status(201).json({
+      //   getResult
+      // });
     } else {
       const response = {
         status: "failure",

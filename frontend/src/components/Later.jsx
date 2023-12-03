@@ -26,11 +26,6 @@ const Later = () => {
     task_completed: 1,
     done_by: "",
   });
-  const [addedItem, setAddedItem] = useState("");
-
-  useEffect(() => {
-    setAddedItem();
-  });
 
   useEffect(() => {
     // Update the taskadd state when onDutyGlobal changes
@@ -56,6 +51,11 @@ const Later = () => {
 
     const result = await serverResponse.json();
     console.log("srv post resp", result);
+
+    if (serverResponse.ok) {
+      // Append the newly added task to the existing list
+      setLaterList(result);
+    }
   };
 
   useEffect(() => {
@@ -68,12 +68,9 @@ const Later = () => {
 
       const result = await serverResponse.json();
       setLaterList(() => result);
-      setAddedItem(result);
     };
     getTasks();
   }, []);
-
-  useEffect(() => {}, [addedItem]);
 
   const handleClick = async (eachLater) => {
     const updatedMarkCompleteAdd = {
@@ -106,6 +103,9 @@ const Later = () => {
           );
           const result = await deleteResponse.json();
           console.log("delete resp", result);
+          if (serverResponse.ok) {
+            setLaterList(result);
+          }
         } catch (error) {
           console.error("Error during fetch:", error);
         }

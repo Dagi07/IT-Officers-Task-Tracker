@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SingleDayOnSidebar from "./SingleDayOnSidebar";
-import { useTasksContext } from "../hooks/useTasksContext";
-import moment from "moment";
+import { SidebarContext } from "../context/SidebarContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Sidebar = () => {
-  const { dispatch } = useTasksContext();
   const [daysList, setDaysList] = useState(null);
-  useEffect(() => {
-    const getDays = async () => {
-      let backendResult = await fetch(`${serverUrl}/getDays`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      let res = await backendResult.json();
-      setDaysList(res);
-    };
-    getDays();
-  }, [dispatch]);
+  const [sidebarTaskLength, setSidebarTaskLength] = useContext(SidebarContext);
 
-  if (daysList) {
-    let dayKeys = Object.keys(daysList);
+  const getDays = async () => {
+    let backendResult = await fetch(`${serverUrl}/getDays`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    let res = await backendResult.json();
+    setDaysList(res);
+    setSidebarTaskLength(res);
+  };
+
+  useEffect(() => {
+    getDays();
+  }, []);
+
+  if (sidebarTaskLength) {
+    let dayKeys = Object.keys(sidebarTaskLength);
 
     return (
       <div className="hide">
@@ -29,18 +31,12 @@ const Sidebar = () => {
           {/* <div className="days_list_body"> */}
           <div className="scrollbox">
             <div className="scrollbox-inner">
-              {/* <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
-              <div class="sb-sidenav-menu">
-                <div class="nav"> */}
-              {/* {dayCollector.map((doneDay, index) => (
-              <SingleDayOnSidebar key={index} doneDay={doneDay} />
-            ))} */}
               {dayKeys &&
                 dayKeys.map((day_key) => (
                   <SingleDayOnSidebar
                     key={day_key}
                     day_key={day_key}
-                    day_key_value={daysList[day_key]}
+                    day_key_value={sidebarTaskLength[day_key]}
                   />
                 ))}
               {/* </div>
@@ -52,21 +48,6 @@ const Sidebar = () => {
           {/* </div> */}
         </div>
       </div>
-      // <div id="layoutSidenav_nav">
-      //   <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
-      //     <div class="sb-sidenav-menu">
-      //       {/* <div class="nav"> */}
-      //       {hourCollector.map((singleHour, index) => (
-      //         <SingleDayOnSidebar singleHour={singleHour} />
-      //       ))}
-      //       {/* </div> */}
-      //     </div>
-      //     <div class="sb-sidenav-footer">
-      //       <div class="small">Logged in as:</div>
-      //       Start Bootstrap
-      //     </div>
-      //   </nav>
-      // </div>
     );
   }
 };
@@ -107,3 +88,30 @@ export default Sidebar;
 //       }
 //     });
 //   // .format("ddd[,] MMM DD")
+
+{
+  /* <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
+              <div class="sb-sidenav-menu">
+                <div class="nav"> */
+}
+{
+  /* {dayCollector.map((doneDay, index) => (
+              <SingleDayOnSidebar key={index} doneDay={doneDay} />
+            ))} */
+}
+
+// <div id="layoutSidenav_nav">
+//   <nav class="sb-sidenav accordion sb-sidenav" id="sidenavAccordion">
+//     <div class="sb-sidenav-menu">
+//       {/* <div class="nav"> */}
+//       {hourCollector.map((singleHour, index) => (
+//         <SingleDayOnSidebar singleHour={singleHour} />
+//       ))}
+//       {/* </div> */}
+//     </div>
+//     <div class="sb-sidenav-footer">
+//       <div class="small">Logged in as:</div>
+//       Start Bootstrap
+//     </div>
+//   </nav>
+// </div>

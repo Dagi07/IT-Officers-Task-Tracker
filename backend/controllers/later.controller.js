@@ -1,14 +1,15 @@
 const laterService = require("../services/later.service");
 async function addTasksLater(req, res) {
   try {
-    let serviceResult = await laterService.addLater(req.body);
-    if (serviceResult) {
+    let addserviceResult = await laterService.addLater(req.body);
+    if (addserviceResult) {
+      let fetchserviceResult = await laterService.fetchLater();
       const response = {
         status: "success",
         message: "Task added successfully",
       };
       // console.log(serviceResult);
-      return res.status(201).json(serviceResult);
+      return res.status(201).json(fetchserviceResult);
     } else {
       const response = {
         status: "failure",
@@ -47,15 +48,15 @@ async function fetchTasksLater(req, res) {
 async function deleteTasksLater(req, res) {
   console.log(req.params)
   try {
-    let serviceResult = await laterService.deleteLater(req.params.id);
-
-    if (serviceResult) {
+    let delserviceResult = await laterService.deleteLater(req.params.id);
+    let fetchserviceResult = await laterService.fetchLater();
+    if (delserviceResult) {
       const response = {
         status: "success",
         message: "Task deleted successfully",
       };
-      console.log(serviceResult)
-      return res.status(200).json(response);
+      
+      return res.status(200).json(fetchserviceResult);
     } else {
       const response = {
         status: "failure",

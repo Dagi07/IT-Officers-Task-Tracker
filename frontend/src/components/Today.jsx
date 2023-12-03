@@ -32,8 +32,6 @@ const Today = () => {
     getTasks();
   }, []);
 
-  console.log(url.pathname);
-
   return (
     <>
       <div className="task__header">
