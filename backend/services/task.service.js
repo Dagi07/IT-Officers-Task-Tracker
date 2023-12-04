@@ -39,7 +39,7 @@ async function fetchTasks() {
   }
 }
 
-async function updateTask(idTask, taskDetail, taskCompleted, doneBy) {
+async function updateTask(task_detail, task_completed, done_by, task_id) {
   try {
     let editSQL = `UPDATE task_table
     SET
@@ -51,10 +51,10 @@ async function updateTask(idTask, taskDetail, taskCompleted, doneBy) {
     `;
     // Execute the query (use the query method from the db connection file)
     let result = await conn.query(editSQL, [
-      taskDetail,
-      taskCompleted,
-      doneBy,
-      idTask,
+      task_detail,
+      task_completed,
+      done_by,
+      task_id,
     ]);
     // If the query returns a result, return the result. Otherwise, return null
     if (result) {

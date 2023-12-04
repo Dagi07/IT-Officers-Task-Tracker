@@ -20,5 +20,9 @@ router.use(task2Route);
 const laterRoute = require("./later.routes");
 // Add the later router to the middleware chain
 router.use(laterRoute);
+// Import the tomorrow route
+const tomorrowRoute = require("./tomorrow.routes");
+// Add the tomorrow router to the middleware chain
+router.use(tomorrowRoute);
 
 module.exports = router;

@@ -9,6 +9,7 @@ import { TabsProvider } from "./context/TabsContext";
 import Later from "./components/Later";
 import Sidebar from "./components/Sidebar";
 import { SidebarProvider } from "./context/SidebarContext";
+import Tomorrow from "./components/Tomorrow";
 
 function App() {
   return (
@@ -45,6 +46,16 @@ function App() {
                       <Header />
                       <Sidebar />
                       <Later />
+                    </>
+                  }
+                />
+                <Route
+                  path="/tomorrow"
+                  element={
+                    <>
+                      <Header />
+                      <Sidebar />
+                      <Tomorrow />
                     </>
                   }
                 />

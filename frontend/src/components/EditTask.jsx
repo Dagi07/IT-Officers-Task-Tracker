@@ -7,10 +7,10 @@ function EditTask(props) {
   // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
 
   const [updateTask, setUpdateTask] = useState({
-    idTask: `${props.specificTask.task_id}`,
-    taskDetail: `${props.specificTask.task_detail}`,
-    taskCompleted: `${props.specificTask.task_completed}`,
-    doneBy: `${props.specificTask.done_by}`,
+    task_id: `${props.specificTask.task_id}`,
+    task_detail: `${props.specificTask.task_detail}`,
+    task_completed: `${props.specificTask.task_completed}`,
+    done_by: `${props.specificTask.done_by}`,
   });
 
   // useEffect(() => {
@@ -52,8 +52,10 @@ function EditTask(props) {
         // setTitle('')
         // setLoad('')
         // setReps('')
-        dispatch({ type: "SET_TASKS", payload: result });
+        // dispatch({ type: "SET_TASKS", payload: result });
         props.setModalShow(false);
+        console.log(...props.taskslist);
+        props.settaskslist(result);
       }
     } catch (error) {
       console.log(error);
@@ -85,10 +87,10 @@ function EditTask(props) {
                     rows="2"
                     type="text"
                     placeholder="Task detail"
-                    name="taskDetail"
+                    name="task_detail"
                     id="taskDetail"
                     onChange={handleChange}
-                    value={updateTask.taskDetail}
+                    value={updateTask.task_detail}
                     required
                   ></textarea>
                 </div>
@@ -102,8 +104,8 @@ function EditTask(props) {
                     <select
                       id="taskCompleted"
                       onChange={handleChange}
-                      value={updateTask.taskCompleted}
-                      name="taskCompleted"
+                      value={updateTask.task_completed}
+                      name="task_completed"
                       size="1"
                       className="form-select"
                     >
@@ -120,8 +122,8 @@ function EditTask(props) {
                     <select
                       id="doneBy"
                       onChange={handleChange}
-                      value={updateTask.doneBy}
-                      name="doneBy"
+                      value={updateTask.done_by}
+                      name="done_by"
                       size="1"
                       className="form-select"
                     >

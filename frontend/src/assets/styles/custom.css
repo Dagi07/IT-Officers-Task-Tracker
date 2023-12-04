@@ -101,7 +101,7 @@ body {
   text-decoration: none;
 }
 .tabs a:hover {
-  opacity:  0.8;
+  opacity: 0.8;
 }
 
 .tab {
@@ -290,7 +290,7 @@ body {
   height: 100px;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
-  
+
   text-decoration: none;
 }
 
@@ -301,10 +301,8 @@ body {
   font-weight: bold;
 }
 
-
 .scrollbox-inner a {
   text-decoration: none;
-
 }
 .day_card__title h1 {
   margin: 15px 0 20px;
@@ -479,13 +477,14 @@ body {
   float: right;
 }
 
-.header_right {}
+.header_right {
+}
 
 .later_list {
   margin-top: 200px;
 }
 .eachLater {
- margin-top: 8px;
+  margin-top: 8px;
 }
 .ll_time {
   /* float: right; */
@@ -506,7 +505,7 @@ body {
 }
 
 .ll_container {
-  display: flex; 
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -522,6 +521,13 @@ body {
   border-color: #fff !important;
 }
 
+sup {
+  color: white;
+  background-color: red;
+  border-radius: 100px;
+  padding: 0 3px;
+  font-size: 9px;
+}
 
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {
@@ -541,7 +547,8 @@ body {
     height: 350px !important;
   }
   .task__sub-head {
-    margin-bottom: 33px !important;}
+    margin-bottom: 33px !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -564,8 +571,8 @@ body {
     width: 100%;
   }
   .task__sub-head {
-    margin-bottom: 13px !important;}
-    
+    margin-bottom: 13px !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -598,7 +605,7 @@ body {
     display: block;
     font-size: 12px;
   }
-  .lf_rightSec{
+  .lf_rightSec {
     width: 100%;
   }
 }

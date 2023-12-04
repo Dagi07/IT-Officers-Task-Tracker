@@ -106,17 +106,17 @@ async function fetchDayList(req, res) {
 
 async function updateTask(req, res) {
   try {
-    const { idTask, taskDetail, taskCompleted, doneBy } = req.body;
+    const { task_detail, task_completed, done_by, task_id } = req.body;
 
     let editResult = await taskService.updateTask(
-      idTask,
-      taskDetail,
-      taskCompleted,
-      doneBy
+      task_detail,
+      task_completed,
+      done_by,
+      task_id
     );
-    let getResult = await taskService.fetchTasks();
 
     if (editResult) {
+      let getResult = await taskService.fetchTasks();
       const response = {
         status: "success",
         message: "Task updated successfully",

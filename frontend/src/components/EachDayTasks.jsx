@@ -32,7 +32,7 @@ const EachDayTasks = () => {
     <>
       <div className="task">
         {dayjs().format("YYYY-MM-DD") === doneDay || !doneDay ? (
-          <Today tasksList={tasksList} />
+          <Today />
         ) : (
           <>
             <div className="task__header">
@@ -54,7 +54,11 @@ const EachDayTasks = () => {
                         }
                         key={specificTask.task_id}
                       >
-                        <SingleTask specificTask={specificTask} />
+                        <SingleTask
+                          specificTask={specificTask}
+                          taskslist={tasksList}
+                          settaskslist={setTasksList}
+                        />
                       </li>
                     );
                   })

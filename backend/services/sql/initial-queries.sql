@@ -16,3 +16,13 @@ CREATE TABLE if not exists later_table (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (later_id)
 );
+
+CREATE TABLE if not exists tomorrow_table (
+    tomorrow_id INT NOT NULL AUTO_INCREMENT,
+    tomorrow_detail TEXT NOT NULL,
+    task_assignee VARCHAR(255) NOT NULL,
+    completion_time VARCHAR(255) NOT NULL,
+    registered_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (tomorrow_id)
+);

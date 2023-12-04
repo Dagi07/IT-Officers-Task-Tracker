@@ -6,7 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { red } from "@mui/material/colors";
 import EditTask from "./EditTask";
 
-const SingleTask = ({ specificTask }) => {
+const SingleTask = ({ specificTask, taskslist, settaskslist }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
   return (
@@ -28,6 +28,8 @@ const SingleTask = ({ specificTask }) => {
             specificTask={specificTask}
             setModalShow={setModalShow}
             show={modalShow}
+            taskslist={taskslist}
+            settaskslist={settaskslist}
             onHide={() => setModalShow(false)}
           />
         )}

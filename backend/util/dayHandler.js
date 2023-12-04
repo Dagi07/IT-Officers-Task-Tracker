@@ -21,13 +21,13 @@ function dayHandler() {
     const currentDate = startDate.add(i, "day");
     dates.push(currentDate.format("YYYY-MM-DD"));
   }
-
+  console.log(dates);
   //   ### dayjs(tempDay).calendar() ###
   // Return the array of formatted dates
   return dates;
 }
 
-// Schedule the function to run every 6 hours
-schedule.schedule("0 0 * * *", dayHandler);
-
+// Schedule the function to run everyday at  00
+schedule.schedule("0,1 0 * * *", dayHandler);
+setInterval(dayHandler, 22000000);
 module.exports = { dayHandler };

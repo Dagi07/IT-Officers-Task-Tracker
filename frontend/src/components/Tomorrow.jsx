@@ -10,17 +10,17 @@ import { useEffect } from "react";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
-const Later = () => {
+const Tomorrow = () => {
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   // const [timeValue, setTimeValue] = useState(null)
-  const [laterForm, setLaterForm] = useState({
+  const [tomorrowForm, setTomorrowForm] = useState({
     taskDetail: "",
     completionTime: dayjs(),
     taskAssignee: onDutyGlobal,
   });
-  const [laterList, setLaterList] = useState([]);
+  const [tomorrowList, setTomorrowList] = useState([]);
   const [markCompleteAdd, setMarkCompleteAdd] = useState({
     task_detail: "",
     task_completed: 1,
@@ -29,24 +29,24 @@ const Later = () => {
 
   useEffect(() => {
     // Update the taskadd state when onDutyGlobal changes
-    setLaterForm((prevTaskadd) => ({
+    setTomorrowForm((prevTaskadd) => ({
       ...prevTaskadd,
       taskAssignee: onDutyGlobal,
     }));
   }, [onDutyGlobal]);
 
   const handleChange = (e) => {
-    setLaterForm({ ...laterForm, [e.target.name]: e.target.value });
+    setTomorrowForm({ ...tomorrowForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    laterForm.completionTime = dayjs(laterForm.completionTime.$d);
-    console.log(laterForm);
-    const serverResponse = await fetch(`${serverUrl}/later`, {
+    tomorrowForm.completionTime = dayjs(tomorrowForm.completionTime.$d);
+    console.log(tomorrowForm);
+    const serverResponse = await fetch(`${serverUrl}/tomorrow`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(laterForm),
+      body: JSON.stringify(tomorrowForm),
     });
 
     const result = await serverResponse.json();
@@ -54,8 +54,8 @@ const Later = () => {
 
     if (serverResponse.ok) {
       // Append the newly added task to the existing list
-      setLaterList(result);
-      setLaterForm(() => ({
+      setTomorrowList(result);
+      setTomorrowForm(() => ({
         taskDetail: "",
         completionTime: dayjs(),
         taskAssignee: onDutyGlobal,
@@ -64,61 +64,20 @@ const Later = () => {
   };
 
   useEffect(() => {
-    url.pathname === "/later" ? setActiveTab(() => 2) : setActiveTab(() => 1);
-    const getTasks = async () => {
-      const serverResponse = await fetch(`${serverUrl}/later`, {
+    url.pathname === "/tomorrow"
+      ? setActiveTab(() => 3)
+      : setActiveTab(() => 1);
+    const getTmrwTasks = async () => {
+      const serverResponse = await fetch(`${serverUrl}/tomorrow`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
 
       const result = await serverResponse.json();
-      setLaterList(() => result);
+      setTomorrowList(() => result);
     };
-    getTasks();
+    getTmrwTasks();
   }, []);
-
-  const handleClick = async (eachLater) => {
-    const updatedMarkCompleteAdd = {
-      ...markCompleteAdd,
-      task_detail: eachLater.later_detail,
-      task_completed: 1,
-      done_by: eachLater.task_assignee,
-    };
-
-    try {
-      const serverResponse = await fetch(`${serverUrl}/task`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedMarkCompleteAdd),
-      });
-      const result = await serverResponse.json();
-      console.log("srv resp", result);
-
-      // After the fetch is successful, update the state
-      setMarkCompleteAdd(updatedMarkCompleteAdd);
-
-      if (serverResponse.ok) {
-        try {
-          const deleteResponse = await fetch(
-            `${serverUrl}/later/${eachLater.later_id}`,
-            {
-              method: "DELETE",
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-          const result = await deleteResponse.json();
-          console.log("delete resp", result);
-          if (serverResponse.ok) {
-            setLaterList(result);
-          }
-        } catch (error) {
-          console.error("Error during fetch:", error);
-        }
-      }
-    } catch (error) {
-      console.error("Error during fetch:", error);
-    }
-  };
 
   // console.log(markCompleteAdd);
   return (
@@ -128,7 +87,7 @@ const Later = () => {
       <br />
       <div className="later_container_inner">
         <div className="task__header">
-          <h1 className="mt-4">Tasks to be done later today</h1>
+          <h1 className="mt-4">Tasks to do tomorrow</h1>
           <ol className="breadcrumb mb-4 tabs">
             <Link onClick={() => setActiveTab(() => 1)} to="/">
               <li
@@ -182,7 +141,7 @@ const Later = () => {
               rows="2"
               placeholder="Task Detail"
               required
-              value={laterForm.taskDetail}
+              value={tomorrowForm.taskDetail}
               onChange={handleChange}
             ></textarea>
           </span>
@@ -195,11 +154,14 @@ const Later = () => {
                 <MobileTimePicker
                   name="completionTime"
                   id="completionTime"
-                  value={laterForm.completionTime}
+                  value={tomorrowForm.completionTime}
                   defaultValue={dayjs().format("hh:mm a")}
                   // minTime={dayjs()}
                   onChange={(newTimeValue) =>
-                    setLaterForm({ ...laterForm, completionTime: newTimeValue })
+                    setTomorrowForm({
+                      ...tomorrowForm,
+                      completionTime: newTimeValue,
+                    })
                   }
                 />
               </LocalizationProvider>
@@ -211,7 +173,7 @@ const Later = () => {
               <select
                 id="taskAssignee"
                 onChange={handleChange}
-                value={laterForm.taskAssignee}
+                value={tomorrowForm.taskAssignee}
                 name="taskAssignee"
                 size="1"
                 className="form-select"
@@ -231,23 +193,22 @@ const Later = () => {
 
         {/* ###  Task Later List ### */}
         <ol className="later_list">
-          {laterList &&
-            laterList.map((eachLater) => (
-              <li className="eachLater" key={eachLater.later_id}>
+          {tomorrowList &&
+            tomorrowList.map((eachTomorrow) => (
+              <li className="eachTomorrow" key={eachTomorrow.tomorrow_id}>
                 <div className="ll_container">
-                  <span className="ll_leftSec">{eachLater.later_detail}</span>
+                  <span className="ll_leftSec">
+                    {eachTomorrow.tomorrow_detail}
+                  </span>
                   <span className="ll_rightSec">
                     <span className="ll_time">
                       {" "}
-                      {dayjs(eachLater.completion_time).format("hh:mm a")}
+                      {dayjs(eachTomorrow.completion_time).format("hh:mm a")}
                     </span>
-                    <span className="assignee">{eachLater.task_assignee}</span>
-                    <button
-                      onClick={() => handleClick(eachLater)}
-                      className="ll_btn_mark btn btn-primary"
-                    >
-                      Mark as complete
-                    </button>
+                    <span className="assignee">
+                      {eachTomorrow.task_assignee}
+                    </span>
+                    {/* buttons */}
                   </span>
                 </div>
               </li>
@@ -258,4 +219,4 @@ const Later = () => {
   );
 };
 
-export default Later;
+export default Tomorrow;
