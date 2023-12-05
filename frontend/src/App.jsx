@@ -10,6 +10,7 @@ import Later from "./components/Later";
 import Sidebar from "./components/Sidebar";
 import { SidebarProvider } from "./context/SidebarContext";
 import Tomorrow from "./components/Tomorrow";
+import ForToday from "./components/ForToday";
 
 function App() {
   return (
@@ -56,6 +57,16 @@ function App() {
                       <Header />
                       <Sidebar />
                       <Tomorrow />
+                    </>
+                  }
+                />
+                <Route
+                  path="/for-today"
+                  element={
+                    <>
+                      <Header />
+                      <Sidebar />
+                      <ForToday />
                     </>
                   }
                 />

@@ -7,6 +7,8 @@ const conn = require("../config/db.config");
 const dayjs = require("dayjs");
 const populateDays = require("../util/dayHandler");
 
+const schedule = require("node-cron");
+
 let pd = populateDays.dayHandler();
 // console.log(pd.length);
 
@@ -23,6 +25,7 @@ async function getDayssForSidebar() {
     );
     // Access the actual result from each element in dayMap
     let actualResults = dayMap.map((result) => result[0]);
+    console.log(actualResults);
 
     return actualResults;
   } catch (error) {
@@ -40,5 +43,8 @@ async function getTasksForSpecificDay(doneDay) {
     console.error("Error in fetching task", error);
   }
 }
+
+schedule.schedule("0,1 0 * * *", getDayssForSidebar);
+setInterval(getDayssForSidebar, 22000000);
 
 module.exports = { getDayssForSidebar, getTasksForSpecificDay };

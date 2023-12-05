@@ -169,6 +169,19 @@ const Later = () => {
                 </h3>
               </li>
             </Link>
+            <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
+              <li
+                className={
+                  aciveTab === 4
+                    ? "breadcrumb-item active pb-2 task__sub-head tab"
+                    : "breadcrumb-item active pb-2 task__sub-head"
+                }
+              >
+                <h3 className="task__sub-head">
+                  For Today<sup>7</sup>
+                </h3>
+              </li>
+            </Link>
           </ol>
         </div>
 

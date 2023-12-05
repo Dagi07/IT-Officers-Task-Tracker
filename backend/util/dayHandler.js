@@ -1,7 +1,6 @@
 const dayjs = require("dayjs");
 const calendar = require("dayjs/plugin/calendar");
 dayjs.extend(calendar);
-const schedule = require("node-cron");
 
 function dayHandler() {
   // Specify the starting date
@@ -21,13 +20,10 @@ function dayHandler() {
     const currentDate = startDate.add(i, "day");
     dates.push(currentDate.format("YYYY-MM-DD"));
   }
-  console.log(dates);
+
   //   ### dayjs(tempDay).calendar() ###
   // Return the array of formatted dates
   return dates;
 }
 
-// Schedule the function to run everyday at  00
-schedule.schedule("0,1 0 * * *", dayHandler);
-setInterval(dayHandler, 22000000);
 module.exports = { dayHandler };

@@ -24,5 +24,9 @@ router.use(laterRoute);
 const tomorrowRoute = require("./tomorrow.routes");
 // Add the tomorrow router to the middleware chain
 router.use(tomorrowRoute);
+// Import the forToday route
+const forTodayRoute = require("./forToday.routes");
+// Add the forToday router to the middleware chain
+router.use(forTodayRoute);
 
 module.exports = router;
