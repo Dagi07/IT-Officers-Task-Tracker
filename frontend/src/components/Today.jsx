@@ -11,7 +11,7 @@ import { AlertContext } from "../context/AlertContext";
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Today = () => {
-  const [tasksList, setTasksList] = useState(null);
+  const [tasksList, setTasksList] = useState([]);
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
@@ -107,6 +107,7 @@ const Today = () => {
                 >
                   <SingleTask
                     specificTask={specificTask}
+                    taskslist={tasksList}
                     settaskslist={setTasksList}
                   />
                 </li>

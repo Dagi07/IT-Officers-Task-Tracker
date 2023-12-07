@@ -48,14 +48,9 @@ function EditTask(props) {
       const result = await serverResponse.json();
 
       if (serverResponse.ok) {
-        // setError(null)
-        // setTitle('')
-        // setLoad('')
-        // setReps('')
-        // dispatch({ type: "SET_TASKS", payload: result });
         props.setModalShow(false);
-        // console.log(...props.taskslist);
-        props.settaskslist(result);
+        console.log(result, "result");
+        props.settaskslist([...props.taskslist, ...result]);
       }
     } catch (error) {
       console.log(error);
@@ -146,7 +141,7 @@ function EditTask(props) {
           {/* <Modal.Footer> */}
           {/* <Button onClick={props.onHide}>Close</Button> */}
           {/* </Modal.Footer> */}
-        </div>{" "}
+        </div>
       </Modal>
     </>
   );
