@@ -11,6 +11,7 @@ import Sidebar from "./components/Sidebar";
 import { SidebarProvider } from "./context/SidebarContext";
 import Tomorrow from "./components/Tomorrow";
 import ForToday from "./components/ForToday";
+import { AlertProvider } from "./context/AlertContext";
 
 function App() {
   return (
@@ -19,59 +20,61 @@ function App() {
         <TabsProvider>
           {" "}
           <SidebarProvider>
-            <div className="app">
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <>
-                      <Header />
-                      <Home />
-                    </>
-                  }
-                />
+            <AlertProvider>
+              <div className="app">
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <>
+                        <Header />
+                        <Home />
+                      </>
+                    }
+                  />
 
-                <Route
-                  path="/eachdaytask/:doneDay"
-                  element={
-                    <>
-                      <Header />
-                      <Home />
-                    </>
-                  }
-                />
-                <Route
-                  path="/later"
-                  element={
-                    <>
-                      <Header />
-                      <Sidebar />
-                      <Later />
-                    </>
-                  }
-                />
-                <Route
-                  path="/tomorrow"
-                  element={
-                    <>
-                      <Header />
-                      <Sidebar />
-                      <Tomorrow />
-                    </>
-                  }
-                />
-                <Route
-                  path="/for-today"
-                  element={
-                    <>
-                      <Header />
-                      <Sidebar />
-                      <ForToday />
-                    </>
-                  }
-                />
-              </Routes>
-            </div>
+                  <Route
+                    path="/eachdaytask/:doneDay"
+                    element={
+                      <>
+                        <Header />
+                        <Home />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/later"
+                    element={
+                      <>
+                        <Header />
+                        <Sidebar />
+                        <Later />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/tomorrow"
+                    element={
+                      <>
+                        <Header />
+                        <Sidebar />
+                        <Tomorrow />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/for-today"
+                    element={
+                      <>
+                        <Header />
+                        <Sidebar />
+                        <ForToday />
+                      </>
+                    }
+                  />
+                </Routes>
+              </div>
+            </AlertProvider>
           </SidebarProvider>
         </TabsProvider>
       </OndutyProvider>

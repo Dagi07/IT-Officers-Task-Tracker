@@ -42,25 +42,40 @@ async function fetchLater() {
     console.error("Error in fetching later", err);
   }
 }
+async function getAlertAmount() {
+  try {
+    let today = dayjs().format("YYYY-MM-DD");
+    let tomorrow = dayjs().add(1, "day").format("YYYY-MM-DD");
+
+    let fetchSQL = `SELECT COUNT(later_id) FROM later_table WHERE completion_time>'${today} 00:00:00' AND  completion_time<'${tomorrow} 00:00:00'`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(fetchSQL);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching later", err);
+  }
+}
 
 async function deleteLater(laterID) {
   try {
     let deleteSQL = `DELETE FROM later_table
     WHERE later_id = ?`;
     // Execute the query (use the query method from the db connection file)
-    let result = await conn.query(deleteSQL, [
-      laterID
-    ]);
+    let result = await conn.query(deleteSQL, [laterID]);
 
-     // If the query returns a result, return the result. Otherwise, return null
-     if (result) {
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
       return result;
     } else {
       return null;
     }
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
-module.exports = { addLater, fetchLater, deleteLater };
+module.exports = { addLater, fetchLater, getAlertAmount, deleteLater };

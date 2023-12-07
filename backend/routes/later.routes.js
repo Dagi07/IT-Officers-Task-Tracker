@@ -9,6 +9,8 @@ const laterController = require("../controllers/later.controller");
 router.post("/later", laterController.addTasksLater);
 // Create a get request handler for the getDays route
 router.get("/later", laterController.fetchTasksLater);
+// Create a get request handler for the get amount of alert route
+router.get("/later/amount", laterController.getAlertAmount);
 // Create a delete request handler for the delete task later route
 router.delete("/later/:id", laterController.deleteTasksLater);
 

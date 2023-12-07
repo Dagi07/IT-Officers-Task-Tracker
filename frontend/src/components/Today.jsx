@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { Link, useLocation, useParams } from "react-router-dom";
 import Later from "./Later";
 import { TabsContext } from "../context/TabsContext";
+import { AlertContext } from "../context/AlertContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -13,6 +14,7 @@ const Today = () => {
   const [tasksList, setTasksList] = useState(null);
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
+  const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -59,7 +61,10 @@ const Today = () => {
               }
             >
               <h3 className="task__sub-head">
-                Tasks Later<sup>11</sup>
+                Tasks Later{" "}
+                {alertTaskLength.later > 0 && (
+                  <sup>{alertTaskLength.later}</sup>
+                )}
               </h3>
             </li>
           </Link>
@@ -100,7 +105,10 @@ const Today = () => {
                   key={specificTask.task_id}
                   className={specificTask.task_completed === 0 && "not_yet"}
                 >
-                  <SingleTask specificTask={specificTask} />
+                  <SingleTask
+                    specificTask={specificTask}
+                    settaskslist={setTasksList}
+                  />
                 </li>
               );
             })

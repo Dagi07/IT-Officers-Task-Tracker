@@ -7,6 +7,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { useEffect } from "react";
+import { AlertContext } from "../context/AlertContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -15,6 +16,8 @@ const Tomorrow = () => {
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   // const [timeValue, setTimeValue] = useState(null)
+  const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
+
   const [tomorrowForm, setTomorrowForm] = useState({
     taskDetail: "",
     completionTime: dayjs(),
@@ -111,7 +114,7 @@ const Tomorrow = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Later<sup>11</sup>
+                  Tasks Later<sup>{alertTaskLength}</sup>
                 </h3>
               </li>
             </Link>
@@ -124,7 +127,7 @@ const Tomorrow = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Tomorrow<sup>11</sup>
+                  Tasks Tomorrow<sup>{tomorrowList.length}</sup>
                 </h3>
               </li>
             </Link>

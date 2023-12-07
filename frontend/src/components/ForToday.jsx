@@ -10,7 +10,7 @@ import { TabsContext } from "../context/TabsContext";
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Today = () => {
-  const [tasksList, setTasksList] = useState(null);
+  const [tasksList, setTasksList] = useState([]);
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
 
@@ -24,6 +24,7 @@ const Today = () => {
         headers: { "Content-Type": "application/json" },
       });
       let res = await backendResult.json();
+      console.log(tasksList);
       setTasksList(res);
     };
     getTasks();
@@ -83,7 +84,7 @@ const Today = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  For Today<sup>7</sup>
+                  For Today<sup>{tasksList.length}</sup>
                 </h3>
               </li>
             </Link>

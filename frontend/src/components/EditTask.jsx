@@ -54,7 +54,7 @@ function EditTask(props) {
         // setReps('')
         // dispatch({ type: "SET_TASKS", payload: result });
         props.setModalShow(false);
-        console.log(...props.taskslist);
+        // console.log(...props.taskslist);
         props.settaskslist(result);
       }
     } catch (error) {

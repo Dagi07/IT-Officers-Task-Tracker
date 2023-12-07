@@ -7,6 +7,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { useEffect } from "react";
+import { AlertContext } from "../context/AlertContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -14,6 +15,8 @@ const Later = () => {
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [onDutyGlobal] = useContext(OndutyContext);
+  const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
+
   // const [timeValue, setTimeValue] = useState(null)
   const [laterForm, setLaterForm] = useState({
     taskDetail: "",
@@ -34,6 +37,17 @@ const Later = () => {
       taskAssignee: onDutyGlobal,
     }));
   }, [onDutyGlobal]);
+
+  const getAlertAmount = async () => {
+    const serverResponse = await fetch(`${serverUrl}/later/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const result = await serverResponse.json();
+
+    setAlertTaskLength(() => ({ later: result }));
+  };
 
   const handleChange = (e) => {
     setLaterForm({ ...laterForm, [e.target.name]: e.target.value });
@@ -60,6 +74,7 @@ const Later = () => {
         completionTime: dayjs(),
         taskAssignee: onDutyGlobal,
       }));
+      getAlertAmount();
     }
   };
 
@@ -75,7 +90,11 @@ const Later = () => {
       setLaterList(() => result);
     };
     getTasks();
+
+    getAlertAmount();
   }, []);
+
+  console.log("aletr amount", alertTaskLength.later);
 
   const handleClick = async (eachLater) => {
     const updatedMarkCompleteAdd = {
@@ -110,6 +129,7 @@ const Later = () => {
           console.log("delete resp", result);
           if (serverResponse.ok) {
             setLaterList(result);
+            getAlertAmount();
           }
         } catch (error) {
           console.error("Error during fetch:", error);
@@ -120,7 +140,6 @@ const Later = () => {
     }
   };
 
-  // console.log(markCompleteAdd);
   return (
     <div className="later_container">
       <br />
@@ -152,7 +171,10 @@ const Later = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Later<sup>11</sup>
+                  Tasks Later
+                  {alertTaskLength.later > 0 && (
+                    <sup>{alertTaskLength.later}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
