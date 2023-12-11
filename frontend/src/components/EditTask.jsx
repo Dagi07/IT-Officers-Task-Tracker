@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import { useParams } from "react-router-dom";
 import { useTasksContext } from "../hooks/useTasksContext";
+
+const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 function EditTask(props) {
   const { tasks, dispatch } = useTasksContext();
   // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
+  const { doneDay } = useParams();
 
   const [updateTask, setUpdateTask] = useState({
     task_id: `${props.specificTask.task_id}`,
@@ -48,9 +52,16 @@ function EditTask(props) {
       const result = await serverResponse.json();
 
       if (serverResponse.ok) {
+        const getTasks = async () => {
+          let backendResult = await fetch(`${serverUrl}/getTasks/${doneDay}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+          let res = await backendResult.json();
+          props.settaskslistea(() => res);
+        };
+        getTasks();
         props.setModalShow(false);
-        console.log(result, "result");
-        props.settaskslist([...props.taskslist, ...result]);
       }
     } catch (error) {
       console.log(error);
