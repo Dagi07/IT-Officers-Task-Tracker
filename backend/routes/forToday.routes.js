@@ -9,6 +9,8 @@ const forTodayController = require("../controllers/forToday.controller");
 // router.post("/for-today", forTodayController.addTasksforToday);
 // Create a get request handler for the getDays route
 router.get("/for-today", forTodayController.fetchTasksForToday);
+// Create a get request handler for the get amount of alert route
+router.get("/for-today/amount", forTodayController.getAlertAmount);
 // // Create a delete request handler for the delete task forToday route
 // router.delete("/for-today/:id", forTodayController.deleteTasksforToday);
 

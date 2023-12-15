@@ -46,6 +46,28 @@ async function fetchTasksTomorrow(req, res) {
   }
 }
 
+async function getAlertAmount(req, res) {
+  try {
+    let serviceResult = await tomorrowService.getAlertAmount();
+    if (serviceResult) {
+      const response = {
+        status: "success",
+        message: "Task fetched successfully",
+      };
+      return res.status(200).json(serviceResult[0]["COUNT(tomorrow_id)"]);
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't fetch task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(503);
+  }
+}
+
 async function deleteTasksTomorrow(req, res) {
   console.log(req.params);
   try {
@@ -68,4 +90,9 @@ async function deleteTasksTomorrow(req, res) {
   } catch (error) {}
 }
 
-module.exports = { addTasksTomorrow, fetchTasksTomorrow, deleteTasksTomorrow };
+module.exports = {
+  addTasksTomorrow,
+  fetchTasksTomorrow,
+  getAlertAmount,
+  deleteTasksTomorrow,
+};

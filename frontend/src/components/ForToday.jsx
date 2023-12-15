@@ -1,18 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTasksContext } from "../hooks/useTasksContext";
-import SingleTask from "./SingleTask";
-import AddTask from "./AddTask";
-import dayjs from "dayjs";
-import { Link, useLocation, useParams } from "react-router-dom";
-import Later from "./Later";
 import { TabsContext } from "../context/TabsContext";
+import { AlertContext } from "../context/AlertContext";
+import { Link, useLocation } from "react-router-dom";
+import dayjs from "dayjs";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
-const Today = () => {
-  const [tasksList, setTasksList] = useState([]);
+const ForToday = () => {
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
+  const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
+  const [forTodayList, setForTodayList] = useState([]);
+
+  const getAlertAmount = async () => {
+    const serverResponse = await fetch(`${serverUrl}/for-today/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const result = await serverResponse.json();
+    console.log("aletr amount", result);
+    setAlertTaskLength(() => ({ ...alertTaskLength, forToday: result }));
+  };
 
   useEffect(() => {
     const getTasks = async () => {
@@ -24,17 +33,21 @@ const Today = () => {
         headers: { "Content-Type": "application/json" },
       });
       let res = await backendResult.json();
-      console.log(tasksList);
-      setTasksList(res);
+      console.log(forTodayList);
+      setForTodayList(res);
     };
     getTasks();
+    getAlertAmount();
   }, []);
 
   return (
-    <>
-      <div className="for_today">
+    <div className="later_container forToday_wrapper">
+      <br />
+      <br />
+      <br />
+      <div className="later_container_inner forToday_inner">
         <div className="task__header">
-          <h1 className="mt-4">Task for Today</h1>
+          <h1 className="mt-4">Tasks to do Today</h1>
           <ol className="breadcrumb mb-4 tabs">
             <Link onClick={() => setActiveTab(() => 1)} to="/">
               <li
@@ -58,7 +71,10 @@ const Today = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Later<sup>11</sup>
+                  Tasks Later
+                  {alertTaskLength.later > 0 && (
+                    <sup>{alertTaskLength.later}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
@@ -71,7 +87,10 @@ const Today = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Tomorrow<sup>11</sup>
+                  Tasks Tomorrow{" "}
+                  {alertTaskLength.tomorrow > 0 && (
+                    <sup>{alertTaskLength.tomorrow}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
@@ -84,33 +103,42 @@ const Today = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  For Today<sup>{tasksList.length}</sup>
+                  For Today{" "}
+                  {alertTaskLength.forToday > 0 && (
+                    <sup>{alertTaskLength.forToday}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
           </ol>
         </div>
-        <div className="task__body">
-          <ol>
-            {tasksList ? (
-              tasksList.map((specificTask) => {
-                return (
-                  <li
-                    key={specificTask.task_id}
-                    className={specificTask.task_completed === 0 && "not_yet"}
-                  >
-                    <SingleTask specificTask={specificTask} />
-                  </li>
-                );
-              })
-            ) : (
-              <p className="loading">loading...</p>
-            )}
-          </ol>
-        </div>
+
+        {/* ###  Task Later List ### */}
+        <ol className="later_list forToday_list">
+          {forTodayList &&
+            forTodayList.map((eachTomorrow) => (
+              <li className="eachTomorrow" key={eachTomorrow.tomorrow_id}>
+                <div className="ll_container">
+                  <span className="ll_leftSec">
+                    {eachTomorrow.tomorrow_detail}
+                  </span>
+                  <span className="ll_rightSec">
+                    <span className="ll_time">
+                      {" "}
+                      {dayjs(eachTomorrow.completion_time).format("hh:mm a")}
+                    </span>
+                    <span className="assignee">
+                      {eachTomorrow.task_assignee}
+                    </span>
+                    {/* buttons */}
+                  </span>
+                </div>
+              </li>
+            ))}
+        </ol>
       </div>
-    </>
+    </div>
   );
 };
 
-export default Today;
+export default ForToday;

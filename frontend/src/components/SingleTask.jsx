@@ -5,10 +5,13 @@ import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import { red } from "@mui/material/colors";
 import EditTask from "./EditTask";
+import DeleteTask from "./DeleteTask";
 
 const SingleTask = ({ specificTask, taskslistea, settaskslistea }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState(false);
+
   return (
     <div className="single_task" key={specificTask.task_id}>
       <h6>{specificTask.task_detail}</h6>
@@ -41,9 +44,18 @@ const SingleTask = ({ specificTask, taskslistea, settaskslistea }) => {
               opacity: 0.9,
             },
           }}
+          onClick={() => setDeleteModal(true)}
         >
           <DeleteIcon sx={{ color: red[50] }} />
         </IconButton>
+        {deleteModal && (
+          <DeleteTask
+            deletemodal={deleteModal}
+            setdeletemodal={setDeleteModal}
+            specificTask={specificTask}
+            settaskslistea={settaskslistea}
+          />
+        )}
       </div>
     </div>
   );

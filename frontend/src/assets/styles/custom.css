@@ -527,18 +527,25 @@ sup {
   border-radius: 100px;
   padding: 0 3px;
   font-size: 9px;
+  margin-left: -3px;
 }
 
-.for_today {
-  width: calc(100%-275px) !important;
-  min-width: calc(100%) !important;
-  margin-left: 558px !important;
-  height: 100%;
+.forToday_wrapper {
+  /* background-color: #374151; */
+  /* height: 100%; */
+  color: #fff;
 }
 
-.for_today .task__body {
-  height: 100%;
+.forToday_list {
+  margin-top: 72px;
 }
+
+.forToday_inner {
+   background-color: #374151; 
+   height: 100%;
+}
+
+
 
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {

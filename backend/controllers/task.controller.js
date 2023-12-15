@@ -136,4 +136,8 @@ async function updateTask(req, res) {
   }
 }
 
-module.exports = { addTask, fetchTasks, fetchDayList, updateTask };
+async function deleteTask(req, res) {
+  console.log(req.params);
+}
+
+module.exports = { addTask, fetchTasks, fetchDayList, updateTask, deleteTask };

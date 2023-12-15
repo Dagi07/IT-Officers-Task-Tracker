@@ -46,7 +46,7 @@ const Later = () => {
 
     const result = await serverResponse.json();
 
-    setAlertTaskLength(() => ({ later: result }));
+    setAlertTaskLength(() => ({ ...alertTaskLength, later: result }));
   };
 
   const handleChange = (e) => {
@@ -56,7 +56,7 @@ const Later = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     laterForm.completionTime = dayjs(laterForm.completionTime.$d);
-    console.log(laterForm);
+    // console.log(laterForm);
     const serverResponse = await fetch(`${serverUrl}/later`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -64,7 +64,7 @@ const Later = () => {
     });
 
     const result = await serverResponse.json();
-    console.log("srv post resp", result);
+    // console.log("srv post resp", result);
 
     if (serverResponse.ok) {
       // Append the newly added task to the existing list
@@ -94,7 +94,7 @@ const Later = () => {
     getAlertAmount();
   }, []);
 
-  console.log("aletr amount", alertTaskLength.later);
+  // console.log("aletr amount", alertTaskLength.later);
 
   const handleClick = async (eachLater) => {
     const updatedMarkCompleteAdd = {
@@ -187,7 +187,10 @@ const Later = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Tomorrow<sup>11</sup>
+                  Tasks Tomorrow
+                  {alertTaskLength.tomorrow > 0 && (
+                    <sup>{alertTaskLength.tomorrow}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
@@ -200,7 +203,10 @@ const Later = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  For Today<sup>7</sup>
+                  For Today
+                  {alertTaskLength.forToday > 0 && (
+                    <sup>{alertTaskLength.forToday}</sup>
+                  )}
                 </h3>
               </li>
             </Link>

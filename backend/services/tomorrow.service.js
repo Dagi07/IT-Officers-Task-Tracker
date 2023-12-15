@@ -43,6 +43,26 @@ async function fetchTomorrow() {
   }
 }
 
+async function getAlertAmount() {
+  try {
+    let today = dayjs().format("YYYY-MM-DD");
+    let tomorrow = dayjs().add(1, "day").format("YYYY-MM-DD");
+
+    let fetchSQL = `SELECT COUNT(tomorrow_id) FROM tomorrow_table WHERE completion_time>'${today} 00:00:00' AND  completion_time<'${tomorrow} 00:00:00'`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(fetchSQL);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching tomorrow", err);
+  }
+}
+
 async function deleteTomorrow(laterID) {
   try {
     let deleteSQL = `DELETE FROM tomorrow_table
@@ -59,4 +79,4 @@ async function deleteTomorrow(laterID) {
   } catch (error) {}
 }
 
-module.exports = { addTomorrow, fetchTomorrow, deleteTomorrow };
+module.exports = { addTomorrow, fetchTomorrow, getAlertAmount, deleteTomorrow };

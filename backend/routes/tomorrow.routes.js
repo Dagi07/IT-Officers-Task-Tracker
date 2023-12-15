@@ -9,6 +9,8 @@ const tomorrowController = require("../controllers/tomorrow.controller");
 router.post("/tomorrow", tomorrowController.addTasksTomorrow);
 // Create a get request handler for the getDays route
 router.get("/tomorrow", tomorrowController.fetchTasksTomorrow);
+// Create a get request handler for the get amount of alert route
+router.get("/tomorrow/amount", tomorrowController.getAlertAmount);
 // Create a delete request handler for the delete task tomorrow route
 router.delete("/tomorrow/:id", tomorrowController.deleteTasksTomorrow);
 

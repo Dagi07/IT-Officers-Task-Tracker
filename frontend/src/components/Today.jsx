@@ -16,6 +16,39 @@ const Today = () => {
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
 
+  const getAlertAmount = async () => {
+    const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const serverResponseTomorrow = await fetch(`${serverUrl}/tomorrow/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const serverResponseForToday = await fetch(
+      `${serverUrl}/for-today/amount`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const forTodayResult = await serverResponseForToday.json();
+
+    const tomorrowResult = await serverResponseTomorrow.json();
+
+    const laterResult = await serverResponseLater.json();
+
+    setAlertTaskLength(() => ({
+      ...alertTaskLength,
+      later: laterResult,
+      tomorrow: tomorrowResult,
+      forToday: forTodayResult,
+    }));
+  };
+
   useEffect(() => {
     const getTasks = async () => {
       let backendResult = await fetch(
@@ -32,6 +65,7 @@ const Today = () => {
       }
     };
     getTasks();
+    getAlertAmount();
   }, []);
 
   return (
@@ -77,7 +111,10 @@ const Today = () => {
               }
             >
               <h3 className="task__sub-head">
-                Tasks Tomorrow<sup>11</sup>
+                Tasks Tomorrow{" "}
+                {alertTaskLength.tomorrow > 0 && (
+                  <sup>{alertTaskLength.tomorrow}</sup>
+                )}
               </h3>
             </li>
           </Link>
@@ -90,7 +127,10 @@ const Today = () => {
               }
             >
               <h3 className="task__sub-head">
-                For Today<sup>7</sup>
+                For Today
+                {alertTaskLength.forToday > 0 && (
+                  <sup>{alertTaskLength.forToday}</sup>
+                )}
               </h3>
             </li>
           </Link>

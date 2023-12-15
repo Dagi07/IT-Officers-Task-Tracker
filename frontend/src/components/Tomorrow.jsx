@@ -63,7 +63,19 @@ const Tomorrow = () => {
         completionTime: dayjs(),
         taskAssignee: onDutyGlobal,
       }));
+      getAlertAmount();
     }
+  };
+
+  const getAlertAmount = async () => {
+    const serverResponse = await fetch(`${serverUrl}/tomorrow/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const result = await serverResponse.json();
+    console.log("aletr amount", result);
+    setAlertTaskLength(() => ({ ...alertTaskLength, tomorrow: result }));
   };
 
   useEffect(() => {
@@ -80,6 +92,7 @@ const Tomorrow = () => {
       setTomorrowList(() => result);
     };
     getTmrwTasks();
+    getAlertAmount();
   }, []);
 
   // console.log(markCompleteAdd);
@@ -114,7 +127,10 @@ const Tomorrow = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Later<sup>{alertTaskLength.later}</sup>
+                  Tasks Later
+                  {alertTaskLength.later > 0 && (
+                    <sup>{alertTaskLength.later}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
@@ -127,7 +143,10 @@ const Tomorrow = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  Tasks Tomorrow<sup>{tomorrowList.length}</sup>
+                  Tasks Tomorrow{" "}
+                  {alertTaskLength.tomorrow > 0 && (
+                    <sup>{alertTaskLength.tomorrow}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
@@ -140,7 +159,10 @@ const Tomorrow = () => {
                 }
               >
                 <h3 className="task__sub-head">
-                  For Today<sup>7</sup>
+                  For Today
+                  {alertTaskLength.forToday > 0 && (
+                    <sup>{alertTaskLength.forToday}</sup>
+                  )}
                 </h3>
               </li>
             </Link>
