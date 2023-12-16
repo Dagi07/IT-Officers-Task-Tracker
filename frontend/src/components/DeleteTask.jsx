@@ -2,12 +2,13 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
+const serverUrl = import.meta.env.VITE_API_serverUrl;
+
 function DeleteTask(props) {
   const handleClick = async () => {
-    console.log(props.specificTask);
     try {
       const serverResponse = await fetch(
-        `http://localhost:6800/task/${props.specificTask.task_id}`,
+        `${serverUrl}/task/${props.specificTask.task_id}`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -15,18 +16,22 @@ function DeleteTask(props) {
       );
       const result = await serverResponse.json();
 
-      if (serverResponse.ok) {
-        const getTasks = async () => {
-          let backendResult = await fetch(`${serverUrl}/getTasks/${doneDay}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          });
-          let res = await backendResult.json();
-          props.settaskslistea(() => res);
-        };
-        getTasks();
-        props.setdeletemodal(false);
-      }
+      console.log(result);
+
+      // if (serverResponse.ok) {
+      //   const getTasks = async () => {
+      //     let backendResult = await fetch(`${serverUrl}/getTasks/${doneDay}`, {
+      //       method: "GET",
+      //       headers: { "Content-Type": "application/json" },
+      //     });
+      //     let res = await backendResult.json();
+      //     props.settaskslistea(() => res);
+      //   };
+      //   getTasks();
+      //   props.setModalShow(false);
+      //   props.settaskslistea(() => result);
+      //   props.setdeletemodal(false);
+      // }
     } catch (error) {
       console.log(error);
     }

@@ -137,7 +137,29 @@ async function updateTask(req, res) {
 }
 
 async function deleteTask(req, res) {
-  console.log(req.params);
+  try {
+    let deleteResult = await taskService.deleteTask(req.params.id);
+    // let getResult = await taskService.fetchTasks();
+    if (deleteResult) {
+      const response = {
+        status: "success",
+        message: "Task deleted successfully",
+      };
+      console.log("getResult", deleteResult);
+      // if (getResult) {
+      return res.status(204).json(response);
+      // }
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't delete task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(503);
+  }
 }
 
 module.exports = { addTask, fetchTasks, fetchDayList, updateTask, deleteTask };

@@ -68,4 +68,22 @@ async function updateTask(task_detail, task_completed, done_by, task_id) {
   }
 }
 
-module.exports = { addTask, fetchTasks, updateTask };
+async function deleteTask(deletedId) {
+  try {
+    let deleteSQL = `DELETE FROM task_table
+    WHERE task_id = ?`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(deleteSQL, [deletedId]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error in deletin task", err);
+  }
+}
+
+module.exports = { addTask, fetchTasks, updateTask, deleteTask };
