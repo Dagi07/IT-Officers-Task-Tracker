@@ -147,8 +147,8 @@ const Today = () => {
                 >
                   <SingleTask
                     specificTask={specificTask}
-                    // taskslist={tasksList}
-                    // settaskslist={setTasksList}
+                    taskslist={tasksList}
+                    settaskslist={setTasksList}
                   />
                 </li>
               );

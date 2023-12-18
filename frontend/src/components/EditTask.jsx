@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
 import { useTasksContext } from "../hooks/useTasksContext";
+import dayjs from "dayjs";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -53,12 +54,17 @@ function EditTask(props) {
 
       if (serverResponse.ok) {
         const getTasks = async () => {
-          let backendResult = await fetch(`${serverUrl}/getTasks/${doneDay}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          });
+          let backendResult = await fetch(
+            `${serverUrl}/getTasks/${
+              doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
+            }`,
+            {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
           let res = await backendResult.json();
-          props.settaskslistea(() => res);
+          props.settaskslist(() => res);
         };
         getTasks();
         props.setModalShow(false);

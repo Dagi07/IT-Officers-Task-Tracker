@@ -147,7 +147,7 @@ async function deleteTask(req, res) {
       };
       console.log("getResult", deleteResult);
       // if (getResult) {
-      return res.status(204).json(response);
+      return res.status(200).json(response);
       // }
     } else {
       const response = {

@@ -7,7 +7,7 @@ import { red } from "@mui/material/colors";
 import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
 
-const SingleTask = ({ specificTask, taskslistea, settaskslistea }) => {
+const SingleTask = ({ specificTask, taskslist, settaskslist }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
   const [deleteModal, setDeleteModal] = React.useState(false);
@@ -31,8 +31,8 @@ const SingleTask = ({ specificTask, taskslistea, settaskslistea }) => {
             specificTask={specificTask}
             setModalShow={setModalShow}
             show={modalShow}
-            taskslistea={taskslistea}
-            settaskslistea={settaskslistea}
+            taskslist={taskslist}
+            settaskslist={settaskslist}
             onHide={() => setModalShow(false)}
           />
         )}
@@ -53,7 +53,7 @@ const SingleTask = ({ specificTask, taskslistea, settaskslistea }) => {
             deletemodal={deleteModal}
             setdeletemodal={setDeleteModal}
             specificTask={specificTask}
-            settaskslistea={settaskslistea}
+            settaskslist={settaskslist}
           />
         )}
       </div>

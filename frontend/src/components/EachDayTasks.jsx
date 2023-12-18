@@ -56,8 +56,8 @@ const EachDayTasks = () => {
                       >
                         <SingleTask
                           specificTask={specificTask}
-                          taskslistea={tasksList}
-                          settaskslistea={setTasksList}
+                          taskslist={tasksList}
+                          settaskslist={setTasksList}
                         />
                       </li>
                     );

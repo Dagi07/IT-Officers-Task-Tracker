@@ -48,7 +48,8 @@ const AddTask = ({ taskslist, settaskslist }) => {
         // setLoad('')
         // setReps('')
         setTaskadd({
-          ...taskadd,
+          task_detail: "",
+          task_completed: 1,
           done_by: onDutyGlobal,
         });
         console.log("taskslist", taskslist);
