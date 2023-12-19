@@ -28,6 +28,18 @@ const EachDayTasks = () => {
     getTasks();
   }, [doneDay]);
 
+  const handleClick = () => {
+    const getReport = async () => {
+      let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      let res = await backendResult.json();
+      // setReportList(res);
+    };
+    getReport();
+  }
+
   return (
     <>
       <div className="task">
@@ -36,7 +48,10 @@ const EachDayTasks = () => {
         ) : (
           <>
             <div className="task__header">
-              <h1 className="mt-4">Task Tracker</h1>
+              <div className="generate_report">
+                <h1 className="mt-4">Task Tracker</h1>
+                <button className="btn btn-primary generate_report_btn" onClick={handleClick}>Generate Report</button>
+              </div>
               <ol className="breadcrumb mb-4">
                 <li className="breadcrumb-item active pb-2 task__sub-head">
                   <h3 className="task__sub-head"> Tasks {dayCalc(doneDay)}</h3>

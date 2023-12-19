@@ -545,6 +545,18 @@ sup {
    height: 100%;
 }
 
+.generate_report {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.generate_report_btn {
+  height: 40px;
+  padding: 0px 8px;
+  align-self: flex-end;
+  float: left;
+}
 
 
 /* ### For Mobile Devices ### */
@@ -641,5 +653,8 @@ sup {
   .modal-content {
     width: 45%;
     height: 425px;
+  }
+  .generate_report {
+    width: 70%;
   }
 }
