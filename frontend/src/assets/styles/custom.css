@@ -579,6 +579,9 @@ sup {
   .task__sub-head {
     margin-bottom: 33px !important;
   }
+  .generate_report {
+    width: 100% !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -602,6 +605,9 @@ sup {
   }
   .task__sub-head {
     margin-bottom: 13px !important;
+  }
+  .generate_report {
+    width: 100% !important;
   }
 }
 

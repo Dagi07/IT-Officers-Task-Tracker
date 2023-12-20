@@ -50,18 +50,18 @@ const Today = () => {
     }));
   };
 
-  // const handleClick = () => {
-  //   const getReport = async () => {
-  //     console.log(doneDay)
-  //     // let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
-  //     //   method: "GET",
-  //     //   headers: { "Content-Type": "application/json" },
-  //     // });
-  //     // let res = await backendResult.json();
-  //     // // setReportList(res);
-  //   };
-  //   getReport();
-  // }
+  const handleClick = () => {
+    const getReport = async () => {
+      console.log(doneDay)
+      let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      let res = await backendResult.json();
+      // setReportList(res);
+    };
+    getReport();
+  }
 
   useEffect(() => {
     const getTasks = async () => {
@@ -85,10 +85,10 @@ const Today = () => {
   return (
     <>
       <div className="task__header">
-        {/* <div className="generate_report"> */}
+        <div className="generate_report">
           <h1 className="mt-4">Task Tracker</h1>
-        {/* <button className="btn btn-primary generate_report_btn" onClick={handleClick}>Generate Report</button> */}
-        {/* </div> */}
+        <button className="btn btn-primary generate_report_btn" onClick={handleClick}>Generate Report</button>
+        </div>
         
         <ol className="breadcrumb mb-4 tabs">
           <Link onClick={() => setActiveTab(() => 1)} to="/">
