@@ -7,6 +7,7 @@ import SingleTask from "./SingleTask";
 import Today from "./Today";
 import Noteexpand from "./Noteexpand";
 import { dayCalc } from "./SingleDayOnSidebar";
+import { saveAs } from "file-saver";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -32,13 +33,15 @@ const EachDayTasks = () => {
     const getReport = async () => {
       let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: { responseType: "blob" },
+      }).then((res) => {
+        const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+        console.log(res);
+        saveAs(pdfBlob);
       });
-      let res = await backendResult.json();
-      // setReportList(res);
     };
     getReport();
-  }
+  };
 
   return (
     <>
@@ -50,7 +53,12 @@ const EachDayTasks = () => {
             <div className="task__header">
               <div className="generate_report">
                 <h1 className="mt-4">Task Tracker</h1>
-                <button className="btn btn-primary generate_report_btn" onClick={handleClick}>Generate Report</button>
+                <button
+                  className="btn btn-primary generate_report_btn"
+                  onClick={handleClick}
+                >
+                  Generate Report
+                </button>
               </div>
               <ol className="breadcrumb mb-4">
                 <li className="breadcrumb-item active pb-2 task__sub-head">
