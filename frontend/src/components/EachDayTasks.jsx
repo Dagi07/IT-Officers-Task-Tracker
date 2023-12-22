@@ -14,6 +14,7 @@ const serverUrl = import.meta.env.VITE_API_serverUrl;
 const EachDayTasks = () => {
   const { doneDay } = useParams();
   const { tasks, dispatch } = useTasksContext();
+  const [status, setStatus] = useState("Generate Report");
 
   const [tasksList, setTasksList] = useState(null);
 
@@ -30,14 +31,19 @@ const EachDayTasks = () => {
   }, [doneDay]);
 
   const handleClick = () => {
-    const getReport = async () => {
+   
+    const getReport = async () => { setStatus(()=>'generating report for this day ...')
       let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
         method: "GET",
         headers: { responseType: "blob" },
       }).then((res) => {
         const pdfBlob = new Blob([res.data], { type: "application/pdf" });
-        console.log(res);
-        saveAs(pdfBlob);
+        const filename = res.headers.get('Content-Disposition')
+        console.log(filename);
+        
+        saveAs(pdfBlob, filename);
+        console.log(pdfBlob)
+        setStatus(()=>'Generate Report')
       });
     };
     getReport();
@@ -57,7 +63,7 @@ const EachDayTasks = () => {
                   className="btn btn-primary generate_report_btn"
                   onClick={handleClick}
                 >
-                  Generate Report
+                  {status}
                 </button>
               </div>
               <ol className="breadcrumb mb-4">

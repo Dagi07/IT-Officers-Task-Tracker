@@ -1,6 +1,7 @@
 const reportService = require("../services/report.service");
 const pdf = require("html-pdf");
 const path = require("path");
+const dayjs = require("dayjs");
 
 const pdfTemplate = require("../documents");
 
@@ -16,17 +17,16 @@ async function generateReport(req, res) {
             if (err) {
               res.send(Promise.reject());
             }
-            console.log("pdf created");
-            // res.send(Promise.resolve());
+            
             // Assuming filePath contains the path to the file you want to send
-            const filePath = "../documents/generatedPDFs/"; // Replace this with your file path
+            const filePath = "../documents/generatedPDFs/"; 
 
             // Resolve the absolute path using path.join()
             const absolutePath = path.join(__dirname, filePath);
 
-            return res.download(
+            return res.sendFile(
               `${absolutePath}${req.params.doneDay}_report.pdf`,
-              "report.pdf"
+             `${dayjs(req.params.doneDay).format("DD-MM-YYYY")}_report.pdf`
             );
           }
         );
