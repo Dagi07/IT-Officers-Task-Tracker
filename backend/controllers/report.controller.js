@@ -13,7 +13,7 @@ async function generateReport(req, res) {
         .create(pdfTemplate(serviceResult, req.params.doneDay), {})
         .toFile(
           `./documents/generatedPDFs/${req.params.doneDay}_report.pdf`,
-          (err) => {
+           (err) => {
             if (err) {
               res.send(Promise.reject());
             }
@@ -24,9 +24,8 @@ async function generateReport(req, res) {
             // Resolve the absolute path using path.join()
             const absolutePath = path.join(__dirname, filePath);
 
-            return res.sendFile(
-              `${absolutePath}${req.params.doneDay}_report.pdf`,
-             `${dayjs(req.params.doneDay).format("DD-MM-YYYY")}_report.pdf`
+             res.sendFile(
+              `${absolutePath}${req.params.doneDay}_report.pdf`
             );
           }
         );

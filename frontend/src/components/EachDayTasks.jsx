@@ -30,24 +30,30 @@ const EachDayTasks = () => {
     getTasks();
   }, [doneDay]);
 
-  const handleClick = () => {
-   
-    const getReport = async () => { setStatus(()=>'generating report for this day ...')
-      let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
-        method: "GET",
-        headers: { responseType: "blob" },
-      }).then((res) => {
-        const pdfBlob = new Blob([res.data], { type: "application/pdf" });
-        const filename = res.headers.get('Content-Disposition')
-        console.log(filename);
-        
-        saveAs(pdfBlob, filename);
-        console.log(pdfBlob)
-        setStatus(()=>'Generate Report')
+ const handleClick = () => {
+  const getReport = async () => {
+    setStatus('generating report for this day...');
+    try {
+      const response = await fetch(`${serverUrl}/get-report/${doneDay}`, {
+        method: 'GET',
+        responseType: 'blob',
       });
-    };
-    getReport();
+
+      if (response.ok) {
+        const pdfBlob = await response.blob();
+        saveAs(pdfBlob, `${dayjs(doneDay).format('DD-MM-YYYY')}_report.pdf`);
+        setStatus('Generate Report');
+      } else {
+        setStatus('Failed to fetch report');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('Failed to fetch report');
+    }
   };
+
+  getReport();
+};
 
   return (
     <>
