@@ -119,9 +119,18 @@ async function updateTask(req, res) {
       const response = {
         status: "forbidden",
         message:
-          "Modifications to this field are not permitted after a period of 1 day following task completion.",
+          "Modifications to this field are not permitted after 1 day following task completion.",
       };
-      return res.status(403).json(response);
+
+      let getTaskbyId = await taskService.getTaskByID(task_id)
+      if (getTaskbyId[0].task_detail !== task_detail) {
+        response.field = "taskDetail";
+        return res.status(403).json(response);
+      } else if (getTaskbyId[0].done_by !== done_by) {
+        response.field = "doneBy";
+        return res.status(403).json(response);
+      }
+      
     }
 
     let editResult = await taskService.updateTask(

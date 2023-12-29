@@ -70,6 +70,7 @@ function EditTask(props) {
         getTasks();
         props.setModalShow(false);
       } else if (result.status === "forbidden") {
+        console.log(result)
         setWarningMessage(result.message);
       }
     } catch (error) {
