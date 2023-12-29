@@ -2,6 +2,7 @@
 const taskService = require("../services/task.service");
 const task2Service = require("../services/task2.service");
 const moment = require("moment");
+const dayjs = require("dayjs");
 
 async function addTask(req, res) {
   try {
@@ -107,6 +108,21 @@ async function fetchDayList(req, res) {
 async function updateTask(req, res) {
   try {
     const { task_detail, task_completed, done_by, task_id } = req.body;
+
+    let checkDate = await taskService.getTaskToEdit(task_id);
+
+    const today = dayjs();
+    const dateToCheck = dayjs(checkDate[0].done_date);
+    const daysDifference = dateToCheck.diff(today, "day");
+
+    if (daysDifference !== 0) {
+      const response = {
+        status: "forbidden",
+        message:
+          "Modifications to this field are not permitted after a period of 1 day following task completion.",
+      };
+      return res.status(403).json(response);
+    }
 
     let editResult = await taskService.updateTask(
       task_detail,

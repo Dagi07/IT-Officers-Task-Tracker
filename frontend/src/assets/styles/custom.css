@@ -558,6 +558,25 @@ sup {
   float: left;
 }
 
+.warning {
+  color: red;
+  font-size: 12px;
+  margin-top: -22px;
+  margin-bottom: -12px;
+  margin-left: 10px;
+}
+
+.warning-sm {
+  color: red;
+  font-size: 9px;
+  margin-top: -4px;
+  margin-bottom: -21px;
+}
+
+.form-label {
+  font-size: 13px;
+}
+
 
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {

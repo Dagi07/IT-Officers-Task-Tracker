@@ -30,30 +30,30 @@ const EachDayTasks = () => {
     getTasks();
   }, [doneDay]);
 
- const handleClick = () => {
-  const getReport = async () => {
-    setStatus('generating report for this day...');
-    try {
-      const response = await fetch(`${serverUrl}/get-report/${doneDay}`, {
-        method: 'GET',
-        responseType: 'blob',
-      });
+  const handleClick = () => {
+    const getReport = async () => {
+      setStatus("generating report for this day...");
+      try {
+        const response = await fetch(`${serverUrl}/get-report/${doneDay}`, {
+          method: "GET",
+          responseType: "blob",
+        });
 
-      if (response.ok) {
-        const pdfBlob = await response.blob();
-        saveAs(pdfBlob, `${dayjs(doneDay).format('DD-MM-YYYY')}_report.pdf`);
-        setStatus('Generate Report');
-      } else {
-        setStatus('Failed to fetch report');
+        if (response.ok) {
+          const pdfBlob = await response.blob();
+          saveAs(pdfBlob, `${dayjs(doneDay).format("DD-MM-YYYY")}_report.pdf`);
+          setStatus("Generate Report");
+        } else {
+          setStatus("Failed to fetch report");
+        }
+      } catch (error) {
+        console.error(error);
+        setStatus("Failed to fetch report");
       }
-    } catch (error) {
-      console.error(error);
-      setStatus('Failed to fetch report');
-    }
-  };
+    };
 
-  getReport();
-};
+    getReport();
+  };
 
   return (
     <>
@@ -93,6 +93,7 @@ const EachDayTasks = () => {
                           specificTask={specificTask}
                           taskslist={tasksList}
                           settaskslist={setTasksList}
+                          doneday={doneDay}
                         />
                       </li>
                     );

@@ -52,7 +52,7 @@ const Today = () => {
 
   const handleClick = () => {
     const getReport = async () => {
-      console.log(doneDay)
+      console.log(doneDay);
       let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ const Today = () => {
       // setReportList(res);
     };
     getReport();
-  }
+  };
 
   useEffect(() => {
     const getTasks = async () => {
@@ -87,9 +87,14 @@ const Today = () => {
       <div className="task__header">
         <div className="generate_report">
           <h1 className="mt-4">Task Tracker</h1>
-        <button className="btn btn-primary generate_report_btn" onClick={handleClick}>Generate Report</button>
+          <button
+            className="btn btn-primary generate_report_btn"
+            onClick={handleClick}
+          >
+            Generate Report
+          </button>
         </div>
-        
+
         <ol className="breadcrumb mb-4 tabs">
           <Link onClick={() => setActiveTab(() => 1)} to="/">
             <li
@@ -167,6 +172,7 @@ const Today = () => {
                     specificTask={specificTask}
                     taskslist={tasksList}
                     settaskslist={setTasksList}
+                    doneday={doneDay}
                   />
                 </li>
               );

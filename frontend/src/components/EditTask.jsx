@@ -10,6 +10,7 @@ function EditTask(props) {
   const { tasks, dispatch } = useTasksContext();
   // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
   const { doneDay } = useParams();
+  const [warningMessage, setWarningMessage] = useState("");
 
   const [updateTask, setUpdateTask] = useState({
     task_id: `${props.specificTask.task_id}`,
@@ -68,6 +69,8 @@ function EditTask(props) {
         };
         getTasks();
         props.setModalShow(false);
+      } else if (result.status === "forbidden") {
+        setWarningMessage(result.message);
       }
     } catch (error) {
       console.log(error);
@@ -105,11 +108,12 @@ function EditTask(props) {
                     value={updateTask.task_detail}
                     required
                   ></textarea>
+                  <p className="warning">{warningMessage}</p>
                 </div>
 
-                <div className="edit-dropdowns d-flex justify-content-between">
+                <div className="edit-dropdowns d-flex justify-content-around">
                   {/* ### Task Completed dropdown ### */}
-                  <div className=" my-4 me-2">
+                  <div className=" my-4 me-3">
                     <label htmlFor="taskCompleted" className="form-label">
                       Task Completed:
                     </label>
@@ -143,9 +147,10 @@ function EditTask(props) {
                       <option value="Dagmawi">Dagmawi</option>
                       <option value="Tsegaye">Tsegaye</option>
                     </select>
+                    <p className="warning-sm">{warningMessage}</p>
                   </div>
                 </div>
-                <div className="col-12 mt-4">
+                <div className="col-12 mt-2">
                   <div className="d-flex justify-content-end">
                     <button className="btn btn-primary" type="submit">
                       Update

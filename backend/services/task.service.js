@@ -38,6 +38,22 @@ async function fetchTasks() {
     console.error("Error in fetching task", err);
   }
 }
+async function getTaskToEdit(task_id) {
+  try {
+    let getSQL = `SELECT done_date FROM task_table WHERE task_id = ?`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(getSQL, [task_id]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching task", err);
+  }
+}
 
 async function updateTask(task_detail, task_completed, done_by, task_id) {
   try {
@@ -58,7 +74,6 @@ async function updateTask(task_detail, task_completed, done_by, task_id) {
     ]);
     // If the query returns a result, return the result. Otherwise, return null
     if (result) {
-      console.log(result);
       return result;
     } else {
       return null;
@@ -86,4 +101,4 @@ async function deleteTask(deletedId) {
   }
 }
 
-module.exports = { addTask, fetchTasks, updateTask, deleteTask };
+module.exports = { addTask, fetchTasks, getTaskToEdit, updateTask, deleteTask };

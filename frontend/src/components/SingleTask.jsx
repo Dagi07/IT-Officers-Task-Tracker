@@ -9,11 +9,10 @@ import DeleteTask from "./DeleteTask";
 import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 
-const SingleTask = ({ specificTask, taskslist, settaskslist }) => {
+const SingleTask = ({ specificTask, taskslist, settaskslist, doneday }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
   const [deleteModal, setDeleteModal] = React.useState(false);
-  const { doneDay } = useParams();
 
   return (
     <div className="single_task" key={specificTask.task_id}>
@@ -40,19 +39,20 @@ const SingleTask = ({ specificTask, taskslist, settaskslist }) => {
           />
         )}
 
-       {doneDay === "" && (
-        <IconButton
-          aria-label="delete"
-          sx={{
-            ml: 1,
-            "&:hover": {
-              opacity: 0.9,
-            },
-          }}
-          onClick={() => setDeleteModal(true)}
-        >
-          <DeleteIcon sx={{ color: red[50] }} />
-        </IconButton>)}
+        {(!doneday || doneday === dayjs().format("YYYY-MM-DD")) && (
+          <IconButton
+            aria-label="delete"
+            sx={{
+              ml: 1,
+              "&:hover": {
+                opacity: 0.9,
+              },
+            }}
+            onClick={() => setDeleteModal(true)}
+          >
+            <DeleteIcon sx={{ color: red[50] }} />
+          </IconButton>
+        )}
         {deleteModal && (
           <DeleteTask
             deletemodal={deleteModal}
@@ -61,7 +61,7 @@ const SingleTask = ({ specificTask, taskslist, settaskslist }) => {
             settaskslist={settaskslist}
           />
         )}
-              </div>
+      </div>
     </div>
   );
 };
