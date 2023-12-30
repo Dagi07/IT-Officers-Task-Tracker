@@ -10,7 +10,7 @@ function EditTask(props) {
   const { tasks, dispatch } = useTasksContext();
   // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
   const { doneDay } = useParams();
-  const [warningMessage, setWarningMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState({});
 
   const [updateTask, setUpdateTask] = useState({
     task_id: `${props.specificTask.task_id}`,
@@ -70,14 +70,14 @@ function EditTask(props) {
         getTasks();
         props.setModalShow(false);
       } else if (result.status === "forbidden") {
-        console.log(result)
-        setWarningMessage(result.message);
+        console.log(result);
+        setWarningMessage(result);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
+  warningMessage && console.log(warningMessage.field);
   return (
     <>
       <Modal
@@ -99,7 +99,7 @@ function EditTask(props) {
               <div className="row">
                 <div className="">
                   <textarea
-                    className="form-control my-4"
+                    className={`form-control my-4`}
                     rows="2"
                     type="text"
                     placeholder="Task detail"
@@ -109,7 +109,9 @@ function EditTask(props) {
                     value={updateTask.task_detail}
                     required
                   ></textarea>
-                  <p className="warning">{warningMessage}</p>
+                  {warningMessage && warningMessage.field === "taskDetail" && (
+                    <p className="warning">{warningMessage.message}</p>
+                  )}
                 </div>
 
                 <div className="edit-dropdowns d-flex justify-content-around">
@@ -142,16 +144,22 @@ function EditTask(props) {
                       value={updateTask.done_by}
                       name="done_by"
                       size="1"
-                      className="form-select"
+                      className={`form-select${
+                        warningMessage && warningMessage.field === "doneBy"
+                          ? " border-danger"
+                          : ""
+                      }`}
                     >
                       <option value="Sirak">Sirak</option>
                       <option value="Dagmawi">Dagmawi</option>
                       <option value="Tsegaye">Tsegaye</option>
                     </select>
-                    <p className="warning-sm">{warningMessage}</p>
                   </div>
                 </div>
                 <div className="col-12 mt-2">
+                  {warningMessage && warningMessage.field === "doneBy" && (
+                    <p className="warning">{warningMessage.message}</p>
+                  )}
                   <div className="d-flex justify-content-end">
                     <button className="btn btn-primary" type="submit">
                       Update
