@@ -16,6 +16,7 @@ const Today = () => {
   const [aciveTab, setActiveTab] = useContext(TabsContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
   const { doneDay } = useParams();
+  const [status, setStatus] = useState("Generate Report");
 
   const getAlertAmount = async () => {
     const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
@@ -52,14 +53,26 @@ const Today = () => {
 
   const handleClick = () => {
     const getReport = async () => {
-      console.log(doneDay);
-      let backendResult = await fetch(`${serverUrl}/get-report/${doneDay}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      let res = await backendResult.json();
-      // setReportList(res);
+      setStatus("generating report for this day...");
+      try {
+        const response = await fetch(`${serverUrl}/get-report/${doneDay ? doneDay : dayjs().format("YYYY-MM-DD") }`, {
+          method: "GET",
+          responseType: "blob",
+        });
+
+        if (response.ok) {
+          const pdfBlob = await response.blob();
+          saveAs(pdfBlob, `${dayjs(doneDay).format("DD-MM-YYYY")}_report.pdf`);
+          setStatus("Generate Report");
+        } else {
+          setStatus("Failed to fetch report");
+        }
+      } catch (error) {
+        console.error(error);
+        setStatus("Failed to fetch report");
+      }
     };
+
     getReport();
   };
 
@@ -91,7 +104,7 @@ const Today = () => {
             className="btn btn-primary generate_report_btn"
             onClick={handleClick}
           >
-            Generate Report
+            {status}
           </button>
         </div>
 

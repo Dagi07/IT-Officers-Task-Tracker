@@ -513,7 +513,7 @@ body {
 .ll_rightSec {
   width: 65%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 

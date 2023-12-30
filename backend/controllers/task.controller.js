@@ -119,7 +119,7 @@ async function updateTask(req, res) {
       const response = {
         status: "forbidden",
         message:
-          "Modifications to this field are not permitted after 1 day following task completion.",
+          "Modifications to this field are not permitted after 24hrs following task completion.",
       };
 
       let getTaskbyId = await taskService.getTaskByID(task_id)

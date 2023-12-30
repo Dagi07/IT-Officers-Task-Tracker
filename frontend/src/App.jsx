@@ -12,6 +12,7 @@ import { SidebarProvider } from "./context/SidebarContext";
 import Tomorrow from "./components/Tomorrow";
 import ForToday from "./components/ForToday";
 import { AlertProvider } from "./context/AlertContext";
+import AddITOfficer from "./components/AddITOfficer";
 
 function App() {
   return (
@@ -69,6 +70,15 @@ function App() {
                         <Header />
                         <Sidebar />
                         <ForToday />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/add-itofficer"
+                    element={
+                      <>
+                        <Header />
+                        <AddITOfficer />
                       </>
                     }
                   />
