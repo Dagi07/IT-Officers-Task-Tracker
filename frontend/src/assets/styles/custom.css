@@ -577,6 +577,11 @@ sup {
   font-size: 13px;
 }
 
+.add_itofficer {
+  width: 75%;
+  padding: 25px;
+}
+
 
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {

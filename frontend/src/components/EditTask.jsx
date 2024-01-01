@@ -46,7 +46,7 @@ function EditTask(props) {
       // props.onTaskSubmit();
       e.preventDefault();
       // console.log("task update", updateTask);
-      const serverResponse = await fetch(`http://localhost:6800/task`, {
+      const serverResponse = await fetch(`${serverUrl}/task`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateTask),
