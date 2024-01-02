@@ -12,7 +12,7 @@ import { SidebarProvider } from "./context/SidebarContext";
 import Tomorrow from "./components/Tomorrow";
 import ForToday from "./components/ForToday";
 import { AlertProvider } from "./context/AlertContext";
-import AddITOfficer from "./components/AddITOfficer";
+import ITOfficer from "./components/ITOfficer";
 
 function App() {
   return (
@@ -74,11 +74,11 @@ function App() {
                     }
                   />
                   <Route
-                    path="/add-itofficer"
+                    path="/itofficer"
                     element={
                       <>
                         <Header />
-                        <AddITOfficer />
+                        <ITOfficer />
                       </>
                     }
                   />

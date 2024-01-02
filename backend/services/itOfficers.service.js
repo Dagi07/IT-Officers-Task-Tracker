@@ -24,5 +24,40 @@ async function addItOfficers(itOfficerData) {
     console.error("Error in adding task", err);
   }
 }
-// addItOfficers();
-module.exports = { addItOfficers };
+
+async function fetchItOfficers() {
+  try {
+    let getSQL = `SELECT * FROM employee`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(getSQL);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in adding task", err);
+  }
+}
+
+async function deleteItOfficer(itGuyId) {
+  try {
+    let deleteSQL = `DELETE FROM employee
+    WHERE employee_id = ?`;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(deleteSQL, [itGuyId]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in deleting officer", err);
+  }
+}
+
+module.exports = { addItOfficers, fetchItOfficers, deleteItOfficer};
