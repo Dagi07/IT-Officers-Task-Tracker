@@ -32,5 +32,9 @@ router.use(forTodayRoute);
 const reportRoute = require("./report.routes");
 // Add the report router to the middleware chain
 router.use(reportRoute);
+// Import the itOfficers route
+const itOfficersRoute = require("./itOfficers.routes");
+// Add the itOfficers router to the middleware chain
+router.use(itOfficersRoute);
 
 module.exports = router;

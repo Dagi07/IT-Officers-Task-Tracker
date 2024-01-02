@@ -5,12 +5,13 @@ async function create_db(req, res) {
   console.log("Installing DB");
   // Call the install service to run the initial SQL queries
   const installQuery = await installService.installDirectFromApi();
+  console.log("installQuery", installQuery);
   // If the queries are executed successfully, return success response. Otherwise, return failure response
-  if (installQuery) {
+  if (installQuery.message === "All tables are created") {
     // Send a success response back to the client
     const response = {
       status: "success",
-      message: "Tables Created!",
+      message: "All tables are created!",
     };
     res.status(200).json(response);
   } else {

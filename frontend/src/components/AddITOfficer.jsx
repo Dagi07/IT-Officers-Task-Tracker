@@ -11,6 +11,8 @@ const AddITOfficer = () => {
     jobTitle: "",
   });
 
+  const [responseData, setResponseData] = useState("");
+
   const handleChange = (e) => {
     setAddOfficer({
       ...addOfficer,
@@ -26,6 +28,7 @@ const AddITOfficer = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(addOfficer),
       });
+      setResponseData(await backendResponse.json());
     } catch (err) {
       console.log(err);
     }
@@ -115,6 +118,17 @@ const AddITOfficer = () => {
             </button>
           </div>
         </form>
+      </div>
+      <div
+        className={`alert mt-1${
+          responseData &&
+          (responseData.status !== "success"
+            ? " alert-danger"
+            : " alert-success text-center")
+        }`}
+        role="alert"
+      >
+        {responseData.message}
       </div>
     </div>
   );

@@ -26,3 +26,15 @@ CREATE TABLE if not exists tomorrow_table (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (tomorrow_id)
 );
+
+CREATE TABLE if not exists employee (
+    employee_id INT NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    phone VARCHAR(32),
+    job_title VARCHAR(32) NOT NULL,
+    registered_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (employee_id)
+);

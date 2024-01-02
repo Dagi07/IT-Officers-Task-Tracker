@@ -1,43 +1,43 @@
 // Import the db connection file
-const conn = require('../config/db.config');
+const conn = require("../config/db.config");
 // Import the fs module to read in files
-const fs = require('fs')
+const fs = require("fs");
 // A function to install DB directly from the api
 async function installDirectFromApi() {
-    // Temporary variable, used to store all queries 
-    let queries = [];
-    let finalMessage = {};
-    console.log("Installing DB directly from the API");
-    // Query file
-    const queryfile = __dirname + '/sql/initial-queries.sql';
-    console.log(queryfile);
-    let templine = '';
-    // Read in entire file
-    const lines = await fs.readFileSync(queryfile, 'utf-8').split('\n');
-    // Loop through each line
-    const executed = await new Promise((resolve, reject) => {
-        // Iterate over all lines
+  // Temporary variable, used to store all queries
+  let queries = [];
+  let finalMessage = {};
+  console.log("Installing DB directly from the API");
+  // Query file
+  const queryfile = __dirname + "/sql/initial-queries.sql";
+  // console.log(queryfile);
+  let templine = "";
+  // Read in entire file
+  const lines = await fs.readFileSync(queryfile, "utf-8").split("\n");
+  // Loop through each line
+  const executed = await new Promise((resolve, reject) => {
+    // Iterate over all lines
     lines.forEach((line) => {
-        if (line.trim().startsWith('--') || line.trim() === '') {
-          // Skip if it's a comment or empty line
-          return;
-        }
-        templine += line;
-      if (line.trim().endsWith(';')) {
+      if (line.trim().startsWith("--") || line.trim() === "") {
+        // Skip if it's a comment or empty line
+        return;
+      }
+      templine += line;
+      if (line.trim().endsWith(";")) {
         // If it has a semicolon at the end, it's the end of the query
         // Perform the query
         const sqlQuery = templine.trim();
-        // Add query to the list of queries 
+        // Add query to the list of queries
         queries.push(sqlQuery);
-        templine = '';
+        templine = "";
       }
     });
     resolve("Queries are added to the list");
   });
-  //Loop through the queries and execute them one by one asynchrounously  
+  //Loop through the queries and execute them one by one asynchrounously
   for (let i = 0; i < queries.length; i++) {
     try {
-      console.log(queries);
+      console.log("queries", queries[i]);
       const result = await conn.query(queries[i]);
       console.log("Table created");
     } catch (err) {
@@ -57,5 +57,5 @@ async function installDirectFromApi() {
 
 // Export the function
 module.exports = {
-  installDirectFromApi
+  installDirectFromApi,
 };
