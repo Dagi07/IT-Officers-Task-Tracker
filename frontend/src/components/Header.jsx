@@ -1,32 +1,47 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { OndutyContext } from "../context/OndutyContext";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   // const [onDuty, setOnDuty] = useState("");
+  const [itGuysList, setItGuysList] = useState([]);
   const [onDutyGlobal, setOnDutyGlobal] = useContext(OndutyContext);
 
   useEffect(() => {
-    const onDutyChanger = () => {
-      const currentTime = moment(); // Get the current time using moment
-      const startTimeMorningShift = moment("07:00", "HH:mm");
-      const endTimeMorningShift = moment("15:00", "HH:mm");
-      const startTimeAfternoonShift = moment("15:00", "HH:mm");
-      const endTimeAfternoonShift = moment("17:30", "HH:mm");
-
-      if (currentTime.isBetween(startTimeMorningShift, endTimeMorningShift)) {
-        setOnDutyGlobal("Sirak");
-      } else if (
-        currentTime.isBetween(startTimeAfternoonShift, endTimeAfternoonShift)
-      ) {
-        setOnDutyGlobal("Dagmawi");
-      } else {
-        setOnDutyGlobal("Tsegaye");
+    const fetchItGuys = async () => {
+      try {
+        const backendResponse = await fetch(`${serverUrl}/fetch-itofficer`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        setItGuysList(await backendResponse.json());
+      } catch (err) {
+        console.log(err);
       }
     };
+    fetchItGuys();
+  }, []);
 
-    onDutyChanger();
-
+  console.log(onDutyGlobal);
+  useEffect(() => {
+    // const onDutyChanger = () => {
+    //   const currentTime = moment(); // Get the current time using moment
+    //   const startTimeMorningShift = moment("07:00", "HH:mm");
+    //   const endTimeMorningShift = moment("15:00", "HH:mm");
+    //   const startTimeAfternoonShift = moment("15:00", "HH:mm");
+    //   const endTimeAfternoonShift = moment("17:30", "HH:mm");
+    //   // if (currentTime.isBetween(startTimeMorningShift, endTimeMorningShift)) {
+    //   //   setOnDutyGlobal("Sirak");
+    //   // } else if (
+    //   //   currentTime.isBetween(startTimeAfternoonShift, endTimeAfternoonShift)
+    //   // ) {
+    //   //   setOnDutyGlobal("Dagmawi");
+    //   // } else {
+    //   //   setOnDutyGlobal("Tsegaye");
+    //   // }
+    // };
+    // onDutyChanger();
     // // Set up an interval to check and update every minute (adjust as needed)
     // const intervalId = setInterval(onDutyChanger, 6000000);
     // // setOnDutyGlobal(() => onDuty);
@@ -36,9 +51,9 @@ const Header = () => {
 
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark header">
-      <a className="navbar-brand ps-3" href="index.html">
+      <Link className="navbar-brand ps-3" to="/">
         Tasks
-      </a>
+      </Link>
 
       <button
         className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
