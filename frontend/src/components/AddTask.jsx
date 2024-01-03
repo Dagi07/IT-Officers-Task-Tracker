@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { OndutyContext } from "../context/OndutyContext";
 import { SidebarContext } from "../context/SidebarContext";
+import { ItOfficersContext } from "../context/ItOfficersContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const AddTask = ({ taskslist, settaskslist }) => {
+  const [itGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   const [sidebarTaskLength, setSidebarTaskLength] = useContext(SidebarContext);
 
@@ -118,9 +120,9 @@ const AddTask = ({ taskslist, settaskslist }) => {
                 size="1"
                 className="form-select"
               >
-                <option value="Sirak">Sirak</option>
-                <option value="Dagmawi">Dagmawi</option>
-                <option value="Tsegaye">Tsegaye</option>
+                {itGuysList && itGuysList.map(itguy =>
+                (<option value={itguy.first_name}>{itguy.first_name}</option>)
+              )}
               </select>
             </div>
 

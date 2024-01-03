@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ItOfficersContext } from "../context/ItOfficersContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -12,22 +13,7 @@ const ITOfficer = () => {
   });
 
   const [responseData, setResponseData] = useState("");
-  const [itGuysList, setItGuysList] = useState([]);
-
-  useEffect(() => {
-    const fetchItGuys = async () => {
-      try {
-        const backendResponse = await fetch(`${serverUrl}/fetch-itofficer`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        setItGuysList(await backendResponse.json());
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchItGuys();
-  }, []);
+  const [itGuysList, setItGuysList] = useContext(ItOfficersContext);
 
   const handleChange = (e) => {
     setAddOfficer({
@@ -194,7 +180,7 @@ const ITOfficer = () => {
             </tr>
           </thead>
           <tbody>
-            {itGuysList.map((itGuy) => {
+            {itGuysList && itGuysList.map((itGuy) => {
               return (
                 <tr key={itGuy.employee_id}>
                   <td>{itGuy.first_name}</td>
@@ -222,3 +208,29 @@ const ITOfficer = () => {
 };
 
 export default ITOfficer;
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const fetchItGuys = async () => {
+  //     try {
+  //       const backendResponse = await fetch(`${serverUrl}/fetch-itofficer`, {
+  //         method: "GET",
+  //         headers: { "Content-Type": "application/json" },
+  //       });
+  //       setItGuysList(await backendResponse.json());
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   fetchItGuys();
+  // }, []);

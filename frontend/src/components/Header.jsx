@@ -2,10 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { OndutyContext } from "../context/OndutyContext";
 import { Link } from "react-router-dom";
+import { ItOfficersContext } from "../context/ItOfficersContext";
+
+const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Header = () => {
   // const [onDuty, setOnDuty] = useState("");
-  const [itGuysList, setItGuysList] = useState([]);
+  const [itGuysList, setItGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal, setOnDutyGlobal] = useContext(OndutyContext);
 
   useEffect(() => {
@@ -15,7 +18,9 @@ const Header = () => {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
-        setItGuysList(await backendResponse.json());
+        const result = await backendResponse.json()
+        setItGuysList(() => result)
+        
       } catch (err) {
         console.log(err);
       }
@@ -23,31 +28,38 @@ const Header = () => {
     fetchItGuys();
   }, []);
 
-  console.log(onDutyGlobal);
   useEffect(() => {
-    // const onDutyChanger = () => {
-    //   const currentTime = moment(); // Get the current time using moment
-    //   const startTimeMorningShift = moment("07:00", "HH:mm");
-    //   const endTimeMorningShift = moment("15:00", "HH:mm");
-    //   const startTimeAfternoonShift = moment("15:00", "HH:mm");
-    //   const endTimeAfternoonShift = moment("17:30", "HH:mm");
-    //   // if (currentTime.isBetween(startTimeMorningShift, endTimeMorningShift)) {
-    //   //   setOnDutyGlobal("Sirak");
-    //   // } else if (
-    //   //   currentTime.isBetween(startTimeAfternoonShift, endTimeAfternoonShift)
-    //   // ) {
-    //   //   setOnDutyGlobal("Dagmawi");
-    //   // } else {
-    //   //   setOnDutyGlobal("Tsegaye");
-    //   // }
-    // };
-    // onDutyChanger();
-    // // Set up an interval to check and update every minute (adjust as needed)
-    // const intervalId = setInterval(onDutyChanger, 6000000);
-    // // setOnDutyGlobal(() => onDuty);
-    // // Cleanup the interval on component unmount
-    // return () => clearInterval(intervalId);
-  }, []);
+    if (itGuysList) {
+
+      console.log(itGuysList);
+      const onDutyChanger = () => {
+        const currentTime = moment(); // Get the current time using moment
+        const startTimeMorningShift = moment("07:00", "HH:mm");
+        const endTimeMorningShift = moment("15:00", "HH:mm");
+        const startTimeAfternoonShift = moment("15:00", "HH:mm");
+        const endTimeAfternoonShift = moment("17:30", "HH:mm");
+        if (currentTime.isBetween(startTimeMorningShift, endTimeMorningShift)) {
+          setOnDutyGlobal(itGuysList[0].first_name);
+        } else if (
+          currentTime.isBetween(startTimeAfternoonShift, endTimeAfternoonShift)
+        ) {
+          setOnDutyGlobal(itGuysList[1].first_name);
+        } else {
+          setOnDutyGlobal(itGuysList.length > 2 ? itGuysList[2].first_name : itGuysList[1].first_name);
+        }
+        console.log(" it run")
+      };
+
+      onDutyChanger();
+
+      // Set up an interval to check and update every minute (adjust as needed)
+      const intervalId = setInterval(onDutyChanger, 6000000);
+      // setOnDutyGlobal(() => onDuty);
+      // Cleanup the interval on component unmount
+      return () => clearInterval(intervalId);
+    }
+  }, [itGuysList]);
+
 
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark header">
@@ -88,7 +100,8 @@ const Header = () => {
             aria-expanded="false"
           > */}
       <div className="onduty-wrapper">
-        <i className=" manIcon fas fa-user fa-fw"></i>
+        <Link to="/itofficer"><i className=" manIcon fas fa-user fa-fw"></i></Link>
+
         <strong>
           <span className="on-duty">
             On-Duty:
@@ -100,9 +113,9 @@ const Header = () => {
               size="1"
               className=" onDuty_selector bg-dark"
             >
-              <option value="Sirak">Sirak</option>
-              <option value="Dagmawi">Dagmawi</option>
-              <option value="Tsegaye">Tsegaye</option>
+              {itGuysList && itGuysList.map(itguy =>
+                (<option value={itguy.first_name}>{itguy.first_name}</option>)
+              )}
             </select>
           </span>
         </strong>

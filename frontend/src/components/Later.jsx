@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
@@ -6,14 +6,15 @@ import dayjs from "dayjs";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
-import { useEffect } from "react";
 import { AlertContext } from "../context/AlertContext";
+import { ItOfficersContext } from "../context/ItOfficersContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Later = () => {
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
+  const [itGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
 
@@ -257,9 +258,9 @@ const Later = () => {
                 size="1"
                 className="form-select"
               >
-                <option value="Sirak">Sirak</option>
-                <option value="Dagmawi">Dagmawi</option>
-                <option value="Tsegaye">Tsegaye</option>
+                {itGuysList && itGuysList.map(itguy =>
+                  (<option value={itguy.first_name}>{itguy.first_name}</option>)
+                )}
               </select>
             </span>
             <span>

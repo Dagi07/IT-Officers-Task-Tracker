@@ -13,10 +13,12 @@ import Tomorrow from "./components/Tomorrow";
 import ForToday from "./components/ForToday";
 import { AlertProvider } from "./context/AlertContext";
 import ITOfficer from "./components/ITOfficer";
+import { ItOfficersProvider } from "./context/ItOfficersContext";
 
 function App() {
   return (
     <BrowserRouter>
+    <ItOfficersProvider>
       <OndutyProvider>
         <TabsProvider>
           {" "}
@@ -88,6 +90,7 @@ function App() {
           </SidebarProvider>
         </TabsProvider>
       </OndutyProvider>
+      </ItOfficersProvider>
     </BrowserRouter>
   );
 }

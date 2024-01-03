@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
 import { useTasksContext } from "../hooks/useTasksContext";
 import dayjs from "dayjs";
+import { ItOfficersContext } from "../context/ItOfficersContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -11,6 +12,7 @@ function EditTask(props) {
   // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
   const { doneDay } = useParams();
   const [warningMessage, setWarningMessage] = useState({});
+  const [itGuysList] = useContext(ItOfficersContext);
 
   const [updateTask, setUpdateTask] = useState({
     task_id: `${props.specificTask.task_id}`,
@@ -56,8 +58,7 @@ function EditTask(props) {
       if (serverResponse.ok) {
         const getTasks = async () => {
           let backendResult = await fetch(
-            `${serverUrl}/getTasks/${
-              doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
+            `${serverUrl}/getTasks/${doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
             }`,
             {
               method: "GET",
@@ -144,15 +145,14 @@ function EditTask(props) {
                       value={updateTask.done_by}
                       name="done_by"
                       size="1"
-                      className={`form-select${
-                        warningMessage && warningMessage.field === "doneBy"
-                          ? " border-danger"
-                          : ""
-                      }`}
+                      className={`form-select${warningMessage && warningMessage.field === "doneBy"
+                        ? " border-danger"
+                        : ""
+                        }`}
                     >
-                      <option value="Sirak">Sirak</option>
-                      <option value="Dagmawi">Dagmawi</option>
-                      <option value="Tsegaye">Tsegaye</option>
+                      {itGuysList && itGuysList.map(itguy =>
+                        (<option value={itguy.first_name}>{itguy.first_name}</option>)
+                      )}
                     </select>
                   </div>
                 </div>
