@@ -8,6 +8,7 @@ import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { AlertContext } from "../context/AlertContext";
 import { ItOfficersContext } from "../context/ItOfficersContext";
+import EditTaskII from "./EditTaskII";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -17,6 +18,7 @@ const Later = () => {
   const [itGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
+  const [showEditII, setShowEditII] = useState(false);
 
   // const [timeValue, setTimeValue] = useState(null)
   const [laterForm, setLaterForm] = useState({
@@ -289,6 +291,26 @@ const Later = () => {
                       className="ll_btn_mark btn btn-primary"
                     >
                       Mark as complete
+                    </button>
+                    <button
+                      onClick={() => setShowEditII(true)}
+                      className="ll_btn_mark btn btn-primary"
+                    >
+                      Edit
+                    </button>
+                    {showEditII && (
+          <EditTaskII
+            each={eachLater}
+            setshoweditii={setShowEditII}
+            show={showEditII}
+            onHide={() => setShowEditII(false)}
+          />
+        )}
+                    <button
+                      onClick={() => handleClick(eachLater)}
+                      className="ll_btn_mark btn btn-primary"
+                    >
+                      Delete
                     </button>
                   </span>
                 </div>
