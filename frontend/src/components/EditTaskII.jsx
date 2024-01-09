@@ -17,13 +17,12 @@ function EditTaskII(props) {
   const [itGuysList] = useContext(ItOfficersContext);
 
   const [updateII, setUpdateII] = useState({
-    task_id: `${props.each.task_id}`,
-    taskDetail: `${props.each.taskDetail}`,
-    completionTime: `${props.each.completionTime}`,
-    taskAssignee: `${props.each.taskAssignee}`,
+    taskId: `${props.each.later_id}`,
+    taskDetail: `${props.each.later_detail}`,
+    completionTime: `${props.each.completion_time}`,
+    taskAssignee: `${props.each.task_assignee}`,
   });
 
- 
   const handleChange = (e) => {
     setUpdateII({
       ...updateII,
@@ -35,7 +34,7 @@ function EditTaskII(props) {
       // props.onTaskSubmit();
       e.preventDefault();
       // console.log("task update", updateII);
-      const serverResponse = await fetch(`${serverUrl}/later`, {
+      const serverResponse = await fetch(`${serverUrl}/${props.url}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateII),
@@ -44,19 +43,15 @@ function EditTaskII(props) {
 
       if (serverResponse.ok) {
         const getTasks = async () => {
-          let backendResult = await fetch(
-            `${serverUrl}/getTasks/${doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
-            }`,
-            {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            }
-          );
+          let backendResult = await fetch(`${serverUrl}/later`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
           let res = await backendResult.json();
-          props.settaskslist(() => res);
+          props.setlaterlist(() => res);
         };
         getTasks();
-        props.setShowEditII(false);
+        props.setshoweditii(false);
       } else if (result.status === "forbidden") {
         console.log(result);
         setWarningMessage(result);
@@ -83,63 +78,70 @@ function EditTaskII(props) {
           </Modal.Header>
           <Modal.Body>
             {/* <h4>Centered Modal</h4> */}
-            <form  onSubmit={handleSubmit}>
-          <span className="textarea">
-            <textarea
-              className="form-control"
-              name="taskDetail"
-              id="taskDetail"
-              rows="2"
-              placeholder="Task Detail"
-              required
-              value={updateII.taskDetail}
-              onChange={handleChange}
-            ></textarea>
-          </span>
-          <span className="lf_rightSec">
-            <span className="lf_completionTime">
-              <label htmlFor="completionTime">
-                Estimated task completion time:
-              </label>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <MobileTimePicker
-                  name="completionTime"
-                  id="completionTime"
-                  value={updateII.completionTime}
-                  defaultValue={dayjs().format("hh:mm a")}
-                  // minTime={dayjs()}
-                  onChange={(newTimeValue) =>
-                    setupdateII({ ...updateII, completionTime: newTimeValue })
-                  }
-                />
-              </LocalizationProvider>
-            </span>
-            <span>
-              <label htmlFor="taskAssignee" className="form-label">
-                Task assignee:
-              </label>
-              <select
-                id="taskAssignee"
-                onChange={handleChange}
-                value={updateII.taskAssignee}
-                name="taskAssignee"
-                size="1"
-                className="form-select"
-              >
-                {itGuysList && itGuysList.map(itguy =>
-                  (<option value={itguy.first_name}>{itguy.first_name}</option>)
-                )}
-              </select>
-            </span>
-            <span>
-              <button className="btn btn-primary" type="submit">
-                Submit
-              </button>
-            </span>
-          </span>
-        </form>
+            <form onSubmit={handleSubmit} className="form-container">
+              <div className="form-row">
+                <div className="textarea">
+                  <textarea
+                    className="form-control"
+                    name="taskDetail"
+                    id="taskDetail"
+                    rows="2"
+                    placeholder="Task Detail"
+                    required
+                    value={updateII.taskDetail}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="edit_task_ii">
+                  <label htmlFor="completionTime" className="form-label">
+                    Estimated task completion time:
+                  </label>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <MobileTimePicker
+                      name="completionTime"
+                      id="completionTime"
+                      value={updateII.completionTime}
+                      defaultValue={dayjs().format("hh:mm a")}
+                      className="time_picker_ii"
+                      onChange={(newTimeValue) =>
+                        setupdateII({
+                          ...updateII,
+                          completionTime: newTimeValue,
+                        })
+                      }
+                    />
+                  </LocalizationProvider>
+                </div>
+                <div className="taskAssignee mt-2">
+                  <label htmlFor="taskAssignee" className="form-label">
+                    Task assignee:
+                  </label>
+                  <select
+                    id="taskAssignee"
+                    onChange={handleChange}
+                    value={updateII.taskAssignee}
+                    name="taskAssignee"
+                    size="1"
+                    className="form-select"
+                  >
+                    {itGuysList &&
+                      itGuysList.map((itguy) => (
+                        <option key={itguy.id} value={itguy.first_name}>
+                          {itguy.first_name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className="submit-button mt-3 float-end">
+                  <button className="btn btn-primary" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
           </Modal.Body>
-       
         </div>
       </Modal>
     </>

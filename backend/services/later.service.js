@@ -62,6 +62,36 @@ async function getAlertAmount() {
   }
 }
 
+async function updateTasksLater(updatedData) {
+  const { taskId, taskDetail, completionTime, taskAssignee } = updatedData;
+  try {
+    let editSQL = `UPDATE later_table
+    SET
+      later_detail = ?,
+      completion_time = ?,
+      task_assignee = ?
+    WHERE
+      later_id = ?
+    `;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(editSQL, [
+      taskDetail,
+      completionTime,
+      taskAssignee,
+      taskId,
+    ]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching later", err);
+  }
+}
+
 async function deleteLater(laterID) {
   try {
     let deleteSQL = `DELETE FROM later_table
@@ -78,4 +108,10 @@ async function deleteLater(laterID) {
   } catch (error) {}
 }
 
-module.exports = { addLater, fetchLater, getAlertAmount, deleteLater };
+module.exports = {
+  addLater,
+  fetchLater,
+  getAlertAmount,
+  updateTasksLater,
+  deleteLater,
+};

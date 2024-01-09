@@ -438,7 +438,13 @@ body {
 .later_form span p {
   margin-bottom: 8px;
 }
-.MuiInputBase-input {
+
+.time_picker_ii {
+  color: #111 !important;
+  border: 1px solid black !important;
+}
+
+.lf_completionTime .MuiInputBase-input {
   padding: 8px 14px !important;
   color: #fff !important;
   border: #fff !important;

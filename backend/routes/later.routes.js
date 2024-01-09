@@ -11,6 +11,8 @@ router.post("/later", laterController.addTasksLater);
 router.get("/later", laterController.fetchTasksLater);
 // Create a get request handler for the get amount of alert route
 router.get("/later/amount", laterController.getAlertAmount);
+// Create a put request handler for the putDays route
+router.put("/later", laterController.updateTasksLater);
 // Create a delete request handler for the delete task later route
 router.delete("/later/:id", laterController.deleteTasksLater);
 

@@ -42,14 +42,36 @@ const Later = () => {
   }, [onDutyGlobal]);
 
   const getAlertAmount = async () => {
-    const serverResponse = await fetch(`${serverUrl}/later/amount`, {
+    const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
-    const result = await serverResponse.json();
+    const serverResponseTomorrow = await fetch(`${serverUrl}/tomorrow/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
 
-    setAlertTaskLength(() => ({ ...alertTaskLength, later: result }));
+    const serverResponseForToday = await fetch(
+      `${serverUrl}/for-today/amount`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const forTodayResult = await serverResponseForToday.json();
+
+    const tomorrowResult = await serverResponseTomorrow.json();
+
+    const laterResult = await serverResponseLater.json();
+
+    setAlertTaskLength(() => ({
+      ...alertTaskLength,
+      later: laterResult,
+      tomorrow: tomorrowResult,
+      forToday: forTodayResult,
+    }));
   };
 
   const handleChange = (e) => {
@@ -58,7 +80,9 @@ const Later = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    laterForm.completionTime = dayjs(laterForm.completionTime.$d);
+    laterForm.completionTime = dayjs(laterForm.completionTime.$d).format(
+      "YYYY-MM-DD hh:mm:ss"
+    );
     // console.log(laterForm);
     const serverResponse = await fetch(`${serverUrl}/later`, {
       method: "POST",
@@ -140,6 +164,26 @@ const Later = () => {
       }
     } catch (error) {
       console.error("Error during fetch:", error);
+    }
+  };
+
+  const handleDelete = async (eachLater) => {
+    try {
+      const deleteResponse = await fetch(
+        `${serverUrl}/later/${eachLater.later_id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const result = await deleteResponse.json();
+      console.log("delete resp", result);
+      if (deleteResponse.ok) {
+        setLaterList(() => result);
+        getAlertAmount();
+      }
+    } catch (error) {
+      console.error("Error during deleting task:", error);
     }
   };
 
@@ -260,9 +304,10 @@ const Later = () => {
                 size="1"
                 className="form-select"
               >
-                {itGuysList && itGuysList.map(itguy =>
-                  (<option value={itguy.first_name}>{itguy.first_name}</option>)
-                )}
+                {itGuysList &&
+                  itGuysList.map((itguy) => (
+                    <option value={itguy.first_name}>{itguy.first_name}</option>
+                  ))}
               </select>
             </span>
             <span>
@@ -286,32 +331,36 @@ const Later = () => {
                       {dayjs(eachLater.completion_time).format("hh:mm a")}
                     </span>
                     <span className="assignee">{eachLater.task_assignee}</span>
-                    <button
-                      onClick={() => handleClick(eachLater)}
-                      className="ll_btn_mark btn btn-primary"
-                    >
-                      Mark as complete
-                    </button>
-                    <button
-                      onClick={() => setShowEditII(true)}
-                      className="ll_btn_mark btn btn-primary"
-                    >
-                      Edit
-                    </button>
-                    {showEditII && (
-          <EditTaskII
-            each={eachLater}
-            setshoweditii={setShowEditII}
-            show={showEditII}
-            onHide={() => setShowEditII(false)}
-          />
-        )}
-                    <button
-                      onClick={() => handleClick(eachLater)}
-                      className="ll_btn_mark btn btn-primary"
-                    >
-                      Delete
-                    </button>
+                    <div className="d-flex justify-space-evenly">
+                      <button
+                        onClick={() => handleClick(eachLater)}
+                        className="ll_btn_mark btn btn-primary"
+                      >
+                        Mark as complete
+                      </button>
+                      <button
+                        onClick={() => setShowEditII(true)}
+                        className="ll_btn_mark btn btn-primary"
+                      >
+                        Edit
+                      </button>
+                      {showEditII && (
+                        <EditTaskII
+                          each={eachLater}
+                          setshoweditii={setShowEditII}
+                          show={showEditII}
+                          onHide={() => setShowEditII(false)}
+                          setlaterlist={setLaterList}
+                          url="later"
+                        />
+                      )}
+                      <button
+                        onClick={() => handleDelete(eachLater)}
+                        className="ll_btn_mark btn btn-primary"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </span>
                 </div>
               </li>

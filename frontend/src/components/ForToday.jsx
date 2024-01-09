@@ -13,14 +13,36 @@ const ForToday = () => {
   const [forTodayList, setForTodayList] = useState([]);
 
   const getAlertAmount = async () => {
-    const serverResponse = await fetch(`${serverUrl}/for-today/amount`, {
+    const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
-    const result = await serverResponse.json();
-    console.log("aletr amount", result);
-    setAlertTaskLength(() => ({ ...alertTaskLength, forToday: result }));
+    const serverResponseTomorrow = await fetch(`${serverUrl}/tomorrow/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const serverResponseForToday = await fetch(
+      `${serverUrl}/for-today/amount`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const forTodayResult = await serverResponseForToday.json();
+
+    const tomorrowResult = await serverResponseTomorrow.json();
+
+    const laterResult = await serverResponseLater.json();
+
+    setAlertTaskLength(() => ({
+      ...alertTaskLength,
+      later: laterResult,
+      tomorrow: tomorrowResult,
+      forToday: forTodayResult,
+    }));
   };
 
   useEffect(() => {

@@ -8,15 +8,19 @@ import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { useEffect } from "react";
 import { AlertContext } from "../context/AlertContext";
+import EditTaskII from "./EditTaskII";
+import { ItOfficersContext } from "../context/ItOfficersContext";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 const Tomorrow = () => {
   const url = useLocation();
   const [aciveTab, setActiveTab] = useContext(TabsContext);
+  const [itGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   // const [timeValue, setTimeValue] = useState(null)
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
+  const [showEditII, setShowEditII] = useState(false);
 
   const [tomorrowForm, setTomorrowForm] = useState({
     taskDetail: "",
@@ -44,8 +48,10 @@ const Tomorrow = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    tomorrowForm.completionTime = dayjs(tomorrowForm.completionTime.$d);
-    console.log(tomorrowForm);
+    tomorrowForm.completionTime = dayjs(tomorrowForm.completionTime.$d).format(
+      "YYYY-MM-DD hh:mm:ss"
+    );
+    console.log(tomorrowForm.completionTime.$d);
     const serverResponse = await fetch(`${serverUrl}/tomorrow`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -68,14 +74,36 @@ const Tomorrow = () => {
   };
 
   const getAlertAmount = async () => {
-    const serverResponse = await fetch(`${serverUrl}/tomorrow/amount`, {
+    const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
-    const result = await serverResponse.json();
-    console.log("aletr amount", result);
-    setAlertTaskLength(() => ({ ...alertTaskLength, tomorrow: result }));
+    const serverResponseTomorrow = await fetch(`${serverUrl}/tomorrow/amount`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const serverResponseForToday = await fetch(
+      `${serverUrl}/for-today/amount`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const forTodayResult = await serverResponseForToday.json();
+
+    const tomorrowResult = await serverResponseTomorrow.json();
+
+    const laterResult = await serverResponseLater.json();
+
+    setAlertTaskLength(() => ({
+      ...alertTaskLength,
+      later: laterResult,
+      tomorrow: tomorrowResult,
+      forToday: forTodayResult,
+    }));
   };
 
   useEffect(() => {
@@ -95,7 +123,70 @@ const Tomorrow = () => {
     getAlertAmount();
   }, []);
 
-  // console.log(markCompleteAdd);
+  // const handleClick = async (eachLater) => {
+  //   const updatedMarkCompleteAdd = {
+  //     ...markCompleteAdd,
+  //     task_detail: eachLater.later_detail,
+  //     task_completed: 1,
+  //     done_by: eachLater.task_assignee,
+  //   };
+
+  //   try {
+  //     const serverResponse = await fetch(`${serverUrl}/task`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(updatedMarkCompleteAdd),
+  //     });
+  //     const result = await serverResponse.json();
+  //     console.log("srv resp", result);
+
+  //     // After the fetch is successful, update the state
+  //     setMarkCompleteAdd(updatedMarkCompleteAdd);
+
+  //     if (serverResponse.ok) {
+  //       try {
+  //         const deleteResponse = await fetch(
+  //           `${serverUrl}/later/${eachLater.later_id}`,
+  //           {
+  //             method: "DELETE",
+  //             headers: { "Content-Type": "application/json" },
+  //           }
+  //         );
+  //         const result = await deleteResponse.json();
+  //         console.log("delete resp", result);
+  //         if (serverResponse.ok) {
+  //           setLaterList(result);
+  //           getAlertAmount();
+  //         }
+  //       } catch (error) {
+  //         console.error("Error during fetch:", error);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during fetch:", error);
+  //   }
+  // };
+
+  const handleDelete = async (eachLater) => {
+    try {
+      const deleteResponse = await fetch(
+        `${serverUrl}/later/${eachLater.later_id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const result = await deleteResponse.json();
+      console.log("delete resp", result);
+      if (deleteResponse.ok) {
+        setLaterList(() => result);
+        getAlertAmount();
+      }
+    } catch (error) {
+      console.error("Error during deleting task:", error);
+    }
+  };
+
   return (
     <div className="later_container">
       <br />
@@ -216,9 +307,10 @@ const Tomorrow = () => {
                 size="1"
                 className="form-select"
               >
-                <option value="Sirak">Sirak</option>
-                <option value="Dagmawi">Dagmawi</option>
-                <option value="Tsegaye">Tsegaye</option>
+                {itGuysList &&
+                  itGuysList.map((itguy) => (
+                    <option value={itguy.first_name}>{itguy.first_name}</option>
+                  ))}
               </select>
             </span>
             <span>
@@ -229,28 +321,61 @@ const Tomorrow = () => {
           </span>
         </form>
 
-        {/* ###  Task Later List ### */}
         <ol className="later_list">
-          {tomorrowList &&
-            tomorrowList.map((eachTomorrow) => (
-              <li className="eachTomorrow" key={eachTomorrow.tomorrow_id}>
-                <div className="ll_container">
-                  <span className="ll_leftSec">
-                    {eachTomorrow.tomorrow_detail}
-                  </span>
-                  <span className="ll_rightSec">
-                    <span className="ll_time">
-                      {" "}
+          <table className="table table-hover table-bordered">
+            <thead>
+              <tr>
+                {/* <th scope="col">No.</th> */}
+                <th scope="col">Task Detail</th>
+                <th scope="col">Completion Time</th>
+                <th scope="col">Task Assignee</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {tomorrowList &&
+                tomorrowList.map((eachTomorrow) => (
+                  <tr key={eachTomorrow.tomorrow_id}>
+                    {/* <td></td> */}
+                    <td>{eachTomorrow.tomorrow_detail}</td>
+                    <td>
                       {dayjs(eachTomorrow.completion_time).format("hh:mm a")}
-                    </span>
-                    <span className="assignee">
-                      {eachTomorrow.task_assignee}
-                    </span>
-                    {/* buttons */}
-                  </span>
-                </div>
-              </li>
-            ))}
+                    </td>
+                    <td>{eachTomorrow.task_assignee}</td>
+
+                    <td>
+                      <div className="d-flex justify-space-evenly">
+                        <button
+                          onClick={() => setShowEditII(true)}
+                          className="ll_btn_mark btn btn-primary px-2"
+                        >
+                          Edit
+                        </button>
+                        {showEditII && (
+                          <EditTaskII
+                          // each={eachTomorrow}
+                          // setshoweditii={setShowEditII}
+                          // show={showEditII}
+                          // onHide={() => setShowEditII(false)}
+                          // // setlaterlist={setTomorrowList}
+                          // url="tomorrow"
+                          />
+                        )}
+                        <button
+                          onClick={() => handleDelete(eachTomorrow.tomorrow_id)}
+                          className="ll_btn_mark btn btn-primary"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              {/* { (tbody.insertAdjacentHTML('beforeend', row))} */}
+            </tbody>
+          </table>
+
+          {/* ###  Task Later List ### */}
         </ol>
       </div>
     </div>
@@ -258,3 +383,42 @@ const Tomorrow = () => {
 };
 
 export default Tomorrow;
+
+// {tomorrowList &&
+//   tomorrowList.map((eachTomorrow) => (
+//     <div className="ll_container">
+//       <span className="ll_leftSec">
+//         {eachTomorrow.tomorrow_detail}
+//       </span>
+//       <span className="ll_rightSec">
+//         <span className="ll_time">
+//           {" "}
+//           {dayjs(eachTomorrow.completion_time).format("hh:mm a")}
+//         </span>
+//         <span className="assignee">{eachTomorrow.task_assignee}</span>
+//         <div className="d-flex justify-space-evenly">
+//           <button
+//             onClick={() => setShowEditII(true)}
+//             className="ll_btn_mark btn btn-primary px-2"
+//           >
+//             Edit
+//           </button>
+//           {showEditII && (
+//             <EditTaskII
+//               each={eachTomorrow}
+//               setshoweditii={setShowEditII}
+//               show={showEditII}
+//               onHide={() => setShowEditII(false)}
+//               setlaterlist={setLaterList}
+//             />
+//           )}
+//           <button
+//             onClick={() => handleDelete(eachLater)}
+//             className="ll_btn_mark btn btn-primary"
+//           >
+//             Delete
+//           </button>
+//         </div>
+//       </span>
+//     </div>
+//   ))}

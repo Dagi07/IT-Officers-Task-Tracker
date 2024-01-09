@@ -66,8 +66,29 @@ async function getAlertAmount(req, res) {
   }
 }
 
+async function updateTasksLater(req, res) {
+  try {
+    let serviceResult = await laterService.updateTasksLater(req.body);
+    if (serviceResult) {
+      const response = {
+        status: "success",
+        message: "Task updated successfully",
+      };
+      return res.status(200).json(response);
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't update task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(503);
+  }
+}
+
 async function deleteTasksLater(req, res) {
-  console.log(req.params);
   try {
     let delserviceResult = await laterService.deleteLater(req.params.id);
     let fetchserviceResult = await laterService.fetchLater();
@@ -76,7 +97,7 @@ async function deleteTasksLater(req, res) {
         status: "success",
         message: "Task deleted successfully",
       };
-
+      console.log("-->", fetchserviceResult);
       return res.status(200).json(fetchserviceResult);
     } else {
       const response = {
@@ -92,5 +113,6 @@ module.exports = {
   addTasksLater,
   fetchTasksLater,
   getAlertAmount,
+  updateTasksLater,
   deleteTasksLater,
 };
