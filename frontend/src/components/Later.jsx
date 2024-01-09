@@ -321,7 +321,7 @@ const Later = () => {
         {/* ###  Task Later List ### */}
         <ol className="later_list">
           {laterList &&
-            laterList.map((eachLater) => (
+            laterList.map((eachLater) => {return (
               <li className="eachLater" key={eachLater.later_id}>
                 <div className="ll_container">
                   <span className="ll_leftSec">{eachLater.later_detail}</span>
@@ -344,16 +344,20 @@ const Later = () => {
                       >
                         Edit
                       </button>
-                      {showEditII && (
-                        <EditTaskII
-                          each={eachLater}
-                          setshoweditii={setShowEditII}
-                          show={showEditII}
-                          onHide={() => setShowEditII(false)}
-                          setlaterlist={setLaterList}
-                          url="later"
-                        />
-                      )}
+                      
+                      {showEditII &&
+                      console.log(eachLater)
+                      // (
+                      //   <EditTaskII
+                      //     each={eachLater}
+                      //     setshoweditii={setShowEditII}
+                      //     show={showEditII}
+                      //     onHide={() => setShowEditII(false)}
+                      //     setlaterlist={setLaterList}
+                      //     url="later"
+                      //   />
+                      // )
+                    }
                       <button
                         onClick={() => handleDelete(eachLater)}
                         className="ll_btn_mark btn btn-primary"
@@ -364,7 +368,7 @@ const Later = () => {
                   </span>
                 </div>
               </li>
-            ))}
+            )})}
         </ol>
       </div>
     </div>

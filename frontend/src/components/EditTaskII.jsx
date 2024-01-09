@@ -22,7 +22,7 @@ function EditTaskII(props) {
     completionTime: `${props.each.completion_time}`,
     taskAssignee: `${props.each.task_assignee}`,
   });
-
+// console.log(props.each)
   const handleChange = (e) => {
     setUpdateII({
       ...updateII,
@@ -97,7 +97,7 @@ function EditTaskII(props) {
                 <div className="edit_task_ii">
                   <label htmlFor="completionTime" className="form-label">
                     Estimated task completion time:
-                  </label>
+                  </label><br/>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker
                       name="completionTime"
