@@ -9,6 +9,7 @@ import { OndutyContext } from "../context/OndutyContext";
 import { AlertContext } from "../context/AlertContext";
 import { ItOfficersContext } from "../context/ItOfficersContext";
 import EditTaskII from "./EditTaskII";
+import SingleTask from "./SingleTask";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -319,7 +320,7 @@ const Later = () => {
         </form>
 
         {/* ###  Task Later List ### */}
-        <ol className="later_list">
+        {/* <ol className="later_list">
           {laterList &&
             laterList.map((eachLater) => {return (
               <li className="eachLater" key={eachLater.later_id}>
@@ -369,7 +370,8 @@ const Later = () => {
                 </div>
               </li>
             )})}
-        </ol>
+        </ol> */}
+        <SingleTask/>
       </div>
     </div>
   );
