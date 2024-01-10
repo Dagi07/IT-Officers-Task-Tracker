@@ -18,9 +18,8 @@ const Header = () => {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
-        const result = await backendResponse.json()
-        setItGuysList(() => result)
-        
+        const result = await backendResponse.json();
+        setItGuysList(() => result);
       } catch (err) {
         console.log(err);
       }
@@ -30,8 +29,6 @@ const Header = () => {
 
   useEffect(() => {
     if (itGuysList) {
-
-      console.log(itGuysList);
       const onDutyChanger = () => {
         const currentTime = moment(); // Get the current time using moment
         const startTimeMorningShift = moment("07:00", "HH:mm");
@@ -45,9 +42,12 @@ const Header = () => {
         ) {
           setOnDutyGlobal(itGuysList[1].first_name);
         } else {
-          setOnDutyGlobal(itGuysList.length > 2 ? itGuysList[2].first_name : itGuysList[1].first_name);
+          setOnDutyGlobal(
+            itGuysList.length > 2
+              ? itGuysList[2].first_name
+              : itGuysList[1].first_name
+          );
         }
-        console.log(" it run")
       };
 
       onDutyChanger();
@@ -59,7 +59,6 @@ const Header = () => {
       return () => clearInterval(intervalId);
     }
   }, [itGuysList]);
-
 
   return (
     <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark header">
@@ -100,7 +99,9 @@ const Header = () => {
             aria-expanded="false"
           > */}
       <div className="onduty-wrapper">
-        <Link to="/itofficer"><i className=" manIcon fas fa-user fa-fw"></i></Link>
+        <Link to="/itofficer">
+          <i className=" manIcon fas fa-user fa-fw"></i>
+        </Link>
 
         <strong>
           <span className="on-duty">
@@ -113,9 +114,10 @@ const Header = () => {
               size="1"
               className=" onDuty_selector bg-dark"
             >
-              {itGuysList && itGuysList.map(itguy =>
-                (<option value={itguy.first_name}>{itguy.first_name}</option>)
-              )}
+              {itGuysList &&
+                itGuysList.map((itguy) => (
+                  <option value={itguy.first_name}>{itguy.first_name}</option>
+                ))}
             </select>
           </span>
         </strong>

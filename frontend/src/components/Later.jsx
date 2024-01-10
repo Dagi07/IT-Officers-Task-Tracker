@@ -8,8 +8,7 @@ import { TabsContext } from "../context/TabsContext";
 import { OndutyContext } from "../context/OndutyContext";
 import { AlertContext } from "../context/AlertContext";
 import { ItOfficersContext } from "../context/ItOfficersContext";
-import EditTaskII from "./EditTaskII";
-import SingleTask from "./SingleTask";
+import SingleTaskII from "./SingleTaskII";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -19,9 +18,7 @@ const Later = () => {
   const [itGuysList] = useContext(ItOfficersContext);
   const [onDutyGlobal] = useContext(OndutyContext);
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
-  const [showEditII, setShowEditII] = useState(false);
 
-  // const [timeValue, setTimeValue] = useState(null)
   const [laterForm, setLaterForm] = useState({
     taskDetail: "",
     completionTime: dayjs(),
@@ -82,7 +79,7 @@ const Later = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     laterForm.completionTime = dayjs(laterForm.completionTime.$d).format(
-      "YYYY-MM-DD hh:mm:ss"
+      "YYYY-MM-DD hh:mm:ss a"
     );
     // console.log(laterForm);
     const serverResponse = await fetch(`${serverUrl}/later`, {
@@ -320,58 +317,17 @@ const Later = () => {
         </form>
 
         {/* ###  Task Later List ### */}
-        {/* <ol className="later_list">
+        <ol className="later_list">
           {laterList &&
-            laterList.map((eachLater) => {return (
-              <li className="eachLater" key={eachLater.later_id}>
-                <div className="ll_container">
-                  <span className="ll_leftSec">{eachLater.later_detail}</span>
-                  <span className="ll_rightSec">
-                    <span className="ll_time">
-                      {" "}
-                      {dayjs(eachLater.completion_time).format("hh:mm a")}
-                    </span>
-                    <span className="assignee">{eachLater.task_assignee}</span>
-                    <div className="d-flex justify-space-evenly">
-                      <button
-                        onClick={() => handleClick(eachLater)}
-                        className="ll_btn_mark btn btn-primary"
-                      >
-                        Mark as complete
-                      </button>
-                      <button
-                        onClick={() => setShowEditII(true)}
-                        className="ll_btn_mark btn btn-primary"
-                      >
-                        Edit
-                      </button>
-                      
-                      {showEditII &&
-                      console.log(eachLater)
-                      // (
-                      //   <EditTaskII
-                      //     each={eachLater}
-                      //     setshoweditii={setShowEditII}
-                      //     show={showEditII}
-                      //     onHide={() => setShowEditII(false)}
-                      //     setlaterlist={setLaterList}
-                      //     url="later"
-                      //   />
-                      // )
-                    }
-                      <button
-                        onClick={() => handleDelete(eachLater)}
-                        className="ll_btn_mark btn btn-primary"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </span>
-                </div>
-              </li>
-            )})}
-        </ol> */}
-        <SingleTask/>
+            laterList.map((eachLater) => {
+              return (
+                <SingleTaskII
+                  eachlater={eachLater}
+                  setlaterlist={setLaterList}
+                />
+              );
+            })}
+        </ol>
       </div>
     </div>
   );

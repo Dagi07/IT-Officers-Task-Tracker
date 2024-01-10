@@ -16,13 +16,16 @@ function EditTaskII(props) {
   const [warningMessage, setWarningMessage] = useState({});
   const [itGuysList] = useContext(ItOfficersContext);
 
+  console.log(props.each.completion_time.split(" ")[1]);
+  const x = props.each.completion_time.split(" ")[1];
+
   const [updateII, setUpdateII] = useState({
     taskId: `${props.each.later_id}`,
     taskDetail: `${props.each.later_detail}`,
-    completionTime: `${props.each.completion_time}`,
+    completionTime: `${dayjs()}`,
     taskAssignee: `${props.each.task_assignee}`,
   });
-// console.log(props.each)
+  // console.log(props.each)
   const handleChange = (e) => {
     setUpdateII({
       ...updateII,
@@ -97,7 +100,8 @@ function EditTaskII(props) {
                 <div className="edit_task_ii">
                   <label htmlFor="completionTime" className="form-label">
                     Estimated task completion time:
-                  </label><br/>
+                  </label>
+                  <br />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker
                       name="completionTime"

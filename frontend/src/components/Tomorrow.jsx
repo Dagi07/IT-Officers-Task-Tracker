@@ -49,7 +49,7 @@ const Tomorrow = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     tomorrowForm.completionTime = dayjs(tomorrowForm.completionTime.$d).format(
-      "YYYY-MM-DD hh:mm:ss"
+      "YYYY-MM-DD hh:mm:ss a"
     );
     console.log(tomorrowForm.completionTime.$d);
     const serverResponse = await fetch(`${serverUrl}/tomorrow`, {
