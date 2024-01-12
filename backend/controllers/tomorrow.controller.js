@@ -68,6 +68,29 @@ async function getAlertAmount(req, res) {
   }
 }
 
+async function updateTasksTomorrow(req, res) {
+  try {
+    let serviceResult = await tomorrowService.updateTasksTomorrow(req.body);
+    // console.log(req.body);
+    if (serviceResult) {
+      const response = {
+        status: "success",
+        message: "Task updated successfully",
+      };
+      return res.status(200).json(response);
+    } else {
+      const response = {
+        status: "failure",
+        message: "Couldn't update task",
+      };
+      res.status(409).json(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(503);
+  }
+}
+
 async function deleteTasksTomorrow(req, res) {
   console.log(req.params);
   try {
@@ -94,5 +117,6 @@ module.exports = {
   addTasksTomorrow,
   fetchTasksTomorrow,
   getAlertAmount,
+  updateTasksTomorrow,
   deleteTasksTomorrow,
 };

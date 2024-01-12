@@ -1,4 +1,5 @@
 const laterService = require("../services/later.service");
+const dayjs = require("dayjs");
 async function addTasksLater(req, res) {
   try {
     let addserviceResult = await laterService.addLater(req.body);
@@ -69,6 +70,7 @@ async function getAlertAmount(req, res) {
 async function updateTasksLater(req, res) {
   try {
     let serviceResult = await laterService.updateTasksLater(req.body);
+    // console.log(req.body);
     if (serviceResult) {
       const response = {
         status: "success",
@@ -89,6 +91,7 @@ async function updateTasksLater(req, res) {
 }
 
 async function deleteTasksLater(req, res) {
+  console.log(req.params.id);
   try {
     let delserviceResult = await laterService.deleteLater(req.params.id);
     let fetchserviceResult = await laterService.fetchLater();
@@ -97,7 +100,7 @@ async function deleteTasksLater(req, res) {
         status: "success",
         message: "Task deleted successfully",
       };
-      console.log("-->", fetchserviceResult);
+      // console.log("-->", fetchserviceResult);
       return res.status(200).json(fetchserviceResult);
     } else {
       const response = {

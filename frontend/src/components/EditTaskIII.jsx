@@ -10,7 +10,7 @@ import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
-function EditTaskII(props) {
+function EditTaskIII(props) {
   const { tasks, dispatch } = useTasksContext();
   const { doneDay } = useParams();
   const [warningMessage, setWarningMessage] = useState({});
@@ -20,8 +20,8 @@ function EditTaskII(props) {
   const x = props.each.completion_time.split(" ")[1];
 
   const [updateII, setUpdateII] = useState({
-    taskId: `${props.each.later_id}`,
-    taskDetail: `${props.each.later_detail}`,
+    taskId: `${props.each.tomorrow_id}`,
+    taskDetail: `${props.each.tomorrow_detail}`,
     completionTime: `${props.each.completion_time}`,
     taskAssignee: `${props.each.task_assignee}`,
   });
@@ -45,16 +45,17 @@ function EditTaskII(props) {
       const result = await serverResponse.json();
 
       if (serverResponse.ok) {
+        console.log("ok");
         const getTasks = async () => {
-          let backendResult = await fetch(`${serverUrl}/later`, {
+          let backendResult = await fetch(`${serverUrl}/tomorrow`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
           });
           let res = await backendResult.json();
-          props.setlaterlist(() => res);
+          props.settomorrowlist(() => res);
         };
         getTasks();
-        props.setshoweditii(false);
+        props.setshoweditiii(false);
       } else if (result.status === "forbidden") {
         console.log(result);
         setWarningMessage(result);
@@ -154,4 +155,4 @@ function EditTaskII(props) {
   );
 }
 
-export default EditTaskII;
+export default EditTaskIII;

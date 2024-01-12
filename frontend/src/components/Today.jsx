@@ -7,6 +7,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import Later from "./Later";
 import { TabsContext } from "../context/TabsContext";
 import { AlertContext } from "../context/AlertContext";
+import FloatingFortoday from "./FloatingFortoday";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -17,6 +18,26 @@ const Today = () => {
   const [alertTaskLength, setAlertTaskLength] = useContext(AlertContext);
   const { doneDay } = useParams();
   const [status, setStatus] = useState("Generate Report");
+  const [showFloating, setShowFloating] = useState(false);
+
+  useEffect(() => {
+    const getTasks = async () => {
+      let backendResult = await fetch(
+        `${serverUrl}/getTasks/${dayjs().format("YYYY-MM-DD")}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      let res = await backendResult.json();
+      setTasksList(res);
+      if (url.pathname !== "/later") {
+        setActiveTab(() => 1);
+      }
+    };
+    getTasks();
+    getAlertAmount();
+  }, []);
 
   const getAlertAmount = async () => {
     const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
@@ -55,10 +76,15 @@ const Today = () => {
     const getReport = async () => {
       setStatus("generating report for this day...");
       try {
-        const response = await fetch(`${serverUrl}/get-report/${doneDay ? doneDay : dayjs().format("YYYY-MM-DD") }`, {
-          method: "GET",
-          responseType: "blob",
-        });
+        const response = await fetch(
+          `${serverUrl}/get-report/${
+            doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
+          }`,
+          {
+            method: "GET",
+            responseType: "blob",
+          }
+        );
 
         if (response.ok) {
           const pdfBlob = await response.blob();
@@ -75,25 +101,6 @@ const Today = () => {
 
     getReport();
   };
-
-  useEffect(() => {
-    const getTasks = async () => {
-      let backendResult = await fetch(
-        `${serverUrl}/getTasks/${dayjs().format("YYYY-MM-DD")}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      let res = await backendResult.json();
-      setTasksList(res);
-      if (url.pathname !== "/later") {
-        setActiveTab(() => 1);
-      }
-    };
-    getTasks();
-    getAlertAmount();
-  }, []);
 
   return (
     <>
@@ -154,7 +161,7 @@ const Today = () => {
               </h3>
             </li>
           </Link>
-          <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
+          {/* <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
             <li
               className={
                 aciveTab === 4
@@ -169,7 +176,17 @@ const Today = () => {
                 )}
               </h3>
             </li>
-          </Link>
+          </Link> */}
+
+          <button
+            className={`btn btn-primary fortoday_btn ${
+              alertTaskLength.forToday > 0 ? "opacity-100" : "opacity-50"
+            }`}
+            type="submit"
+            onClick={() => setShowFloating(true)}
+          >
+            For Today
+          </button>
         </ol>
       </div>
       <div className="task__body">
@@ -195,6 +212,14 @@ const Today = () => {
           )}
         </ol>
       </div>
+
+      <FloatingFortoday
+        showfloating={showFloating}
+        setshowfloating={setShowFloating}
+        settaskslist={setTasksList}
+        getalertamount={getAlertAmount}
+      />
+
       <div className="bg-white add_task">
         <AddTask taskslist={tasksList} settaskslist={setTasksList} />
       </div>

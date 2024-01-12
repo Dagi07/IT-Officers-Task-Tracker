@@ -64,6 +64,7 @@ async function getAlertAmount() {
 
 async function updateTasksLater(updatedData) {
   const { taskId, taskDetail, completionTime, taskAssignee } = updatedData;
+  let completiontime = dayjs(completionTime).format("YYYY-MM-DD hh:mm:ss a");
   try {
     let editSQL = `UPDATE later_table
     SET
@@ -76,7 +77,7 @@ async function updateTasksLater(updatedData) {
     // Execute the query (use the query method from the db connection file)
     let result = await conn.query(editSQL, [
       taskDetail,
-      completionTime,
+      completiontime,
       taskAssignee,
       taskId,
     ]);

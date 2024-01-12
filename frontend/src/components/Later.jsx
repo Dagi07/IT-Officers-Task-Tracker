@@ -25,11 +25,6 @@ const Later = () => {
     taskAssignee: onDutyGlobal,
   });
   const [laterList, setLaterList] = useState([]);
-  const [markCompleteAdd, setMarkCompleteAdd] = useState({
-    task_detail: "",
-    task_completed: 1,
-    done_by: "",
-  });
 
   useEffect(() => {
     // Update the taskadd state when onDutyGlobal changes
@@ -38,6 +33,22 @@ const Later = () => {
       taskAssignee: onDutyGlobal,
     }));
   }, [onDutyGlobal]);
+
+  useEffect(() => {
+    url.pathname === "/later" ? setActiveTab(() => 2) : setActiveTab(() => 1);
+    const getTasks = async () => {
+      const serverResponse = await fetch(`${serverUrl}/later`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await serverResponse.json();
+      setLaterList(() => result);
+    };
+    getTasks();
+
+    getAlertAmount();
+  }, []);
 
   const getAlertAmount = async () => {
     const serverResponseLater = await fetch(`${serverUrl}/later/amount`, {
@@ -50,15 +61,15 @@ const Later = () => {
       headers: { "Content-Type": "application/json" },
     });
 
-    const serverResponseForToday = await fetch(
-      `${serverUrl}/for-today/amount`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    // const serverResponseForToday = await fetch(
+    //   `${serverUrl}/for-today/amount`,
+    //   {
+    //     method: "GET",
+    //     headers: { "Content-Type": "application/json" },
+    //   }
+    // );
 
-    const forTodayResult = await serverResponseForToday.json();
+    // const forTodayResult = await serverResponseForToday.json();
 
     const tomorrowResult = await serverResponseTomorrow.json();
 
@@ -68,7 +79,7 @@ const Later = () => {
       ...alertTaskLength,
       later: laterResult,
       tomorrow: tomorrowResult,
-      forToday: forTodayResult,
+      // forToday: forTodayResult,
     }));
   };
 
@@ -103,87 +114,7 @@ const Later = () => {
     }
   };
 
-  useEffect(() => {
-    url.pathname === "/later" ? setActiveTab(() => 2) : setActiveTab(() => 1);
-    const getTasks = async () => {
-      const serverResponse = await fetch(`${serverUrl}/later`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const result = await serverResponse.json();
-      setLaterList(() => result);
-    };
-    getTasks();
-
-    getAlertAmount();
-  }, []);
-
   // console.log("aletr amount", alertTaskLength.later);
-
-  const handleClick = async (eachLater) => {
-    const updatedMarkCompleteAdd = {
-      ...markCompleteAdd,
-      task_detail: eachLater.later_detail,
-      task_completed: 1,
-      done_by: eachLater.task_assignee,
-    };
-
-    try {
-      const serverResponse = await fetch(`${serverUrl}/task`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedMarkCompleteAdd),
-      });
-      const result = await serverResponse.json();
-      console.log("srv resp", result);
-
-      // After the fetch is successful, update the state
-      setMarkCompleteAdd(updatedMarkCompleteAdd);
-
-      if (serverResponse.ok) {
-        try {
-          const deleteResponse = await fetch(
-            `${serverUrl}/later/${eachLater.later_id}`,
-            {
-              method: "DELETE",
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-          const result = await deleteResponse.json();
-          console.log("delete resp", result);
-          if (serverResponse.ok) {
-            setLaterList(result);
-            getAlertAmount();
-          }
-        } catch (error) {
-          console.error("Error during fetch:", error);
-        }
-      }
-    } catch (error) {
-      console.error("Error during fetch:", error);
-    }
-  };
-
-  const handleDelete = async (eachLater) => {
-    try {
-      const deleteResponse = await fetch(
-        `${serverUrl}/later/${eachLater.later_id}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const result = await deleteResponse.json();
-      console.log("delete resp", result);
-      if (deleteResponse.ok) {
-        setLaterList(() => result);
-        getAlertAmount();
-      }
-    } catch (error) {
-      console.error("Error during deleting task:", error);
-    }
-  };
 
   return (
     <div className="later_container">
@@ -239,7 +170,7 @@ const Later = () => {
                 </h3>
               </li>
             </Link>
-            <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
+            {/* <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
               <li
                 className={
                   aciveTab === 4
@@ -254,7 +185,7 @@ const Later = () => {
                   )}
                 </h3>
               </li>
-            </Link>
+            </Link> */}
           </ol>
         </div>
 
@@ -324,6 +255,7 @@ const Later = () => {
                 <SingleTaskII
                   eachlater={eachLater}
                   setlaterlist={setLaterList}
+                  getalertamount={getAlertAmount}
                 />
               );
             })}

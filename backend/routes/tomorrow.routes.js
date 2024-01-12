@@ -11,6 +11,8 @@ router.post("/tomorrow", tomorrowController.addTasksTomorrow);
 router.get("/tomorrow", tomorrowController.fetchTasksTomorrow);
 // Create a get request handler for the get amount of alert route
 router.get("/tomorrow/amount", tomorrowController.getAlertAmount);
+// Create a put request handler for the putTomorrow route
+router.put("/tomorrow", tomorrowController.updateTasksTomorrow);
 // Create a delete request handler for the delete task tomorrow route
 router.delete("/tomorrow/:id", tomorrowController.deleteTasksTomorrow);
 

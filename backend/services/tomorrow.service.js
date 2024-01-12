@@ -19,7 +19,7 @@ async function addTomorrow(addedTomorrowData) {
       return null;
     }
   } catch (err) {
-    console.error("Error in adding later", err);
+    console.error("Error in adding tomorrow", err);
   }
 }
 
@@ -63,12 +63,74 @@ async function getAlertAmount() {
   }
 }
 
-async function deleteTomorrow(laterID) {
+async function updateTasksTomorrow(updatedData) {
+  const { taskId, taskDetail, completionTime, taskAssignee } = updatedData;
+  let completiontime = dayjs(completionTime).format("YYYY-MM-DD hh:mm:ss a");
+  try {
+    let editSQL = `UPDATE later_table
+    SET
+      later_detail = ?,
+      completion_time = ?,
+      task_assignee = ?
+    WHERE
+      later_id = ?
+    `;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(editSQL, [
+      taskDetail,
+      completiontime,
+      taskAssignee,
+      taskId,
+    ]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching later", err);
+  }
+}
+
+async function updateTasksTomorrow(updatedData) {
+  const { taskId, taskDetail, completionTime, taskAssignee } = updatedData;
+  let completiontime = dayjs(completionTime).format("YYYY-MM-DD hh:mm:ss a");
+  try {
+    let editSQL = `UPDATE tomorrow_table
+    SET
+      tomorrow_detail = ?,
+      completion_time = ?,
+      task_assignee = ?
+    WHERE
+      tomorrow_id = ?
+    `;
+    // Execute the query (use the query method from the db connection file)
+    let result = await conn.query(editSQL, [
+      taskDetail,
+      completiontime,
+      taskAssignee,
+      taskId,
+    ]);
+
+    // If the query returns a result, return the result. Otherwise, return null
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("Error in fetching tomorrow", err);
+  }
+}
+
+async function deleteTomorrow(tomorrowID) {
   try {
     let deleteSQL = `DELETE FROM tomorrow_table
-    WHERE later_id = ?`;
+    WHERE tomorrow_id = ?`;
     // Execute the query (use the query method from the db connection file)
-    let result = await conn.query(deleteSQL, [laterID]);
+    let result = await conn.query(deleteSQL, [tomorrowID]);
 
     // If the query returns a result, return the result. Otherwise, return null
     if (result) {
@@ -79,4 +141,10 @@ async function deleteTomorrow(laterID) {
   } catch (error) {}
 }
 
-module.exports = { addTomorrow, fetchTomorrow, getAlertAmount, deleteTomorrow };
+module.exports = {
+  addTomorrow,
+  fetchTomorrow,
+  getAlertAmount,
+  updateTasksTomorrow,
+  deleteTomorrow,
+};

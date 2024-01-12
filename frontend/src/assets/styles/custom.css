@@ -588,6 +588,68 @@ sup {
   padding: 25px;
 }
 
+@keyframes rotate {
+  from {
+    transform: rotate(180deg);
+    left: 840px;
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.float_container {
+  animation: rotate 0.4s linear;
+  animation-play-state: paused;
+}
+
+.visible {
+  animation-play-state: running;
+}
+
+.float_container {
+  position: absolute;
+  left: 420px;
+  top: 125px;
+  width: 40%;
+  height: 65%;
+  background-color: #E6E6E6;
+  z-index: 10;
+  border-radius: 10%;
+  border: 1px solid #656565;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 4px;
+}
+
+.float_container .ll_time {
+  font-size: 12px;
+}
+
+.floating_btn {
+  padding: 0;
+  height: 40px;
+}
+
+.close_button {
+   margin: 0 20px 20px 0
+}
+
+.floating_heading {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.fortoday_btn {
+  background-color: #72101e;
+  color: #e2c375;
+  transition: 0.4s;
+  margin-left: 25px;
+  margin-bottom: 18px;
+  margin-top: -18px;
+  font-size: 15px;
+}
 
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {

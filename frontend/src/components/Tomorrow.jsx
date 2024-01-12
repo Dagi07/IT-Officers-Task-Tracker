@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { AlertContext } from "../context/AlertContext";
 import EditTaskII from "./EditTaskII";
 import { ItOfficersContext } from "../context/ItOfficersContext";
+import SingleTaskIII from "./SingleTaskIII";
 
 const serverUrl = import.meta.env.VITE_API_serverUrl;
 
@@ -84,15 +85,15 @@ const Tomorrow = () => {
       headers: { "Content-Type": "application/json" },
     });
 
-    const serverResponseForToday = await fetch(
-      `${serverUrl}/for-today/amount`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    // const serverResponseForToday = await fetch(
+    //   `${serverUrl}/for-today/amount`,
+    //   {
+    //     method: "GET",
+    //     headers: { "Content-Type": "application/json" },
+    //   }
+    // );
 
-    const forTodayResult = await serverResponseForToday.json();
+    // const forTodayResult = await serverResponseForToday.json();
 
     const tomorrowResult = await serverResponseTomorrow.json();
 
@@ -102,7 +103,7 @@ const Tomorrow = () => {
       ...alertTaskLength,
       later: laterResult,
       tomorrow: tomorrowResult,
-      forToday: forTodayResult,
+      // forToday: forTodayResult,
     }));
   };
 
@@ -167,26 +168,6 @@ const Tomorrow = () => {
   //   }
   // };
 
-  const handleDelete = async (eachLater) => {
-    try {
-      const deleteResponse = await fetch(
-        `${serverUrl}/later/${eachLater.later_id}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const result = await deleteResponse.json();
-      console.log("delete resp", result);
-      if (deleteResponse.ok) {
-        setLaterList(() => result);
-        getAlertAmount();
-      }
-    } catch (error) {
-      console.error("Error during deleting task:", error);
-    }
-  };
-
   return (
     <div className="later_container">
       <br />
@@ -241,7 +222,7 @@ const Tomorrow = () => {
                 </h3>
               </li>
             </Link>
-            <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
+            {/* <Link onClick={() => setActiveTab(() => 4)} to="/for-today">
               <li
                 className={
                   aciveTab === 4
@@ -256,7 +237,7 @@ const Tomorrow = () => {
                   )}
                 </h3>
               </li>
-            </Link>
+            </Link> */}
           </ol>
         </div>
 
@@ -335,41 +316,11 @@ const Tomorrow = () => {
             <tbody>
               {tomorrowList &&
                 tomorrowList.map((eachTomorrow) => (
-                  <tr key={eachTomorrow.tomorrow_id}>
-                    {/* <td></td> */}
-                    <td>{eachTomorrow.tomorrow_detail}</td>
-                    <td>
-                      {dayjs(eachTomorrow.completion_time).format("hh:mm a")}
-                    </td>
-                    <td>{eachTomorrow.task_assignee}</td>
-
-                    <td>
-                      <div className="d-flex justify-space-evenly">
-                        <button
-                          onClick={() => setShowEditII(true)}
-                          className="ll_btn_mark btn btn-primary px-2"
-                        >
-                          Edit
-                        </button>
-                        {showEditII && (
-                          <EditTaskII
-                          // each={eachTomorrow}
-                          // setshoweditii={setShowEditII}
-                          // show={showEditII}
-                          // onHide={() => setShowEditII(false)}
-                          // // setlaterlist={setTomorrowList}
-                          // url="tomorrow"
-                          />
-                        )}
-                        <button
-                          onClick={() => handleDelete(eachTomorrow.tomorrow_id)}
-                          className="ll_btn_mark btn btn-primary"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                  <SingleTaskIII
+                    each={eachTomorrow}
+                    settomorrowlist={setTomorrowList}
+                    getalertamount={getAlertAmount}
+                  />
                 ))}
               {/* { (tbody.insertAdjacentHTML('beforeend', row))} */}
             </tbody>
