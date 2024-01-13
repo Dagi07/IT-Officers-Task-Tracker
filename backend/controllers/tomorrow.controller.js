@@ -1,4 +1,6 @@
 const tomorrowService = require("../services/tomorrow.service");
+const forTodayService = require("../services/forToday.service");
+
 async function addTasksTomorrow(req, res) {
   console.log(req.body);
   try {
@@ -95,7 +97,7 @@ async function deleteTasksTomorrow(req, res) {
   console.log(req.params);
   try {
     let delserviceResult = await tomorrowService.deleteTomorrow(req.params.id);
-    let fetchserviceResult = await tomorrowService.fetchTomorrow();
+    let fetchserviceResult = await forTodayService.fetchForToday();
     if (delserviceResult) {
       const response = {
         status: "success",
