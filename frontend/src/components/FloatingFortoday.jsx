@@ -143,7 +143,7 @@ const FloatingFortoday = ({
                   <td>
                     <button
                       onClick={() => handleClick(eachTomorrow)}
-                      className="ll_btn_mark btn btn-primary floating_btn"
+                      className="ll_btn_mark btn btn-primary floating_btn px-2"
                     >
                       Mark as complete
                     </button>

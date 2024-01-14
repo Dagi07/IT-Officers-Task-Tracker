@@ -44,7 +44,7 @@ async function getTasksForSpecificDay(doneDay) {
   }
 }
 
-schedule.schedule("0,1 0 * * *", getDayssForSidebar);
+schedule.schedule("1,10,20,30,40,50 * * * * *", getDayssForSidebar);
 setInterval(getDayssForSidebar, 22000000);
 
 module.exports = { getDayssForSidebar, getTasksForSpecificDay };
