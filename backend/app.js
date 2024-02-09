@@ -1,9 +1,15 @@
 // Import the express module
 const express = require("express");
+const dayHandler = require("./util/dayHandler");
+let dh = dayHandler.dayHandler();
+// console.log(dh[0]);
+
+// console.log(pdd.getDayssForSidebar());
+
 // Import the dotenv module
 require("dotenv").config();
 // Import the CORS package
-const cors = require('cors');
+const cors = require("cors");
 
 // save imported express to app variable
 let app = express();
@@ -21,7 +27,9 @@ const allRoutes = require("./routes/index.routes");
 // Add the routes index file to the middleware chain
 app.use(allRoutes);
 
+// const pdd = require("./controllers/task2.controller");
+
 // Set up the listener
 app.listen(port, () => {
-  console.log(`Listening at ${process.env.host}:${port}...`);
+  console.log(`Listening at http://${process.env.host}:${port}...`);
 });

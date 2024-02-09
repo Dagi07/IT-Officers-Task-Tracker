@@ -90,6 +90,32 @@ body {
   color: #737373;
   margin-bottom: 5px;
 }
+.task__sub-head::before {
+  display: none;
+}
+.task__sub-head h3 {
+  margin: 0 5px;
+}
+
+.tabs a {
+  text-decoration: none;
+}
+.tabs a:hover {
+  opacity: 0.8;
+}
+
+.tab {
+  border: 1px solid black;
+  border-radius: 7px;
+  border-bottom: none;
+  padding: 0 5px;
+  background-color: #374151;
+  color: #fff !important;
+  z-index: -1;
+}
+.tab .task__sub-head {
+  color: #fff;
+}
 
 .task__body {
   flex: 1;
@@ -134,10 +160,17 @@ body {
 }
 
 .addtask button {
+  background-color: #72101e;
+  color: #e2c375;
   transition: 0.4s;
 }
 .addtask button:active {
   opacity: 0.6;
+}
+.addtask button:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
 }
 
 .tasks_list {
@@ -243,8 +276,10 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #72101e !important;
   text-decoration: none;
+  background-color: #e2c375;
+  color: #72101e;
 }
 
 .day_card__head {
@@ -255,20 +290,28 @@ body {
   height: 100px;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
+
+  text-decoration: none;
 }
 
 .day_card__title {
   width: 100%;
   flex: 1;
-  h1 {
-    margin: 15px 0 20px;
-    font-weight: 500;
-    font-size: 20px;
-  }
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.scrollbox-inner a {
+  text-decoration: none;
+}
+.day_card__title h1 {
+  margin: 15px 0 20px;
+  font-weight: 500;
+  font-size: 20px;
 }
 
 .single_task {
-  align-items: center;
+  align-items: baseline;
   margin-left: 5px;
   display: flex;
   justify-content: space-between;
@@ -295,7 +338,7 @@ body {
   background-color: #111827;
   color: #fff;
   border: 1px solid black;
-  padding: 1rem;
+  padding: 0.4rem;
   border-radius: 1rem;
   margin-bottom: 1rem;
 }
@@ -306,6 +349,12 @@ body {
   border: 1px solid #fff;
   border-radius: 50%;
   text-align: center;
+}
+
+.not_yet {
+  border-color: pink !important;
+  background-color: #1f2532 !important;
+  color: #ebdfdf !important;
 }
 
 .modal-content {
@@ -333,6 +382,275 @@ body {
   margin: 0 15px 0 5px;
 }
 
+.onDuty_selector {
+  -webkit-appearance: none;
+  margin-left: 4px;
+  padding-left: 4px;
+  color: gold;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: gold;
+  text-decoration: underline;
+}
+.onDuty_selector:hover {
+  color: brown;
+  background-color: brown;
+}
+
+.later_container {
+  width: 100%;
+  position: relative;
+}
+.later_container_inner {
+  max-width: calc(100% - 275px) !important;
+  width: calc(100% - 275px) !important;
+
+  margin-left: 275px;
+}
+.later_addTask {
+}
+
+.later_form {
+  display: flex;
+  /* justify-content: space-between; */
+  /* max-height: 70px!important; */
+  align-items: end;
+  width: calc(100% - 275px);
+  margin: auto;
+  border: 1px solid #dee2e6;
+  border-right: 3px solid #dee2e6;
+  padding: 15px;
+  position: fixed;
+  top: 144px;
+  background-color: #374151;
+  color: #fff;
+}
+
+.later_form .textarea {
+  width: 50%;
+}
+
+.later_form span {
+  margin: 0 5px;
+}
+
+.later_form span p {
+  margin-bottom: 8px;
+}
+
+.time_picker_ii {
+  color: #111 !important;
+  border: 1px solid black !important;
+}
+
+.lf_completionTime .MuiInputBase-input {
+  padding: 8px 14px !important;
+  color: #fff !important;
+  border: #fff !important;
+}
+
+.later_form button {
+  background-color: #72101e;
+  color: #e2c375;
+  border-color: #360008;
+}
+.later_form button:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
+}
+
+.lf_rightSec {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: end;
+  width: 50%;
+}
+
+.lf_completionTime {
+  width: 125px;
+}
+
+.hide-content {
+  display: none;
+}
+.show-content {
+  display: block;
+}
+
+.onduty-wrapper {
+  float: right;
+}
+
+.header_right {
+}
+
+.later_list {
+  margin-top: 200px;
+}
+.eachLater {
+  margin-top: 8px;
+}
+.ll_time {
+  /* float: right; */
+}
+.ll_btn_mark {
+  font-size: 11px;
+  /* float: right; */
+  margin-right: 10px;
+  height: 30px;
+  padding: 0 5px;
+  background-color: #72101e;
+  color: #e2c375;
+}
+.ll_btn_mark:hover {
+  background-color: #72101e;
+  color: #e2c375;
+  opacity: 0.9;
+}
+
+.ll_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ll_rightSec {
+  width: 65%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+
+sup {
+  color: white;
+  background-color: red;
+  border-radius: 100px;
+  padding: 0 3px;
+  font-size: 9px;
+  margin-left: -3px;
+}
+
+.forToday_wrapper {
+  /* background-color: #374151; */
+  /* height: 100%; */
+  color: #fff;
+}
+
+.forToday_list {
+  margin-top: 72px;
+}
+
+.forToday_inner {
+   background-color: #374151; 
+   height: 100%;
+}
+
+.generate_report {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.generate_report_btn {
+  height: 40px;
+  padding: 0px 8px;
+  align-self: flex-end;
+  float: left;
+}
+
+.warning {
+  color: red;
+  font-size: 12px;
+  margin-top: -22px;
+  margin-bottom: -12px;
+  margin-left: 10px;
+}
+
+.warning-sm {
+  color: red;
+  font-size: 9px;
+  margin-top: -4px;
+  margin-bottom: -21px;
+}
+
+.form-label {
+  font-size: 13px;
+}
+
+.add_itofficer {
+  width: 75%;
+  padding: 25px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(180deg);
+    left: 840px;
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.float_container {
+  animation: rotate 0.4s linear;
+  animation-play-state: paused;
+}
+
+.visible {
+  animation-play-state: running;
+}
+
+.float_container {
+  position: absolute;
+  left: 420px;
+  top: 125px;
+  width: 40%;
+  height: 65%;
+  background-color: #E6E6E6;
+  z-index: 10;
+  border-radius: 10%;
+  border: 1px solid #656565;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 4px;
+}
+
+.float_container .ll_time {
+  font-size: 12px;
+}
+
+.floating_btn {
+  padding: 0;
+  height: 40px;
+}
+
+.close_button {
+   margin: 0 20px 20px 0
+}
+
+.floating_heading {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.fortoday_btn {
+  background-color: #72101e;
+  color: #e2c375;
+  transition: 0.4s;
+  margin-left: 25px;
+  margin-bottom: 18px;
+  margin-top: -18px;
+  font-size: 15px;
+}
+
 /* ### For Mobile Devices ### */
 @media (max-width: 540px) {
   * {
@@ -350,6 +668,12 @@ body {
     width: 75% !important;
     height: 350px !important;
   }
+  .task__sub-head {
+    margin-bottom: 33px !important;
+  }
+  .generate_report {
+    width: 100% !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -362,6 +686,20 @@ body {
   }
   .add_task {
     padding-left: 0 !important;
+  }
+  .later_container_inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0;
+  }
+  .later_form {
+    width: 100%;
+  }
+  .task__sub-head {
+    margin-bottom: 13px !important;
+  }
+  .generate_report {
+    width: 100% !important;
   }
 }
 
@@ -388,6 +726,16 @@ body {
   .modal-content {
     width: 60% !important;
   }
+  .task__sub-head h3 {
+    margin: 0 5px 3px;
+  }
+  .later_form {
+    display: block;
+    font-size: 12px;
+  }
+  .lf_rightSec {
+    width: 100%;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -403,5 +751,8 @@ body {
   .modal-content {
     width: 45%;
     height: 425px;
+  }
+  .generate_report {
+    width: 70%;
   }
 }

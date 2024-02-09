@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import { useParams } from "react-router-dom";
 import { useTasksContext } from "../hooks/useTasksContext";
+import dayjs from "dayjs";
+import { ItOfficersContext } from "../context/ItOfficersContext";
+
+const serverUrl = import.meta.env.VITE_API_serverUrl;
 
 function EditTask(props) {
   const { tasks, dispatch } = useTasksContext();
-  const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
+  // const currentTask = tasks.filter((ct) => ct.task_id === props.taskid);
+  const { doneDay } = useParams();
+  const [warningMessage, setWarningMessage] = useState({});
+  const [itGuysList] = useContext(ItOfficersContext);
 
   const [updateTask, setUpdateTask] = useState({
-    idTask: `${currentTask[0].task_id}`,
-    taskDetail: `${currentTask[0].task_detail}`,
-    taskCompleted: `${currentTask[0].task_completed}`,
-    doneBy: `${currentTask[0].done_by}`,
+    task_id: `${props.specificTask.task_id}`,
+    task_detail: `${props.specificTask.task_detail}`,
+    task_completed: `${props.specificTask.task_completed}`,
+    done_by: `${props.specificTask.done_by}`,
   });
 
   // useEffect(() => {
@@ -40,7 +48,7 @@ function EditTask(props) {
       // props.onTaskSubmit();
       e.preventDefault();
       // console.log("task update", updateTask);
-      const serverResponse = await fetch(`http://localhost:6800/task`, {
+      const serverResponse = await fetch(`${serverUrl}/task`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updateTask),
@@ -48,18 +56,29 @@ function EditTask(props) {
       const result = await serverResponse.json();
 
       if (serverResponse.ok) {
-        // setError(null)
-        // setTitle('')
-        // setLoad('')
-        // setReps('')
-        dispatch({ type: "SET_TASKS", payload: result });
+        const getTasks = async () => {
+          let backendResult = await fetch(
+            `${serverUrl}/getTasks/${doneDay ? doneDay : dayjs().format("YYYY-MM-DD")
+            }`,
+            {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          let res = await backendResult.json();
+          props.settaskslist(() => res);
+        };
+        getTasks();
         props.setModalShow(false);
+      } else if (result.status === "forbidden") {
+        console.log(result);
+        setWarningMessage(result);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
+  warningMessage && console.log(warningMessage.field);
   return (
     <>
       <Modal
@@ -81,29 +100,32 @@ function EditTask(props) {
               <div className="row">
                 <div className="">
                   <textarea
-                    className="form-control my-4"
+                    className={`form-control my-4`}
                     rows="2"
                     type="text"
                     placeholder="Task detail"
-                    name="taskDetail"
+                    name="task_detail"
                     id="taskDetail"
                     onChange={handleChange}
-                    value={updateTask.taskDetail}
+                    value={updateTask.task_detail}
                     required
                   ></textarea>
+                  {warningMessage && warningMessage.field === "taskDetail" && (
+                    <p className="warning">{warningMessage.message}</p>
+                  )}
                 </div>
 
-                <div className="edit-dropdowns d-flex justify-content-between">
+                <div className="edit-dropdowns d-flex justify-content-around">
                   {/* ### Task Completed dropdown ### */}
-                  <div className=" my-4 me-2">
+                  <div className=" my-4 me-3">
                     <label htmlFor="taskCompleted" className="form-label">
                       Task Completed:
                     </label>
                     <select
                       id="taskCompleted"
                       onChange={handleChange}
-                      value={updateTask.taskCompleted}
-                      name="taskCompleted"
+                      value={updateTask.task_completed}
+                      name="task_completed"
                       size="1"
                       className="form-select"
                     >
@@ -120,18 +142,24 @@ function EditTask(props) {
                     <select
                       id="doneBy"
                       onChange={handleChange}
-                      value={updateTask.doneBy}
-                      name="doneBy"
+                      value={updateTask.done_by}
+                      name="done_by"
                       size="1"
-                      className="form-select"
+                      className={`form-select${warningMessage && warningMessage.field === "doneBy"
+                        ? " border-danger"
+                        : ""
+                        }`}
                     >
-                      <option value="Sirak">Sirak</option>
-                      <option value="Dagmawi">Dagmawi</option>
-                      <option value="Tsegaye">Tsegaye</option>
+                      {itGuysList && itGuysList.map(itguy =>
+                        (<option value={itguy.first_name}>{itguy.first_name}</option>)
+                      )}
                     </select>
                   </div>
                 </div>
-                <div className="col-12 mt-4">
+                <div className="col-12 mt-2">
+                  {warningMessage && warningMessage.field === "doneBy" && (
+                    <p className="warning">{warningMessage.message}</p>
+                  )}
                   <div className="d-flex justify-content-end">
                     <button className="btn btn-primary" type="submit">
                       Update
@@ -144,7 +172,7 @@ function EditTask(props) {
           {/* <Modal.Footer> */}
           {/* <Button onClick={props.onHide}>Close</Button> */}
           {/* </Modal.Footer> */}
-        </div>{" "}
+        </div>
       </Modal>
     </>
   );

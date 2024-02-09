@@ -9,7 +9,10 @@ router.post("/task", taskController.addTask);
 // Create a get request handler for the task route
 router.get("/task", taskController.fetchTasks);
 router.get("/task/:id", taskController.fetchDayList);
-// Create a get request handler for the task route
+// Create an update request handler for the task route
 router.put("/task", taskController.updateTask);
+// Create a delete request handler for the task route
+router.delete("/task/:id", taskController.deleteTask);
+
 // Export the router
 module.exports = router;

@@ -5,13 +5,18 @@ import Fab from "@mui/material/Fab";
 import EditIcon from "@mui/icons-material/Edit";
 import { red } from "@mui/material/colors";
 import EditTask from "./EditTask";
+import DeleteTask from "./DeleteTask";
+import dayjs from "dayjs";
+import { useParams } from "react-router-dom";
 
-const SingleTask = ({ eachTask }) => {
+const SingleTask = ({ specificTask, taskslist, settaskslist, doneday }) => {
   // const classes = useStyles();
   const [modalShow, setModalShow] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState(false);
+
   return (
-    <div className="single_task" key={eachTask.task_id}>
-      <h6>{eachTask.task_detail}</h6>
+    <div className="single_task" key={specificTask.task_id}>
+      <h6>{specificTask.task_detail}</h6>
       <div className="single_task__btns">
         <Fab
           color="secondary"
@@ -25,23 +30,37 @@ const SingleTask = ({ eachTask }) => {
         </Fab>
         {modalShow && (
           <EditTask
-            taskid={eachTask.task_id}
+            specificTask={specificTask}
             setModalShow={setModalShow}
             show={modalShow}
+            taskslist={taskslist}
+            settaskslist={settaskslist}
             onHide={() => setModalShow(false)}
           />
         )}
-        <IconButton
-          aria-label="delete"
-          sx={{
-            ml: 1,
-            "&:hover": {
-              opacity: 0.9,
-            },
-          }}
-        >
-          <DeleteIcon sx={{ color: red[50] }} />
-        </IconButton>
+
+        {(!doneday || doneday === dayjs().format("YYYY-MM-DD")) && (
+          <IconButton
+            aria-label="delete"
+            sx={{
+              ml: 1,
+              "&:hover": {
+                opacity: 0.9,
+              },
+            }}
+            onClick={() => setDeleteModal(true)}
+          >
+            <DeleteIcon sx={{ color: red[50] }} />
+          </IconButton>
+        )}
+        {deleteModal && (
+          <DeleteTask
+            deletemodal={deleteModal}
+            setdeletemodal={setDeleteModal}
+            specificTask={specificTask}
+            settaskslist={settaskslist}
+          />
+        )}
       </div>
     </div>
   );
