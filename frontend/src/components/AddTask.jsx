@@ -120,9 +120,10 @@ const AddTask = ({ taskslist, settaskslist }) => {
                 size="1"
                 className="form-select"
               >
-                {itGuysList && itGuysList.map(itguy =>
-                (<option value={itguy.first_name}>{itguy.first_name}</option>)
-              )}
+                {itGuysList &&
+                  itGuysList.map((itguy) => (
+                    <option value={itguy.first_name}>{itguy.first_name}</option>
+                  ))}
               </select>
             </div>
 
