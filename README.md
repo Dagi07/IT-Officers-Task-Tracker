@@ -8,7 +8,7 @@ Welcome to the IT Officers Task Tracker, a versatile task management system desi
 - **Usage**
 - **Contributing**
 - **License**
-- 
+
 ### Features
 - **Task Management**: IT Officers can add, edit, and delete tasks on the same day.
 - **Assignment**: When adding tasks, Officers can choose the assignee and mark the task as done or pending.
@@ -18,13 +18,13 @@ Welcome to the IT Officers Task Tracker, a versatile task management system desi
 - **Fast and Robust**: The web app is designed for speed and reliability, offering excellent state management.
 
 ### Technologies Used
-- **Frontend: React library, Bootstrap for styling, Material Icons, React-Bootstrap
-- **Backend: ExpressJS framework
-- **Database: MySQL
-- 
+- **Frontend**: React library, Bootstrap for styling, Material Icons, React-Bootstrap
+- **Backend**: ExpressJS framework
+- **Database**: MySQL
+
 ### Getting Started
 1. Clone the repository.
-git clone https://github.com/your-username/it-officers-task-tracker.git
+git clone https://github.com/Dagi07/IT-Officers-Task-Tracker.git
 
 2. Install dependencies for both the frontend and backend.
 cd it-officers-task-tracker/frontend
@@ -40,7 +40,7 @@ npm start
 cd ../backend
 npm start
 
-5. Access the app at http://localhost:3000.
+5. Access the app at http://localhost:5173.
 
 ### Usage
 1. Add tasks for the current day, assigning them to specific Officers.
